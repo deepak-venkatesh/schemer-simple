@@ -1,0 +1,131 @@
+% Created 2025-10-09 Thu 13:29
+% Intended LaTeX compiler: pdflatex
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{longtable}
+\usepackage{wrapfig}
+\usepackage{rotating}
+\usepackage[normalem]{ulem}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{capt-of}
+\usepackage{hyperref}
+\setlength{\parindent}{0pt}
+\author{Deepak Venkatesh}
+\date{\today}
+\title{The Little Schemer Simplified v2}
+\hypersetup{
+ pdfauthor={Deepak Venkatesh},
+ pdftitle={The Little Schemer Simplified v2},
+ pdfkeywords={},
+ pdfsubject={},
+ pdfcreator={Emacs 29.4 (Org mode 9.6.15)}, 
+ pdflang={English}}
+\begin{document}
+
+\maketitle
+\tableofcontents
+
+\newpage
+\emph{Note:}
+
+\vspace{1em}
+
+These are my personal notes created to deepen my understanding of Lisp and programming in general. `The Little Schemer'
+(4th edition) by Daniel Friedman and Matthias Felleisen is a remarkable book that teaches programming concepts in a
+unique and playful way. It builds from first principles using only a small set of primitives, showing how powerful
+ideas—such as recursion, functional programming, lambda functions, and interpreters—can be expressed using just
+those few building blocks.
+
+While the book uses Scheme, I prefer to work in Common Lisp and have adapted the examples accordingly. Despite its
+lighthearted tone, the book is far from an easy read—it demands close attention and careful thought.
+
+All mistakes in these notes, whether typographical or conceptual, are entirely my own. Any misinterpretations are as
+well. I am still new to both Lisp and programming.
+
+\newpage
+\section{Foreword}
+\label{sec:org3b82342}
+
+By Gerald Sussman of MIT, co-author of the book SICP (the wizard book).
+
+\vspace{1em}
+
+Key Takeaway:
+\emph{In order to be creative one must first gain control of the medium.}
+
+\vspace{1em}
+
+\begin{itemize}
+\item Core skills are the first set of things required to master any pursuit.
+\item Deep understanding is required to visualize beforehand the program which will be written.
+\item Lisp provides freedom and flexibility (this is something which will only come in due course of time, as we keep
+learning more about programming).
+\item Lisp was initially conceived as a theoretical vehicle for recursion and symbolic algebra (this is the algebra we
+have been taught in school \((a + b)^2 = a^2 + b^2 + 2ab\)).
+\item In Lisp procedures are first class. Procedures are essentially a varaint of functions. A mathematical function maps
+a given input to an output (domain - range/co-domain) but a procedure is a process to arrive at the result via
+computation.
+\item First Class basically means that procedure itself can be passed around as arguments to other procedures. Procedures
+can be return values. They can also be stored in data structures. A similar corollary (though not exact) is
+function of a function in pre-calculus.
+\item Lisp programs can manipulate representations of Lisp programs - this likely refers to macros and how in Lisp code can
+be treated as data.
+\end{itemize}
+
+\newpage
+\section{Preface}
+\label{sec:org5d21ec7}
+
+Key Takeaway:
+\emph{The goal of the book is to teach the reader to think recursively.}
+
+\vspace{1em}
+
+\begin{itemize}
+\item Programs take data, apply a process on that data, and then produce some data.
+\item Recursion is the act of defining an object or solving a problem in terms of itself.
+\item 
+\end{itemize}
+
+\section{Toys}
+\label{sec:org4a27f38}
+
+\section{Do It, Do It Again, and Again, and Again \ldots{}}
+\label{sec:org5cb434f}
+
+\section{Cons the Magnificient}
+\label{sec:org4005f26}
+
+\section{Numbers Games}
+\label{sec:org6d858f9}
+
+\section{* Oh My Gawd *: It's Full of Stars}
+\label{sec:org93923b1}
+
+\section{Shadows}
+\label{sec:org86e8f1b}
+
+\section{Friends and Relations}
+\label{sec:org9d6c68d}
+
+\section{Lambda the Ultimate}
+\label{sec:orgfd02769}
+
+\section{\ldots{} and Again, and Again, and Again, \ldots{}}
+\label{sec:org5116866}
+
+\section{What Is the Value of All of This?}
+\label{sec:org9268297}
+
+\section{Intermission}
+\label{sec:org7cc5137}
+
+\section{The Ten Commandments}
+\label{sec:org560fffe}
+
+\section{The Five Rules}
+\label{sec:orgcb4ac5f}
+\end{document}

@@ -1,4 +1,4 @@
-% Created 2025-10-09 Thu 13:29
+% Created 2025-10-10 Fri 15:22
 % Intended LaTeX compiler: pdflatex
 \documentclass[11pt]{article}
 \usepackage[utf8]{inputenc}
@@ -15,10 +15,10 @@
 \setlength{\parindent}{0pt}
 \author{Deepak Venkatesh}
 \date{\today}
-\title{The Little Schemer Simplified v2}
+\title{The Little Schemer Simplified}
 \hypersetup{
  pdfauthor={Deepak Venkatesh},
- pdftitle={The Little Schemer Simplified v2},
+ pdftitle={The Little Schemer Simplified},
  pdfkeywords={},
  pdfsubject={},
  pdfcreator={Emacs 29.4 (Org mode 9.6.15)}, 
@@ -29,7 +29,7 @@
 \tableofcontents
 
 \newpage
-\emph{Note:}
+\textbf{Note:}
 
 \vspace{1em}
 
@@ -40,14 +40,26 @@ ideas—such as recursion, functional programming, lambda functions, and interpr
 those few building blocks.
 
 While the book uses Scheme, I prefer to work in Common Lisp and have adapted the examples accordingly. Despite its
-lighthearted tone, the book is far from an easy read—it demands close attention and careful thought.
+lighthearted tone, the book is far from an easy read—it demands close attention and careful thought. My advice to anyone
+who wants to learn lisp is to work through David Touretzky's book titled `Common Lisp A Gentle Introduction to
+Symbolic Computing' (2nd ed.).
 
 All mistakes in these notes, whether typographical or conceptual, are entirely my own. Any misinterpretations are as
 well. I am still new to both Lisp and programming.
 
+\vspace{1em}
+
+\emph{Hardware and Software used for this study}
+\begin{itemize}
+\item Common Lisp SBCL version 2.4.1
+\item emacs
+\item SLIME for emacs
+\item Macbook Pro 2019 2.6 Ghz I7 Intel chip with 16 GB RAM
+\end{itemize}
+
 \newpage
 \section{Foreword}
-\label{sec:org3b82342}
+\label{sec:org6e63724}
 
 By Gerald Sussman of MIT, co-author of the book SICP (the wizard book).
 
@@ -70,14 +82,14 @@ a given input to an output (domain - range/co-domain) but a procedure is a proce
 computation.
 \item First Class basically means that procedure itself can be passed around as arguments to other procedures. Procedures
 can be return values. They can also be stored in data structures. A similar corollary (though not exact) is
-function of a function in pre-calculus.
+composite function which is usually taught in pre-calculus.
 \item Lisp programs can manipulate representations of Lisp programs - this likely refers to macros and how in Lisp code can
 be treated as data.
 \end{itemize}
 
 \newpage
 \section{Preface}
-\label{sec:org5d21ec7}
+\label{sec:org4df1934}
 
 Key Takeaway:
 \emph{The goal of the book is to teach the reader to think recursively.}
@@ -87,45 +99,198 @@ Key Takeaway:
 \begin{itemize}
 \item Programs take data, apply a process on that data, and then produce some data.
 \item Recursion is the act of defining an object or solving a problem in terms of itself.
-\item 
+\item The authors believe that writing programs recursively in Lisp is essentially pattern recongnition. Well I think
+it's true for any programming language or any programming paradigm.
+\item For recursive programming and studying, this book we will need only a few Common Lisp primitives, namely:
+\begin{itemize}
+\item \texttt{CAR}
+\item \texttt{CDR}
+\item \texttt{CONS}
+\item \texttt{ATOM} (\texttt{ATOM?} actually which is not a primitive in Common Lisp but explanation below)
+\item \texttt{EQ}, \texttt{EQL}, \texttt{EQUAL}, \texttt{EQUALP} (currently unsure if all or only a few will be used)
+\item \texttt{NULL}, \texttt{ZEROP}, \texttt{NUMBERP}
+\item \texttt{ADD1}, \texttt{SUB1} (these do not exist in Common Lisp, we will define them when needed)
+\item \texttt{AND}, \texttt{OR}
+\item \texttt{LAMBDA}
+\item \texttt{COND}
+\item \texttt{DEFUN}
+\end{itemize}
+\item The definitions of the above primitives I am not outlining here and will come to it as we work through the book.
+\item Authors advise to read this book slowly. Very slowly and delibrately. Re-read it multiple times. Every concept should
+be clear before going onto the next page.
+\item In the preface we hit the first difference between Scheme and Common Lisp. \texttt{()} in Scheme is actually different from that in
+Common Lisp. Scheme considers \texttt{()} only a list and not an atom. While in Common Lisp \texttt{()} is considered both an atom and a
+list. Therefore, to stay with the theme of this book we will define our own predicate \texttt{ATOM?} in Common Lisp which
+will work like the \texttt{atom?} in Scheme. \texttt{ATOM} is defined as per the Lisp Hyperspec as well as Common Lisp The
+Language (2nd ed.) by Guy Steele as `The predicate \texttt{ATOM} is trye if its argument is not a \texttt{CONS}, and otherwise is
+false.
+In SBCL  \texttt{ATOM} will give \texttt{T}
+
+\begin{verbatim}
+(atom '())
+» T
+\end{verbatim}
+
+We define our own predicate \texttt{ATOMP}
+
+\begin{verbatim}
+(defun atom? (x)
+  (not (listp x)))
+\end{verbatim}
+
+So now \texttt{ATOMP} for our studies of this book will give \texttt{NIL} when tested for an empty list \texttt{'()}
+
+\begin{verbatim}
+(atom? '())
+» NIL
+\end{verbatim}
 \end{itemize}
 
+
+
+\newpage
 \section{Toys}
-\label{sec:org4a27f38}
+\label{sec:orgff34c00}
+
+\subsection{The Law of Car}
+\label{sec:orgbd5af47}
+Key Takeaway:
+\emph{The primitive CAR is defined only for non-empty lists. The CAR is the first atom (element) of that list.}
+
+\vspace{1em}
+
+\begin{itemize}
+\item In Common Lisp an \texttt{ATOM} is anything which is not a \texttt{CONS}.
+\item \texttt{ATOM} will include single characters, strings, numbers, special characters.
+\item Anything enclosed in parenthesis/brackets \texttt{()} is a list.
+\item We can have nested lists which are also called improper lists and non-nested lists which are proper lists.
+\item An S-expression which stands for Symbolic Expression is any Lisp object that can be read and evaluated by the
+Lisp reader. S-expressions include both \texttt{ATOM} and \texttt{CONS} (which is used to make lists).
+\item Q. How many S-expressions are in the list \texttt{(how are you doing so far)} and what are they? The book answers 6 and
+those are the elements in the lists, basically the 6 atoms inside the list. But the list itself is an S-expression
+in Common Lisp so there are actually 7 S-expressions.
+\item The next 2 questions build up on this contradiction in my opinion. A question asks how many S-expressions are in the
+list \texttt{(((how) are) ((you) (doing so)) far)} and gives the answer as 3. It refers to the 3 lists inside the outermost
+list. So a list is an S-expression for this question but a list was not an S-expression for the prior question.
+Furthermore 3 should not be the correct answer here. The answer should be 12 in my opinion - 6 atoms (the words),
+6 lists (nested and outermost).
+\item The difference of \texttt{()} again comes up since it is both a list and an atom in Common Lisp unlike Scheme. The \texttt{CAR}
+of \texttt{()} will be \texttt{NIL} in Common Lisp unlike Scheme. In Common Lisp as per the standards and empty list's \texttt{CAR} and
+\texttt{CDR} are both \texttt{NIL}.
+\begin{verbatim}
+(car ())
+» NIL
+\end{verbatim}
+\item \texttt{CAR} is the first atom/element of a list. If we try to find the \texttt{CAR} of a string of character or numbers SBCL will
+give us a variable unbound error or say that the number is not of the type list.
+\end{itemize}
+
+
+\subsection{The Law of CDR}
+\label{sec:org5bf61a5}
+Key Takeaway:
+\emph{The primitive CDR}
+
+
+
+
+
+\subsection{The Law of CONS}
+\label{sec:org6dc81f2}
+\subsection{The Law of NULL}
+\label{sec:orgca24ca9}
+\subsection{The Law of EQ}
+\label{sec:orgdd1bf09}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 \section{Do It, Do It Again, and Again, and Again \ldots{}}
-\label{sec:org5cb434f}
+\label{sec:org78840a6}
 
 \section{Cons the Magnificient}
-\label{sec:org4005f26}
+\label{sec:org5ef6c09}
 
 \section{Numbers Games}
-\label{sec:org6d858f9}
+\label{sec:org71c66d3}
 
 \section{* Oh My Gawd *: It's Full of Stars}
-\label{sec:org93923b1}
+\label{sec:org49c718b}
 
 \section{Shadows}
-\label{sec:org86e8f1b}
+\label{sec:org5b66913}
 
 \section{Friends and Relations}
-\label{sec:org9d6c68d}
+\label{sec:orga8e4437}
 
 \section{Lambda the Ultimate}
-\label{sec:orgfd02769}
+\label{sec:orgd8fc301}
 
 \section{\ldots{} and Again, and Again, and Again, \ldots{}}
-\label{sec:org5116866}
+\label{sec:org1e465b4}
 
 \section{What Is the Value of All of This?}
-\label{sec:org9268297}
+\label{sec:org52fd5cf}
 
 \section{Intermission}
-\label{sec:org7cc5137}
+\label{sec:orgb53c9b2}
 
 \section{The Ten Commandments}
-\label{sec:org560fffe}
+\label{sec:orgaad588e}
 
 \section{The Five Rules}
-\label{sec:orgcb4ac5f}
+\label{sec:org5542ef1}
 \end{document}

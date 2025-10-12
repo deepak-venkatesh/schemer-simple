@@ -1,4 +1,4 @@
-% Created 2025-10-11 Sat 07:30
+% Created 2025-10-11 Sat 11:11
 % Intended LaTeX compiler: pdflatex
 \documentclass[11pt]{article}
 \usepackage[utf8]{inputenc}
@@ -59,7 +59,7 @@ well. I am still new to both Lisp and programming.
 
 \newpage
 \section{Foreword}
-\label{sec:org05fdbe3}
+\label{sec:org79e8220}
 
 By Gerald Sussman of MIT, co-author of the book SICP (the wizard book).
 
@@ -89,7 +89,7 @@ be treated as data.
 
 \newpage
 \section{Preface}
-\label{sec:org268c75f}
+\label{sec:orgf6ad534}
 
 Key Takeaway:
 \emph{The goal of the book is to teach the reader to think recursively.}
@@ -153,10 +153,12 @@ means that the empty list in this case is being treated as an \texttt{ATOM}.
 
 \newpage
 \section{Toys}
-\label{sec:orgf7fac50}
+\label{sec:org91cdc1e}
+
+This chapter introduces primitives of Lisp. These are the basic building blocks.
 
 \subsection{The Law of \texttt{CAR}}
-\label{sec:orge8e7878}
+\label{sec:orgb4a418c}
 Key Takeaway:
 \emph{The primitive \texttt{CAR} is defined only for non-empty lists. The \texttt{CAR} is the first atom (element) of that list.}
 \emph{But in Common Lisp the \texttt{CAR} of an empty list will give \texttt{NIL}.}
@@ -191,7 +193,7 @@ give us a variable unbound error or say that the number is not of the type list.
 
 
 \subsection{The Law of \texttt{CDR}}
-\label{sec:orgb5dcd0e}
+\label{sec:orgeeb14db}
 Key Takeaway:
 \emph{The primitive \texttt{CDR} is defined only for non-empty lists. The \texttt{CDR} of any non-empty list is always another list.}
 \emph{The \texttt{CDR} of an empty list in Common Lisp is \texttt{NIL}.}
@@ -216,7 +218,7 @@ Key Takeaway:
 
 
 \subsection{The Law of \texttt{CONS}}
-\label{sec:orgc29f2ce}
+\label{sec:orgfa02c4c}
 Key Takeaway:
 \emph{The primitive \texttt{CONS} takes two arguments. The second argument to \texttt{CONS} must be a list. The result is a list.}
 
@@ -236,7 +238,7 @@ dotted list the last atom points to a non \texttt{NIL} atom. In the above case w
 
 
 \subsection{The Law of \texttt{NULL}}
-\label{sec:org91cbee2}
+\label{sec:org554e6cc}
 Key Takeaway:
 \emph{The primitive \texttt{NULL} is defined only for lists.}
 
@@ -261,7 +263,7 @@ the end of this chapter.
 
 
 \subsection{The Law of \texttt{EQ}}
-\label{sec:orgfa70787}
+\label{sec:org89e8fab}
 Key Takeaway:
 \emph{The function \texttt{EQ} in Common Lisp takes two arguments and compares the unique address of these two arguments.}
 
@@ -280,7 +282,7 @@ irrespective of the fact that it is repeated twice. The \texttt{EQ} function doe
 point 4.0
 \item \texttt{EQUAL}: This compares the elements of a list one by one. It is slower than \texttt{EQ}
 \item \texttt{EQUALP}: Same as \texttt{EQUAL} but ignores case
-\item \texttt{=}: Only for number comparison. Integer 4 and floating point 4.0 yields \texttt{T}
+\item \texttt{=} Only for number comparison. Integer 4 and floating point 4.0 yields \texttt{T}
 \end{itemize}
 \item We again come across the treatment of \texttt{()} differently in Scheme and Common Lisp. In Scheme \texttt{()} is only a list and
 not an atom but in Common Lisp it is both.
@@ -304,7 +306,7 @@ the intent is to compare the contents in the list then we need to use \texttt{EQ
 \end{itemize}
 
 \subsection{Notes on \texttt{NIL} in Common Lisp}
-\label{sec:org794e3a0}
+\label{sec:orgdad7046}
 \vspace{1em}
 
 \begin{itemize}
@@ -342,60 +344,66 @@ Same with \texttt{T})
 
 \newpage
 \section{Do It, Do It Again, and Again, and Again \ldots{}}
-\label{sec:org28246c2}
+\label{sec:org0c91591}
 
+This chapter explains recursion. The best material for recursion in my opinion is Chapter 8 in  Touretzky's book.
 
+Key Takeaway:
+\emph{The First Commandment (preliminary): Always ask \texttt{NULL} as the first question in expressing a function}
 
+\vspace{1em}
+\begin{itemize}
+\item After reading Touretzky's chapter on recursion this chapter will feel very easy. Also the first commandment is not
+really true. Sometimes in recursion the first question is not necessarily \texttt{NULL}. Let's use an example. Make a
+recursive  function to compute a factorial of a number.
+\begin{verbatim}
+(defun fact (n)
+  (cond ((zerop n) 1)
+        (t (* n (fact (- n 1))))))
+\end{verbatim}
+Here the first question actually asks whether the argument \texttt{n} is a zero or not.
+\item The chapter introduces a function named \texttt{LAT?}. It stands for a \texttt{list of atoms}. This means every element of the
+list is an \texttt{ATOM?}. We will use our own defined \texttt{ATOMP} predicate so that we do not return \texttt{T} for a \texttt{()}.
+\item Recursive function definition of \texttt{LAT?} in Common Lisp.
+\begin{verbatim}
+(defun lat? (l)
+  (cond ((null l) t)
+        ((atom? (car l)) (lat? (cdr l)))
+        (t nil)))
+\end{verbatim}
+\item It is important to understand how \texttt{COND} functions. Well \texttt{COND} is actually a macro. This macro has a series of
+tests and results. The macro goes from top to bottom. The cases are processed from left to right under each test.
+Technically we can have more than one result per test for evaluation. As a Common Lisp `trick' the last test is
+usually a \texttt{T} which evaluates to \texttt{TRUE} always and hence the last result is returned. \texttt{COND} is a very nice way to
+do implement \texttt{If..then..Else}. I have never seen such seamless conditional in any language yet.
+\item \texttt{LAT} basically is a \texttt{COND} which keeps checking through all the elements of a list to test for \texttt{ATOM?} till the
+list ends. It checks \texttt{CAR} one by one for each subsequent \texttt{CDR} for \texttt{ATOMP}.
+\item I would study Chapter 8 of Touretzky for getting the intuition on recursion right. The author has done a great job.
+\item SBCL comes with an inbuilt tool called \texttt{TRACE} which lets us see the actual function calls. So lets trace all the
+recursive examples in this chapter.
+\begin{verbatim}
+CL-USER> (lat? '(Jack Sprat could eat no chicken fat))
+  0: (LAT? (JACK SPRAT COULD EAT NO CHICKEN FAT))
+    1: (LAT? (SPRAT COULD EAT NO CHICKEN FAT))
+      2: (LAT? (COULD EAT NO CHICKEN FAT))
+        3: (LAT? (EAT NO CHICKEN FAT))
+          4: (LAT? (NO CHICKEN FAT))
+            5: (LAT? (CHICKEN FAT))
+              6: (LAT? (FAT))
+                7: (LAT? NIL)
+                7: LAT? returned T
+              6: LAT? returned T
+            5: LAT? returned T
+          4: LAT? returned T
+        3: LAT? returned T
+      2: LAT? returned T
+    1: LAT? returned T
+  0: LAT? returned T
+T
+\end{verbatim}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+\item 
+\end{itemize}
 
 
 
@@ -438,35 +446,35 @@ Same with \texttt{T})
 
 
 \section{Cons the Magnificient}
-\label{sec:org4caf505}
+\label{sec:orgad8fc99}
 
 \section{Numbers Games}
-\label{sec:orga61731d}
+\label{sec:orgcffea2d}
 
 \section{* Oh My Gawd *: It's Full of Stars}
-\label{sec:orga1b1f07}
+\label{sec:org2cfa03c}
 
 \section{Shadows}
-\label{sec:orgd43c01f}
+\label{sec:org8b46543}
 
 \section{Friends and Relations}
-\label{sec:org2b90ab4}
+\label{sec:orgac2d29f}
 
 \section{Lambda the Ultimate}
-\label{sec:org4cc4db8}
+\label{sec:orgaa80ecb}
 
 \section{\ldots{} and Again, and Again, and Again, \ldots{}}
-\label{sec:org1f63519}
+\label{sec:org2d856b4}
 
 \section{What Is the Value of All of This?}
-\label{sec:org40eb81c}
+\label{sec:org154f2bc}
 
 \section{Intermission}
-\label{sec:org263a4f1}
+\label{sec:org8e01e75}
 
 \section{The Ten Commandments}
-\label{sec:org5507861}
+\label{sec:orgdde5cf8}
 
 \section{The Five Rules}
-\label{sec:org1571c28}
+\label{sec:org2cf01a8}
 \end{document}

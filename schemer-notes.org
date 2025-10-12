@@ -119,6 +119,8 @@ Key Takeaway:
 #+LATEX: \newpage
 * Toys
 
+This chapter introduces primitives of Lisp. These are the basic building blocks.
+
 ** The Law of ~CAR~
 Key Takeaway:
 /The primitive ~CAR~ is defined only for non-empty lists. The ~CAR~ is the first atom (element) of that list./
@@ -229,7 +231,7 @@ Key Takeaway:
     point 4.0
   + ~EQUAL~: This compares the elements of a list one by one. It is slower than ~EQ~
   + ~EQUALP~: Same as ~EQUAL~ but ignores case
-  + ~=~: Only for number comparison. Integer 4 and floating point 4.0 yields ~T~
+  + ~=~ Only for number comparison. Integer 4 and floating point 4.0 yields ~T~
 + We again come across the treatment of ~()~ differently in Scheme and Common Lisp. In Scheme ~()~ is only a list and
   not an atom but in Common Lisp it is both.
 + One key point to note is that ~EQ~ is a function and not a primitive predicate in Common Lisp. We can verify this
@@ -285,58 +287,62 @@ The 5 pointers of the symbol ~NIL~
 #+LATEX: \newpage
 * Do It, Do It Again, and Again, and Again ...
 
+This chapter explains recursion. The best material for recursion in my opinion is Chapter 8 in  Touretzky's book.
 
+Key Takeaway:
+/The First Commandment (preliminary): Always ask ~NULL~ as the first question in expressing a function/
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#+LATEX: \vspace{1em}
++ After reading Touretzky's chapter on recursion this chapter will feel very easy. Also the first commandment is not
+  really true. Sometimes in recursion the first question is not necessarily ~NULL~. Let's use an example. Make a
+  recursive  function to compute a factorial of a number.
+  #+begin_src common-lisp
+    (defun fact (n)
+      (cond ((zerop n) 1)
+	    (t (* n (fact (- n 1))))))
+  #+end_src
+  Here the first question actually asks whether the argument ~n~ is a zero or not.
++ The chapter introduces a function named ~LAT?~. It stands for a ~list of atoms~. This means every element of the
+  list is an ~ATOM?~. We will use our own defined ~ATOMP~ predicate so that we do not return ~T~ for a ~()~.
++ Recursive function definition of ~LAT?~ in Common Lisp.
+  #+begin_src common-lisp
+    (defun lat? (l)
+      (cond ((null l) t)
+	    ((atom? (car l)) (lat? (cdr l)))
+	    (t nil)))
+  #+end_src
++ It is important to understand how ~COND~ functions. Well ~COND~ is actually a macro. This macro has a series of
+  tests and results. The macro goes from top to bottom. The cases are processed from left to right under each test.
+  Technically we can have more than one result per test for evaluation. As a Common Lisp `trick' the last test is
+  usually a ~T~ which evaluates to ~TRUE~ always and hence the last result is returned. ~COND~ is a very nice way to
+  do implement ~If..then..Else~. I have never seen such seamless conditional in any language yet.
++ ~LAT~ basically is a ~COND~ which keeps checking through all the elements of a list to test for ~ATOM?~ till the
+  list ends. It checks ~CAR~ one by one for each subsequent ~CDR~ for ~ATOMP~.
++ I would study Chapter 8 of Touretzky for getting the intuition on recursion right. The author has done a great job.
++ SBCL comes with an inbuilt tool called ~TRACE~ which lets us see the actual function calls. So lets trace all the
+  recursive examples in this chapter.
+  #+begin_src common-lisp   
+CL-USER> (lat? '(Jack Sprat could eat no chicken fat))
+  0: (LAT? (JACK SPRAT COULD EAT NO CHICKEN FAT))
+    1: (LAT? (SPRAT COULD EAT NO CHICKEN FAT))
+      2: (LAT? (COULD EAT NO CHICKEN FAT))
+        3: (LAT? (EAT NO CHICKEN FAT))
+          4: (LAT? (NO CHICKEN FAT))
+            5: (LAT? (CHICKEN FAT))
+              6: (LAT? (FAT))
+                7: (LAT? NIL)
+                7: LAT? returned T
+              6: LAT? returned T
+            5: LAT? returned T
+          4: LAT? returned T
+        3: LAT? returned T
+      2: LAT? returned T
+    1: LAT? returned T
+  0: LAT? returned T
+T
+  #+end_src
+  
++ 
 
 
 

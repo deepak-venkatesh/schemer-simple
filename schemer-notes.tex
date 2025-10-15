@@ -1,4 +1,4 @@
-% Created 2025-10-11 Sat 11:11
+% Created 2025-10-14 Tue 23:36
 % Intended LaTeX compiler: pdflatex
 \documentclass[11pt]{article}
 \usepackage[utf8]{inputenc}
@@ -36,13 +36,13 @@
 These are my personal notes created to deepen my understanding of Lisp and programming in general. `The Little Schemer'
 (4th edition) by Daniel Friedman and Matthias Felleisen is a remarkable book that teaches programming concepts in a
 unique and playful way. It builds from first principles using only a small set of primitives, showing how powerful
-ideas — such as recursion, functional programming, lambda functions, and interpreters—can be expressed using just
+ideas — such as recursion, functional programming, lambda functions, and interpreters — can be expressed using just
 those few building blocks. I am making this public since other beginners could benefit from these notes.
 
 While the book uses Scheme, I prefer to work in Common Lisp and have adapted the examples accordingly. Despite its
 lighthearted tone, the book is far from an easy read — it demands close attention and careful thought. My advice to
-anyone who wants to learn lisp is to work through David Touretzky's book titled `Common Lisp A Gentle Introduction to
-Symbolic Computing' (2nd ed.). It's a great first book for introduction to programming not just Lisp.
+anyone who wants to learn lisp is to first work through David Touretzky's book titled `Common Lisp A Gentle Introduction to
+Symbolic Computing' (2nd ed.). It's a great book for introduction to programming not just Lisp.
 
 All mistakes in these notes, whether typographical or conceptual, are entirely my own. Any misinterpretations are as
 well. I am still new to both Lisp and programming.
@@ -59,7 +59,7 @@ well. I am still new to both Lisp and programming.
 
 \newpage
 \section{Foreword}
-\label{sec:org79e8220}
+\label{sec:orgfb0ad05}
 
 By Gerald Sussman of MIT, co-author of the book SICP (the wizard book).
 
@@ -89,7 +89,7 @@ be treated as data.
 
 \newpage
 \section{Preface}
-\label{sec:orgf6ad534}
+\label{sec:org3ed624e}
 
 Key Takeaway:
 \emph{The goal of the book is to teach the reader to think recursively.}
@@ -153,12 +153,12 @@ means that the empty list in this case is being treated as an \texttt{ATOM}.
 
 \newpage
 \section{Toys}
-\label{sec:org91cdc1e}
+\label{sec:org399513b}
 
 This chapter introduces primitives of Lisp. These are the basic building blocks.
 
 \subsection{The Law of \texttt{CAR}}
-\label{sec:orgb4a418c}
+\label{sec:org0e56f97}
 Key Takeaway:
 \emph{The primitive \texttt{CAR} is defined only for non-empty lists. The \texttt{CAR} is the first atom (element) of that list.}
 \emph{But in Common Lisp the \texttt{CAR} of an empty list will give \texttt{NIL}.}
@@ -193,7 +193,7 @@ give us a variable unbound error or say that the number is not of the type list.
 
 
 \subsection{The Law of \texttt{CDR}}
-\label{sec:orgeeb14db}
+\label{sec:orgf119439}
 Key Takeaway:
 \emph{The primitive \texttt{CDR} is defined only for non-empty lists. The \texttt{CDR} of any non-empty list is always another list.}
 \emph{The \texttt{CDR} of an empty list in Common Lisp is \texttt{NIL}.}
@@ -218,7 +218,7 @@ Key Takeaway:
 
 
 \subsection{The Law of \texttt{CONS}}
-\label{sec:orgfa02c4c}
+\label{sec:org390449a}
 Key Takeaway:
 \emph{The primitive \texttt{CONS} takes two arguments. The second argument to \texttt{CONS} must be a list. The result is a list.}
 
@@ -238,7 +238,7 @@ dotted list the last atom points to a non \texttt{NIL} atom. In the above case w
 
 
 \subsection{The Law of \texttt{NULL}}
-\label{sec:org554e6cc}
+\label{sec:org1a6be9a}
 Key Takeaway:
 \emph{The primitive \texttt{NULL} is defined only for lists.}
 
@@ -263,7 +263,7 @@ the end of this chapter.
 
 
 \subsection{The Law of \texttt{EQ}}
-\label{sec:org89e8fab}
+\label{sec:org0164e8b}
 Key Takeaway:
 \emph{The function \texttt{EQ} in Common Lisp takes two arguments and compares the unique address of these two arguments.}
 
@@ -306,7 +306,7 @@ the intent is to compare the contents in the list then we need to use \texttt{EQ
 \end{itemize}
 
 \subsection{Notes on \texttt{NIL} in Common Lisp}
-\label{sec:orgdad7046}
+\label{sec:orga24c05f}
 \vspace{1em}
 
 \begin{itemize}
@@ -344,7 +344,7 @@ Same with \texttt{T})
 
 \newpage
 \section{Do It, Do It Again, and Again, and Again \ldots{}}
-\label{sec:org0c91591}
+\label{sec:org4c18497}
 
 This chapter explains recursion. The best material for recursion in my opinion is Chapter 8 in  Touretzky's book.
 
@@ -361,7 +361,8 @@ recursive  function to compute a factorial of a number.
   (cond ((zerop n) 1)
         (t (* n (fact (- n 1))))))
 \end{verbatim}
-Here the first question actually asks whether the argument \texttt{n} is a zero or not.
+Here the first question actually asks whether the argument \texttt{n} is a zero or not. Later in the book the authors do
+add in this nuance.
 \item The chapter introduces a function named \texttt{LAT?}. It stands for a \texttt{list of atoms}. This means every element of the
 list is an \texttt{ATOM?}. We will use our own defined \texttt{ATOMP} predicate so that we do not return \texttt{T} for a \texttt{()}.
 \item Recursive function definition of \texttt{LAT?} in Common Lisp.
@@ -446,35 +447,35 @@ T
 
 
 \section{Cons the Magnificient}
-\label{sec:orgad8fc99}
+\label{sec:org08094b5}
 
 \section{Numbers Games}
-\label{sec:orgcffea2d}
+\label{sec:org95c95f0}
 
 \section{* Oh My Gawd *: It's Full of Stars}
-\label{sec:org2cfa03c}
+\label{sec:org2060558}
 
 \section{Shadows}
-\label{sec:org8b46543}
+\label{sec:org8780d8d}
 
 \section{Friends and Relations}
-\label{sec:orgac2d29f}
+\label{sec:org41a54a5}
 
 \section{Lambda the Ultimate}
-\label{sec:orgaa80ecb}
+\label{sec:org6c06948}
 
 \section{\ldots{} and Again, and Again, and Again, \ldots{}}
-\label{sec:org2d856b4}
+\label{sec:orgf8ec907}
 
 \section{What Is the Value of All of This?}
-\label{sec:org154f2bc}
+\label{sec:org7227e7d}
 
 \section{Intermission}
-\label{sec:org8e01e75}
+\label{sec:org13491d4}
 
 \section{The Ten Commandments}
-\label{sec:orgdde5cf8}
+\label{sec:orgf0935e0}
 
 \section{The Five Rules}
-\label{sec:org2cf01a8}
+\label{sec:orgbd7fabd}
 \end{document}

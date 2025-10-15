@@ -11,13 +11,13 @@
 These are my personal notes created to deepen my understanding of Lisp and programming in general. `The Little Schemer'
 (4th edition) by Daniel Friedman and Matthias Felleisen is a remarkable book that teaches programming concepts in a
 unique and playful way. It builds from first principles using only a small set of primitives, showing how powerful
-ideas — such as recursion, functional programming, lambda functions, and interpreters—can be expressed using just
+ideas — such as recursion, functional programming, lambda functions, and interpreters — can be expressed using just
 those few building blocks. I am making this public since other beginners could benefit from these notes.
 
 While the book uses Scheme, I prefer to work in Common Lisp and have adapted the examples accordingly. Despite its
 lighthearted tone, the book is far from an easy read — it demands close attention and careful thought. My advice to
-anyone who wants to learn lisp is to work through David Touretzky's book titled `Common Lisp A Gentle Introduction to
-Symbolic Computing' (2nd ed.). It's a great first book for introduction to programming not just Lisp.
+anyone who wants to learn lisp is to first work through David Touretzky's book titled `Common Lisp A Gentle Introduction to
+Symbolic Computing' (2nd ed.). It's a great book for introduction to programming not just Lisp.
 
 All mistakes in these notes, whether typographical or conceptual, are entirely my own. Any misinterpretations are as
 well. I am still new to both Lisp and programming.
@@ -301,7 +301,8 @@ Key Takeaway:
       (cond ((zerop n) 1)
 	    (t (* n (fact (- n 1))))))
   #+end_src
-  Here the first question actually asks whether the argument ~n~ is a zero or not.
+  Here the first question actually asks whether the argument ~n~ is a zero or not. Later in the book the authors do
+  add in this nuance.
 + The chapter introduces a function named ~LAT?~. It stands for a ~list of atoms~. This means every element of the
   list is an ~ATOM?~. We will use our own defined ~ATOMP~ predicate so that we do not return ~T~ for a ~()~.
 + Recursive function definition of ~LAT?~ in Common Lisp.

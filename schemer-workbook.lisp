@@ -14,3 +14,12 @@
   (cond ((null l) t)
 	((atom? (car l)) (lat? (cdr l)))
 	(t nil)))
+
+(defun my-member (a lat)
+  (cond ((null lat) nil)
+	((equal a (car lat)) t)
+	(t (my-member a (cdr lat)))))
+
+(defun member? (a lat)
+  (cond ((null lat) nil)
+	(t (or (equal (car lat) a) (member? a (cdr lat))))))

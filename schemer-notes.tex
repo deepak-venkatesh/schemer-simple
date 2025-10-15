@@ -1,4 +1,4 @@
-% Created 2025-10-14 Tue 23:36
+% Created 2025-10-15 Wed 13:42
 % Intended LaTeX compiler: pdflatex
 \documentclass[11pt]{article}
 \usepackage[utf8]{inputenc}
@@ -41,8 +41,8 @@ those few building blocks. I am making this public since other beginners could b
 
 While the book uses Scheme, I prefer to work in Common Lisp and have adapted the examples accordingly. Despite its
 lighthearted tone, the book is far from an easy read — it demands close attention and careful thought. My advice to
-anyone who wants to learn lisp is to first work through David Touretzky's book titled `Common Lisp A Gentle Introduction to
-Symbolic Computing' (2nd ed.). It's a great book for introduction to programming not just Lisp.
+anyone who wants to learn lisp is to first work through Professor David Touretzky's book titled `Common Lisp A Gentle
+Introduction to Symbolic Computing' (2nd ed.). It's a great book for introduction to programming not just Lisp.
 
 All mistakes in these notes, whether typographical or conceptual, are entirely my own. Any misinterpretations are as
 well. I am still new to both Lisp and programming.
@@ -59,7 +59,7 @@ well. I am still new to both Lisp and programming.
 
 \newpage
 \section{Foreword}
-\label{sec:orgfb0ad05}
+\label{sec:orgf30f1c8}
 
 By Gerald Sussman of MIT, co-author of the book SICP (the wizard book).
 
@@ -77,19 +77,26 @@ Key Takeaway:
 learning more about programming).
 \item Lisp was initially conceived as a theoretical vehicle for recursion and symbolic algebra (this is the algebra we
 have been taught in school such as \((a + b)^2 = a^2 + b^2 + 2ab\)).
-\item In Lisp procedures are first class. Procedures are essentially a `variant' of functions. A mathematical function maps
-a given input to an output (domain - range/co-domain) but a procedure is a process to arrive at the result via
+\item In Lisp procedures are first class. Procedures are essentially a `variant' of functions. A mathematical function
+maps a given input to an output (domain - range/co-domain) but a procedure is a process to arrive at the result via
 computation.
 \item First Class basically means that the procedure itself can be passed around as arguments to other procedures.
 Procedures can be return values. They can also be stored in data structures. A similar corollary (though not exact)
 are composite functions which are usually taught in pre-calculus.
-\item Lisp programs can manipulate representations of Lisp programs - this likely refers to macros and how in Lisp code can
-be treated as data.
+\item Lisp programs can manipulate representations of Lisp programs - this likely refers to macros and how in Lisp code
+can be treated as data.
+\end{itemize}
+
+\vspace{1em}
+
+\textbf{Core Terms/Concepts Learnt}
+\begin{itemize}
+\item None
 \end{itemize}
 
 \newpage
 \section{Preface}
-\label{sec:org3ed624e}
+\label{sec:org0b0861e}
 
 Key Takeaway:
 \emph{The goal of the book is to teach the reader to think recursively.}
@@ -106,10 +113,10 @@ it's true for any programming language or any programming paradigm.
 \item \texttt{CAR}
 \item \texttt{CDR}
 \item \texttt{CONS}
-\item \texttt{ATOM} (\texttt{ATOM?} actually which is not a primitive in Common Lisp but explanation below)
-\item \texttt{EQ}, \texttt{EQL}, \texttt{EQUAL}, \texttt{EQUALP} (currently unsure if all or only a few will be used)
+\item \texttt{ATOM?} (\texttt{ATOM?} actually which is not a primitive in Common Lisp but explanation below)
+\item \texttt{EQ}, \texttt{EQL}, \texttt{EQUAL}, \texttt{EQUALP} (currently unsure if all or only a few will be used but in Scheme \texttt{eq?} is used)
 \item \texttt{NULL}, \texttt{ZEROP}, \texttt{NUMBERP}
-\item \texttt{ADD1}, \texttt{SUB1} (these do not exist in Common Lisp, we will define them when needed)
+\item \texttt{ADD1}, \texttt{SUB1} (these do not exist in Common Lisp, we will define them when needed or us \texttt{1+} and \texttt{1-})
 \item \texttt{AND}, \texttt{OR}
 \item \texttt{LAMBDA}
 \item \texttt{COND}
@@ -122,8 +129,8 @@ should be clear before going onto the next page.
 from that in Common Lisp. Scheme considers \texttt{()} as only a list and not an atom. While in Common Lisp \texttt{()} is
 considered both an atom and a list. Therefore, to stay with the theme of this book we will define our own
 predicate \texttt{ATOM?} in Common Lisp which will work like the \texttt{atom?} in Scheme. \texttt{ATOM} is defined as per the Lisp
-Hyperspec as well as Common Lisp The Language (2nd ed.) by Guy Steele as `The predicate \texttt{ATOM} is trye if its
-argument is not a \texttt{CONS}, and otherwise is false. In SBCL  \texttt{ATOM} will give \texttt{T}
+Hyperspec as well as Common Lisp The Language (2nd ed.) by Guy Steele as `The predicate \texttt{ATOM} is true if its
+argument is not a \texttt{CONS}, and otherwise is false. In SBCL \texttt{ATOM} will give \texttt{T}
 
 \begin{verbatim}
 (atom '())
@@ -149,16 +156,22 @@ cell or not. But when we check for a \texttt{CONS} cell for an empty list \textt
 means that the empty list in this case is being treated as an \texttt{ATOM}.
 \end{itemize}
 
+\textbf{Core Terms/Concepts Learnt}
+\begin{itemize}
+\item \texttt{'()} is both an atom and a list in Common Lisp
+\end{itemize}
 
 
 \newpage
 \section{Toys}
-\label{sec:org399513b}
+\label{sec:org07147a8}
 
 This chapter introduces primitives of Lisp. These are the basic building blocks.
 
+\vspace{1em}
+
 \subsection{The Law of \texttt{CAR}}
-\label{sec:org0e56f97}
+\label{sec:org3ebb866}
 Key Takeaway:
 \emph{The primitive \texttt{CAR} is defined only for non-empty lists. The \texttt{CAR} is the first atom (element) of that list.}
 \emph{But in Common Lisp the \texttt{CAR} of an empty list will give \texttt{NIL}.}
@@ -193,7 +206,7 @@ give us a variable unbound error or say that the number is not of the type list.
 
 
 \subsection{The Law of \texttt{CDR}}
-\label{sec:orgf119439}
+\label{sec:org7649e96}
 Key Takeaway:
 \emph{The primitive \texttt{CDR} is defined only for non-empty lists. The \texttt{CDR} of any non-empty list is always another list.}
 \emph{The \texttt{CDR} of an empty list in Common Lisp is \texttt{NIL}.}
@@ -218,7 +231,7 @@ Key Takeaway:
 
 
 \subsection{The Law of \texttt{CONS}}
-\label{sec:org390449a}
+\label{sec:org7be1684}
 Key Takeaway:
 \emph{The primitive \texttt{CONS} takes two arguments. The second argument to \texttt{CONS} must be a list. The result is a list.}
 
@@ -231,14 +244,14 @@ the second input. The return value of the \texttt{CONS} is a pointer to it. Refe
 proper list the chain of \texttt{CONS} cells ends with \texttt{NIL} as the atom, meaning the last cell points to a \texttt{NIL} but in a
 dotted list the last atom points to a non \texttt{NIL} atom. In the above case we will get the following:
 \begin{verbatim}
-(cons '((a b c)) 'b)
-» (((A B C)) . B)
+(cons '((a b c)) 'd)
+» (((A B C)) . D)
 \end{verbatim}
 \end{itemize}
 
 
 \subsection{The Law of \texttt{NULL}}
-\label{sec:org1a6be9a}
+\label{sec:orgafdbb81}
 Key Takeaway:
 \emph{The primitive \texttt{NULL} is defined only for lists.}
 
@@ -263,7 +276,7 @@ the end of this chapter.
 
 
 \subsection{The Law of \texttt{EQ}}
-\label{sec:org0164e8b}
+\label{sec:orgc8a66bc}
 Key Takeaway:
 \emph{The function \texttt{EQ} in Common Lisp takes two arguments and compares the unique address of these two arguments.}
 
@@ -272,15 +285,16 @@ Key Takeaway:
 \begin{itemize}
 \item Now there are major difference here between the ways in which equality can be tested. First in Common Lisp symbols
 are unique where one symbol can have only address in computer's memory (within a given package in Common Lisp).
-This address of the symbol object is unique. So if we have a list as \texttt{(TIME AFTER TIME)} then \texttt{TIME} has the address
-irrespective of the fact that it is repeated twice. The \texttt{EQ} function does this. This is a deviation from the
+This address of the symbol object is unique. So if we have a list as \texttt{(TIME AFTER TIME)} then \texttt{TIME} has the same
+address irrespective of the fact that it is repeated twice. The \texttt{EQ} function does this. This is a deviation from the
 \texttt{eq?} as defined in the book.
 \item Common Lisp has other equality tests
 \begin{itemize}
 \item \texttt{EQ}: As explained above
 \item \texttt{EQL}: Same as \texttt{EQ} but for two numbers it will compare the values. So integer 4 is different from a floating
 point 4.0
-\item \texttt{EQUAL}: This compares the elements of a list one by one. It is slower than \texttt{EQ}
+\item \texttt{EQUAL}: This compares the elements of a list one by one. It is slower than \texttt{EQ}. Most common testing method
+probably.
 \item \texttt{EQUALP}: Same as \texttt{EQUAL} but ignores case
 \item \texttt{=} Only for number comparison. Integer 4 and floating point 4.0 yields \texttt{T}
 \end{itemize}
@@ -306,7 +320,7 @@ the intent is to compare the contents in the list then we need to use \texttt{EQ
 \end{itemize}
 
 \subsection{Notes on \texttt{NIL} in Common Lisp}
-\label{sec:orga24c05f}
+\label{sec:orged32ebc}
 \vspace{1em}
 
 \begin{itemize}
@@ -341,12 +355,20 @@ Same with \texttt{T})
 \item Package: In Common Lisp Package
 \end{itemize}
 
+\textbf{Core Terms/Concepts Learnt}
+\begin{itemize}
+\item \texttt{CAR}, \texttt{CDR}, \texttt{CONS}, \texttt{EQ}, \texttt{NULL}, \texttt{NIL}
+\item Dotted Lists
+\end{itemize}
+
 
 \newpage
 \section{Do It, Do It Again, and Again, and Again \ldots{}}
-\label{sec:org4c18497}
+\label{sec:org1960a57}
 
-This chapter explains recursion. The best material for recursion in my opinion is Chapter 8 in  Touretzky's book.
+This chapter explains recursion. The best material for recursion in my opinion is Chapter 8 in Touretzky's book.
+
+\vspace{1em}
 
 Key Takeaway:
 \emph{The First Commandment (preliminary): Always ask \texttt{NULL} as the first question in expressing a function}
@@ -354,8 +376,8 @@ Key Takeaway:
 \vspace{1em}
 \begin{itemize}
 \item After reading Touretzky's chapter on recursion this chapter will feel very easy. Also the first commandment is not
-really true. Sometimes in recursion the first question is not necessarily \texttt{NULL}. Let's use an example. Make a
-recursive  function to compute a factorial of a number.
+really true always. Sometimes in recursion the first question is not necessarily \texttt{NULL}. Let's use an example. Make
+a recursive  function to compute a factorial of a number.
 \begin{verbatim}
 (defun fact (n)
   (cond ((zerop n) 1)
@@ -376,7 +398,7 @@ list is an \texttt{ATOM?}. We will use our own defined \texttt{ATOMP} predicate 
 tests and results. The macro goes from top to bottom. The cases are processed from left to right under each test.
 Technically we can have more than one result per test for evaluation. As a Common Lisp `trick' the last test is
 usually a \texttt{T} which evaluates to \texttt{TRUE} always and hence the last result is returned. \texttt{COND} is a very nice way to
-do implement \texttt{If..then..Else}. I have never seen such seamless conditional in any language yet.
+implement \texttt{If..then..Else}. I have never seen such seamless conditional in any language yet.
 \item \texttt{LAT} basically is a \texttt{COND} which keeps checking through all the elements of a list to test for \texttt{ATOM?} till the
 list ends. It checks \texttt{CAR} one by one for each subsequent \texttt{CDR} for \texttt{ATOMP}.
 \item I would study Chapter 8 of Touretzky for getting the intuition on recursion right. The author has done a great job.
@@ -402,80 +424,186 @@ CL-USER> (lat? '(Jack Sprat could eat no chicken fat))
   0: LAT? returned T
 T
 \end{verbatim}
+\item Another example which has a nested list
+\begin{verbatim}
+  CL-USER> (lat? '(Jack (Sprat could) eat no chickn fat))
+  0: (LAT? (JACK (SPRAT COULD) EAT NO CHICKN FAT))
+    1: (LAT? ((SPRAT COULD) EAT NO CHICKN FAT))
+    1: LAT? returned NIL
+  0: LAT? returned NIL
+NIL
+\end{verbatim}
+\item Few more examples from the chapter using \texttt{TRACE}
+\begin{verbatim}
+CL-USER> (lat? '(bacon and eggs))
+  0: (LAT? (BACON AND EGGS))
+    1: (LAT? (AND EGGS))
+      2: (LAT? (EGGS))
+        3: (LAT? NIL)
+        3: LAT? returned T
+      2: LAT? returned T
+    1: LAT? returned T
+  0: LAT? returned T
+T
+\end{verbatim}
 
-\item 
+\begin{verbatim}
+CL-USER> (lat? '(bacon (and eggs)))
+  0: (LAT? (BACON (AND EGGS)))
+    1: (LAT? ((AND EGGS)))
+    1: LAT? returned NIL
+  0: LAT? returned NIL
+NIL
+\end{verbatim}
+\item \texttt{OR} is introduced as a logical operator. There is a very important point to note in the use of \texttt{OR} macro. Quoting
+from Chapter 4 in Touretzky - The rule for evaluating \texttt{OR}: Evaluate the clauses one at a time. If a clause
+returns something other than \texttt{NIL}, stop and return that value; otherwise go on to the next clause, or return
+\texttt{NIL} if none are left. \texttt{AND} is not introduced in this chapter. Quoting the evaluation rule for \texttt{AND} - Evaluate
+the clauses one at a time. If a clause returns \texttt{NIL}, stop and return \texttt{NIL}; otherwise go on to the next one. If all
+clauses yield non-NIL results, return the value of the last clause.
+\item \texttt{MEMBER} is a function which returns a \texttt{T} if the input is one of the elements in a list else \texttt{NIL\textasciitilde{}/\#f}. The book
+defines this function using \texttt{OR} whereas it is actually not necessary.
+\begin{verbatim}
+(defun my-member (a lat)
+  (cond ((null lat) nil)
+        ((equal a (car lat)) t)
+        (t (my-member a (cdr lat)))))
+
+(defun member? (a lat)
+  (cond ((null lat) nil)
+        (t (or (equal (car lat) a) (member? a (cdr lat))))))
+\end{verbatim}
+\item The application of \texttt{member?} to find out whether \emph{meat} is in the list \emph{(mashed potatoes and meat gravy)} would
+generate this recursive call
+\begin{verbatim}
+CL-USER> (member? 'meat '(mashed potatoes and meat gravy))
+  0: (MEMBER? MEAT (MASHED POTATOES AND MEAT GRAVY))
+    1: (MEMBER? MEAT (POTATOES AND MEAT GRAVY))
+      2: (MEMBER? MEAT (AND MEAT GRAVY))
+        3: (MEMBER? MEAT (MEAT GRAVY))
+        3: MEMBER? returned T
+      2: MEMBER? returned T
+    1: MEMBER? returned T
+  0: MEMBER? returned T
+T
+\end{verbatim}
+\item Another example
+\begin{verbatim}
+CL-USER> (member? 'liver '(bagels and lox))
+  0: (MEMBER? LIVER (BAGELS AND LOX))
+    1: (MEMBER? LIVER (AND LOX))
+      2: (MEMBER? LIVER (LOX))
+        3: (MEMBER? LIVER NIL)
+        3: MEMBER? returned NIL
+      2: MEMBER? returned NIL
+    1: MEMBER? returned NIL
+  0: MEMBER? returned NIL
+NIL
+\end{verbatim}
 \end{itemize}
 
+\textbf{Core Terms/Concepts Learnt}
+\begin{itemize}
+\item \texttt{OR}
+\item Basic template of recursion. Chapter 8 of Touretzky is great for a deeper dive into ways to constuct recursion. Also
+tail optimized recursion is to be studied from the book `Sketchy Scheme' by Nils M Holm
+\end{itemize}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+\newpage
 
 \section{Cons the Magnificient}
-\label{sec:org08094b5}
+\label{sec:org1568095}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\newpage
 
 \section{Numbers Games}
-\label{sec:org95c95f0}
+\label{sec:org0fd4909}
+
+\newpage
 
 \section{* Oh My Gawd *: It's Full of Stars}
-\label{sec:org2060558}
+\label{sec:orga8a2bed}
+
+\newpage
 
 \section{Shadows}
-\label{sec:org8780d8d}
+\label{sec:org40c8e62}
+
+\newpage
 
 \section{Friends and Relations}
-\label{sec:org41a54a5}
+\label{sec:org3e22616}
+
+\newpage
 
 \section{Lambda the Ultimate}
-\label{sec:org6c06948}
+\label{sec:orgfebdd83}
+
+\newpage
 
 \section{\ldots{} and Again, and Again, and Again, \ldots{}}
-\label{sec:orgf8ec907}
+\label{sec:orgca2bcab}
+
+\newpage
 
 \section{What Is the Value of All of This?}
-\label{sec:org7227e7d}
+\label{sec:org0f34921}
+
+\newpage
 
 \section{Intermission}
-\label{sec:org13491d4}
+\label{sec:org61d0f99}
+
+\newpage
 
 \section{The Ten Commandments}
-\label{sec:orgf0935e0}
+\label{sec:orgec5acdb}
+
+\newpage
 
 \section{The Five Rules}
-\label{sec:orgbd7fabd}
+\label{sec:org03bf191}
+
+\newpage
 \end{document}

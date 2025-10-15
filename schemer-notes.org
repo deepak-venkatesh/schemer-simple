@@ -16,8 +16,8 @@ those few building blocks. I am making this public since other beginners could b
 
 While the book uses Scheme, I prefer to work in Common Lisp and have adapted the examples accordingly. Despite its
 lighthearted tone, the book is far from an easy read — it demands close attention and careful thought. My advice to
-anyone who wants to learn lisp is to first work through David Touretzky's book titled `Common Lisp A Gentle Introduction to
-Symbolic Computing' (2nd ed.). It's a great book for introduction to programming not just Lisp.
+anyone who wants to learn lisp is to first work through Professor David Touretzky's book titled `Common Lisp A Gentle
+Introduction to Symbolic Computing' (2nd ed.). It's a great book for introduction to programming not just Lisp.
 
 All mistakes in these notes, whether typographical or conceptual, are entirely my own. Any misinterpretations are as
 well. I am still new to both Lisp and programming.
@@ -48,14 +48,19 @@ Key Takeaway:
   learning more about programming).
 + Lisp was initially conceived as a theoretical vehicle for recursion and symbolic algebra (this is the algebra we
   have been taught in school such as $(a + b)^2 = a^2 + b^2 + 2ab$).
-+ In Lisp procedures are first class. Procedures are essentially a `variant' of functions. A mathematical function maps
-  a given input to an output (domain - range/co-domain) but a procedure is a process to arrive at the result via
++ In Lisp procedures are first class. Procedures are essentially a `variant' of functions. A mathematical function
+  maps a given input to an output (domain - range/co-domain) but a procedure is a process to arrive at the result via
   computation.
 + First Class basically means that the procedure itself can be passed around as arguments to other procedures.
   Procedures can be return values. They can also be stored in data structures. A similar corollary (though not exact)
   are composite functions which are usually taught in pre-calculus.
-+ Lisp programs can manipulate representations of Lisp programs - this likely refers to macros and how in Lisp code can
-  be treated as data.
++ Lisp programs can manipulate representations of Lisp programs - this likely refers to macros and how in Lisp code
+  can be treated as data.
+
+#+LATEX: \vspace{1em}
+
+*Core Terms/Concepts Learnt*
++ None
 
 #+LATEX: \newpage
 * Preface
@@ -73,10 +78,10 @@ Key Takeaway:
   + ~CAR~
   + ~CDR~
   + ~CONS~
-  + ~ATOM~ (~ATOM?~ actually which is not a primitive in Common Lisp but explanation below)
-  + ~EQ~, ~EQL~, ~EQUAL~, ~EQUALP~ (currently unsure if all or only a few will be used)
+  + ~ATOM?~ (~ATOM?~ actually which is not a primitive in Common Lisp but explanation below)
+  + ~EQ~, ~EQL~, ~EQUAL~, ~EQUALP~ (currently unsure if all or only a few will be used but in Scheme ~eq?~ is used)
   + ~NULL~, ~ZEROP~, ~NUMBERP~
-  + ~ADD1~, ~SUB1~ (these do not exist in Common Lisp, we will define them when needed)
+  + ~ADD1~, ~SUB1~ (these do not exist in Common Lisp, we will define them when needed or us ~1+~ and ~1-~)
   + ~AND~, ~OR~
   + ~LAMBDA~
   + ~COND~
@@ -88,8 +93,8 @@ Key Takeaway:
   from that in Common Lisp. Scheme considers ~()~ as only a list and not an atom. While in Common Lisp ~()~ is
   considered both an atom and a list. Therefore, to stay with the theme of this book we will define our own
   predicate ~ATOM?~ in Common Lisp which will work like the ~atom?~ in Scheme. ~ATOM~ is defined as per the Lisp
-  Hyperspec as well as Common Lisp The Language (2nd ed.) by Guy Steele as `The predicate ~ATOM~ is trye if its
-  argument is not a ~CONS~, and otherwise is false. In SBCL  ~ATOM~ will give ~T~
+  Hyperspec as well as Common Lisp The Language (2nd ed.) by Guy Steele as `The predicate ~ATOM~ is true if its
+  argument is not a ~CONS~, and otherwise is false. In SBCL ~ATOM~ will give ~T~
 
   #+begin_src common-lisp
     (atom '())
@@ -114,12 +119,16 @@ Key Takeaway:
   cell or not. But when we check for a ~CONS~ cell for an empty list ~()~ then ~CONSP~ returns ~NIL~. This perhaps
   means that the empty list in this case is being treated as an ~ATOM~.
 
+*Core Terms/Concepts Learnt*
++ ~'()~ is both an atom and a list in Common Lisp
 
 
 #+LATEX: \newpage
 * Toys
 
 This chapter introduces primitives of Lisp. These are the basic building blocks.
+
+#+LATEX: \vspace{1em}
 
 ** The Law of ~CAR~
 Key Takeaway:
@@ -187,8 +196,8 @@ Key Takeaway:
   proper list the chain of ~CONS~ cells ends with ~NIL~ as the atom, meaning the last cell points to a ~NIL~ but in a
   dotted list the last atom points to a non ~NIL~ atom. In the above case we will get the following:
   #+begin_src common-lisp
-    (cons '((a b c)) 'b)
-    » (((A B C)) . B)
+    (cons '((a b c)) 'd)
+    » (((A B C)) . D)
   #+end_src
 
 
@@ -222,14 +231,15 @@ Key Takeaway:
 
 + Now there are major difference here between the ways in which equality can be tested. First in Common Lisp symbols
   are unique where one symbol can have only address in computer's memory (within a given package in Common Lisp).
-  This address of the symbol object is unique. So if we have a list as ~(TIME AFTER TIME)~ then ~TIME~ has the address
-  irrespective of the fact that it is repeated twice. The ~EQ~ function does this. This is a deviation from the
+  This address of the symbol object is unique. So if we have a list as ~(TIME AFTER TIME)~ then ~TIME~ has the same
+  address irrespective of the fact that it is repeated twice. The ~EQ~ function does this. This is a deviation from the
   ~eq?~ as defined in the book.
 + Common Lisp has other equality tests
   + ~EQ~: As explained above
   + ~EQL~: Same as ~EQ~ but for two numbers it will compare the values. So integer 4 is different from a floating
     point 4.0
-  + ~EQUAL~: This compares the elements of a list one by one. It is slower than ~EQ~
+  + ~EQUAL~: This compares the elements of a list one by one. It is slower than ~EQ~. Most common testing method
+    probably.
   + ~EQUALP~: Same as ~EQUAL~ but ignores case
   + ~=~ Only for number comparison. Integer 4 and floating point 4.0 yields ~T~
 + We again come across the treatment of ~()~ differently in Scheme and Common Lisp. In Scheme ~()~ is only a list and
@@ -283,19 +293,25 @@ The 5 pointers of the symbol ~NIL~
 + plist: No associated properties
 + Package: In Common Lisp Package
 
+*Core Terms/Concepts Learnt*
++ ~CAR~, ~CDR~, ~CONS~, ~EQ~, ~NULL~, ~NIL~
++ Dotted Lists
+
 
 #+LATEX: \newpage
 * Do It, Do It Again, and Again, and Again ...
 
-This chapter explains recursion. The best material for recursion in my opinion is Chapter 8 in  Touretzky's book.
+This chapter explains recursion. The best material for recursion in my opinion is Chapter 8 in Touretzky's book.
+
+#+LATEX: \vspace{1em}
 
 Key Takeaway:
 /The First Commandment (preliminary): Always ask ~NULL~ as the first question in expressing a function/
 
 #+LATEX: \vspace{1em}
 + After reading Touretzky's chapter on recursion this chapter will feel very easy. Also the first commandment is not
-  really true. Sometimes in recursion the first question is not necessarily ~NULL~. Let's use an example. Make a
-  recursive  function to compute a factorial of a number.
+  really true always. Sometimes in recursion the first question is not necessarily ~NULL~. Let's use an example. Make
+  a recursive  function to compute a factorial of a number.
   #+begin_src common-lisp
     (defun fact (n)
       (cond ((zerop n) 1)
@@ -316,7 +332,7 @@ Key Takeaway:
   tests and results. The macro goes from top to bottom. The cases are processed from left to right under each test.
   Technically we can have more than one result per test for evaluation. As a Common Lisp `trick' the last test is
   usually a ~T~ which evaluates to ~TRUE~ always and hence the last result is returned. ~COND~ is a very nice way to
-  do implement ~If..then..Else~. I have never seen such seamless conditional in any language yet.
+  implement ~If..then..Else~. I have never seen such seamless conditional in any language yet.
 + ~LAT~ basically is a ~COND~ which keeps checking through all the elements of a list to test for ~ATOM?~ till the
   list ends. It checks ~CAR~ one by one for each subsequent ~CDR~ for ~ATOMP~.
 + I would study Chapter 8 of Touretzky for getting the intuition on recursion right. The author has done a great job.
@@ -341,9 +357,92 @@ CL-USER> (lat? '(Jack Sprat could eat no chicken fat))
     1: LAT? returned T
   0: LAT? returned T
 T
+  #+end_src  
++ Another example which has a nested list
+  #+begin_src common-lisp
+  CL-USER> (lat? '(Jack (Sprat could) eat no chickn fat))
+  0: (LAT? (JACK (SPRAT COULD) EAT NO CHICKN FAT))
+    1: (LAT? ((SPRAT COULD) EAT NO CHICKN FAT))
+    1: LAT? returned NIL
+  0: LAT? returned NIL
+NIL
   #+end_src
-  
-+ 
++ Few more examples from the chapter using ~TRACE~
+  #+begin_src common-lisp
+CL-USER> (lat? '(bacon and eggs))
+  0: (LAT? (BACON AND EGGS))
+    1: (LAT? (AND EGGS))
+      2: (LAT? (EGGS))
+        3: (LAT? NIL)
+        3: LAT? returned T
+      2: LAT? returned T
+    1: LAT? returned T
+  0: LAT? returned T
+T
+  #+end_src
+
+  #+begin_src common-lisp
+CL-USER> (lat? '(bacon (and eggs)))
+  0: (LAT? (BACON (AND EGGS)))
+    1: (LAT? ((AND EGGS)))
+    1: LAT? returned NIL
+  0: LAT? returned NIL
+NIL
+  #+end_src
++ ~OR~ is introduced as a logical operator. There is a very important point to note in the use of ~OR~ macro. Quoting
+  from Chapter 4 in Touretzky - The rule for evaluating ~OR~: Evaluate the clauses one at a time. If a clause
+  returns something other than ~NIL~, stop and return that value; otherwise go on to the next clause, or return
+  ~NIL~ if none are left. ~AND~ is not introduced in this chapter. Quoting the evaluation rule for ~AND~ - Evaluate
+  the clauses one at a time. If a clause returns ~NIL~, stop and return ~NIL~; otherwise go on to the next one. If all
+  clauses yield non-NIL results, return the value of the last clause.
++ ~MEMBER~ is a function which returns a ~T~ if the input is one of the elements in a list else ~NIL~/#f~. The book
+  defines this function using ~OR~ whereas it is actually not necessary.
+  #+begin_src common-lisp
+(defun my-member (a lat)
+  (cond ((null lat) nil)
+	((equal a (car lat)) t)
+	(t (my-member a (cdr lat)))))
+
+(defun member? (a lat)
+  (cond ((null lat) nil)
+	(t (or (equal (car lat) a) (member? a (cdr lat))))))
+  #+end_src
++ The application of ~member?~ to find out whether /meat/ is in the list /(mashed potatoes and meat gravy)/ would
+  generate this recursive call
+  #+begin_src common-lisp
+CL-USER> (member? 'meat '(mashed potatoes and meat gravy))
+  0: (MEMBER? MEAT (MASHED POTATOES AND MEAT GRAVY))
+    1: (MEMBER? MEAT (POTATOES AND MEAT GRAVY))
+      2: (MEMBER? MEAT (AND MEAT GRAVY))
+        3: (MEMBER? MEAT (MEAT GRAVY))
+        3: MEMBER? returned T
+      2: MEMBER? returned T
+    1: MEMBER? returned T
+  0: MEMBER? returned T
+T
+  #+end_src
++ Another example
+  #+begin_src common-lisp
+CL-USER> (member? 'liver '(bagels and lox))
+  0: (MEMBER? LIVER (BAGELS AND LOX))
+    1: (MEMBER? LIVER (AND LOX))
+      2: (MEMBER? LIVER (LOX))
+        3: (MEMBER? LIVER NIL)
+        3: MEMBER? returned NIL
+      2: MEMBER? returned NIL
+    1: MEMBER? returned NIL
+  0: MEMBER? returned NIL
+NIL
+  #+end_src
+
+*Core Terms/Concepts Learnt*
++ ~OR~
++ Basic template of recursion. Chapter 8 of Touretzky is great for a deeper dive into ways to constuct recursion. Also
+  tail optimized recursion is to be studied from the book `Sketchy Scheme' by Nils M Holm
+
+#+LATEX: \newpage
+
+* Cons the Magnificient 
 
 
 
@@ -385,24 +484,45 @@ T
 
 
 
-* Cons the Magnificient
+
+#+LATEX: \newpage
 
 * Numbers Games
 
+#+LATEX: \newpage
+
 * * Oh My Gawd *: It's Full of Stars
+
+#+LATEX: \newpage
 
 * Shadows
 
+#+LATEX: \newpage
+
 * Friends and Relations
+
+#+LATEX: \newpage
 
 * Lambda the Ultimate
 
+#+LATEX: \newpage
+
 * ... and Again, and Again, and Again, ...
+
+#+LATEX: \newpage
 
 * What Is the Value of All of This?
 
+#+LATEX: \newpage
+
 * Intermission
+
+#+LATEX: \newpage
 
 * The Ten Commandments
 
+#+LATEX: \newpage
+
 * The Five Rules
+
+#+LATEX: \newpage

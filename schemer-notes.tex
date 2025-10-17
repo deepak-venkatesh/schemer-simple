@@ -1,4 +1,4 @@
-% Created 2025-10-17 Fri 11:34
+% Created 2025-10-17 Fri 15:11
 % Intended LaTeX compiler: pdflatex
 \documentclass[11pt]{article}
 \usepackage[utf8]{inputenc}
@@ -60,7 +60,7 @@ well. I am still new to both Lisp and programming.
 
 \newpage
 \section{Foreword}
-\label{sec:org7bd9b0d}
+\label{sec:org2568dfe}
 
 By Gerald Sussman of MIT, co-author of the book SICP (the wizard book).
 
@@ -97,7 +97,7 @@ can be treated as data.
 
 \newpage
 \section{Preface}
-\label{sec:orgd591f2d}
+\label{sec:org2d193ae}
 
 Key Takeaway:
 \emph{The goal of the book is to teach the reader to think recursively.}
@@ -172,14 +172,14 @@ Some tests for checking \texttt{atom?} in Scheme below
 
 \newpage
 \section{Toys}
-\label{sec:orge76bfce}
+\label{sec:org1812920}
 
 This chapter introduces primitives of Scheme. These are the basic building blocks.
 
 \vspace{1em}
 
 \subsection{The Law of \texttt{car}}
-\label{sec:orga6ab9e8}
+\label{sec:org89e547e}
 Key Takeaway:
 \emph{The primitive \texttt{car} is defined only for non-empty lists. The \texttt{car} is the first atom (element) of that list.}
 
@@ -219,7 +219,7 @@ get an error like below.
 \end{itemize}
 
 \subsection{The Law of \texttt{cdr}}
-\label{sec:org546d3ab}
+\label{sec:orgc55d197}
 Key Takeaway:
 \emph{The primitive \texttt{cdr} is defined only for non-empty lists. The \texttt{cdr} of any non-empty list is always another list.}
 
@@ -243,7 +243,7 @@ Key Takeaway:
 
 
 \subsection{The Law of \texttt{cons}}
-\label{sec:org6d42956}
+\label{sec:org6206c9c}
 Key Takeaway:
 \emph{The primitive \texttt{cons} takes two arguments. The second argument to \texttt{cons} must be a list. The result is a list.}
 
@@ -266,7 +266,7 @@ dotted list the last atom points to a non \texttt{NIL} atom. In the above case w
 
 
 \subsection{The Law of \texttt{null?}}
-\label{sec:orgdf3c65f}
+\label{sec:org76839d2}
 Key Takeaway:
 \emph{The primitive \texttt{null?} is defined only for lists.}
 
@@ -289,7 +289,7 @@ for \texttt{()} is \texttt{\#t} and for everything else it is \texttt{\#f}. See 
 \end{itemize}
 
 \subsection{The Law of \texttt{eq?}}
-\label{sec:org6d31b9d}
+\label{sec:org97501f3}
 Key Takeaway:
 \emph{The primitive \texttt{eq?} in takes two arguments and compares them. Each must be a non numeric atom.}
 
@@ -314,232 +314,252 @@ Key Takeaway:
 
 \newpage
 \section{Do It, Do It Again, and Again, and Again \ldots{}}
-\label{sec:org933a314}
+\label{sec:org175adbe}
 
 This chapter explains recursion. The best material for recursion in my opinion is Chapter 8 in Touretzky's book.
 
 \vspace{1em}
 
 Key Takeaway:
-\emph{The First Commandment (preliminary): Always ask \texttt{NULL} as the first question in expressing a function}
+\emph{The First Commandment (preliminary): Always ask \texttt{null?} as the first question in expressing a function}
 
 \vspace{1em}
 \begin{itemize}
 \item After reading Touretzky's chapter on recursion this chapter will feel very easy. Also the first commandment is not
-really true always. Sometimes in recursion the first question is not necessarily \texttt{NULL}. Let's use an example. Make
-a recursive  function to compute a factorial of a number.
+really true always. Sometimes in recursion the first question is not necessarily \texttt{null?}. Later in the book the
+authors do add in this nuance.
+\item The chapter introduces a function named \texttt{lat?}. It stands for a list of atoms. This means every element of the
+list is an atom. It can be written as below.
 \begin{verbatim}
-(defun fact (n)
-  (cond ((zerop n) 1)
-        (t (* n (fact (- n 1))))))
+(define lat?
+  (lambda (l)
+    (cond
+      ((null? l) #t)
+      ((atom? (car l)) (lat? (cdr l)))
+      (else #f))))
 
 \end{verbatim}
-Here the first question actually asks whether the argument \texttt{n} is a zero or not. Later in the book the authors do
-add in this nuance.
-\item The chapter introduces a function named \texttt{LAT?}. It stands for a \texttt{list of atoms}. This means every element of the
-list is an \texttt{ATOM?}. We will use our own defined \texttt{ATOMP} predicate so that we do not return \texttt{T} for a \texttt{()}.
-\item Recursive function definition of \texttt{LAT?} in Common Lisp.
-\begin{verbatim}
-(defun lat? (l)
-  (cond ((null l) t)
-        ((atom? (car l)) (lat? (cdr l)))
-        (t nil)))
-
-\end{verbatim}
-\item It is important to understand how \texttt{COND} functions. Well \texttt{COND} is actually a macro. This macro has a series of
+\item It is important to understand how \texttt{cond} functions. Well \texttt{cond} is actually a macro. This macro has a series of
 tests and results. The macro goes from top to bottom. The cases are processed from left to right under each test.
-Technically we can have more than one result per test for evaluation. As a Common Lisp `trick' the last test is
-usually a \texttt{T} which evaluates to \texttt{TRUE} always and hence the last result is returned. \texttt{COND} is a very nice way to
+Technically we can have more than one result per test for evaluation. As a Lisp `trick' the last test is
+usually an \texttt{else} which evaluates to \texttt{\#t} always and hence the last result is returned. \texttt{cond} is a very nice way to
 implement \texttt{If..then..Else}. I have never seen such seamless conditional in any language yet.
-\item \texttt{LAT} basically is a \texttt{COND} which keeps checking through all the elements of a list to test for \texttt{ATOM?} till the
-list ends. It checks \texttt{CAR} one by one for each subsequent \texttt{CDR} for \texttt{ATOMP}.
+\item \texttt{lat?} basically is a \texttt{cond} which keeps checking through all the elements of a list to test for \texttt{atom?} till the
+list ends. It checks \texttt{car} one by one for each subsequent \texttt{cdr} for \texttt{atom?}.
 \item I would study Chapter 8 of Touretzky for getting the intuition on recursion right. The author has done a great job.
-\item SBCL comes with an inbuilt tool called \texttt{TRACE} which lets us see the actual function calls. So lets trace all the
-recursive examples in this chapter.
+\item Dr Racket comes with an inbuilt tool called \texttt{trace} in the library package called \textasciitilde{}(racket/trace) which lets us see
+the actual function calls. So lets trace all the recursive examples in this chapter.
 \begin{verbatim}
-CL-USER> (lat? '(Jack Sprat could eat no chicken fat))
-  0: (LAT? (JACK SPRAT COULD EAT NO CHICKEN FAT))
-    1: (LAT? (SPRAT COULD EAT NO CHICKEN FAT))
-      2: (LAT? (COULD EAT NO CHICKEN FAT))
-        3: (LAT? (EAT NO CHICKEN FAT))
-          4: (LAT? (NO CHICKEN FAT))
-            5: (LAT? (CHICKEN FAT))
-              6: (LAT? (FAT))
-                7: (LAT? NIL)
-                7: LAT? returned T
-              6: LAT? returned T
-            5: LAT? returned T
-          4: LAT? returned T
-        3: LAT? returned T
-      2: LAT? returned T
-    1: LAT? returned T
-  0: LAT? returned T
-T
+> (lat? '(Jack Sprat could eat no chicken fat))
+>(lat? '(Jack Sprat could eat no chicken fat))
+>(lat? '(Sprat could eat no chicken fat))
+>(lat? '(could eat no chicken fat))
+>(lat? '(eat no chicken fat))
+>(lat? '(no chicken fat))
+>(lat? '(chicken fat))
+>(lat? '(fat))
+>(lat? '())
+<#t
+#t
 
 \end{verbatim}
+
 \item Another example which has a nested list
 \begin{verbatim}
-  CL-USER> (lat? '(Jack (Sprat could) eat no chickn fat))
-  0: (LAT? (JACK (SPRAT COULD) EAT NO CHICKN FAT))
-    1: (LAT? ((SPRAT COULD) EAT NO CHICKN FAT))
-    1: LAT? returned NIL
-  0: LAT? returned NIL
-NIL
+> (lat? '(Jack (Sprat could) eat no chicken fat))
+>(lat? '(Jack (Sprat could) eat no chicken fat))
+>(lat? '((Sprat could) eat no chicken fat))
+<#f
+#f
 
 \end{verbatim}
-\item Few more examples from the chapter using \texttt{TRACE}
+\item Few more examples from the chapter using \texttt{trace}
 \begin{verbatim}
-CL-USER> (lat? '(bacon and eggs))
-  0: (LAT? (BACON AND EGGS))
-    1: (LAT? (AND EGGS))
-      2: (LAT? (EGGS))
-        3: (LAT? NIL)
-        3: LAT? returned T
-      2: LAT? returned T
-    1: LAT? returned T
-  0: LAT? returned T
-T
+> (lat? '(bacon and eggs))
+>(lat? '(bacon and eggs))
+>(lat? '(and eggs))
+>(lat? '(eggs))
+>(lat? '())
+<#t
+#t
 
 \end{verbatim}
 
 \begin{verbatim}
-CL-USER> (lat? '(bacon (and eggs)))
-  0: (LAT? (BACON (AND EGGS)))
-    1: (LAT? ((AND EGGS)))
-    1: LAT? returned NIL
-  0: LAT? returned NIL
-NIL
+> (lat? '(bacon (and eggs)))
+>(lat? '(bacon (and eggs)))
+>(lat? '((and eggs)))
+<#f
+#f
 
 \end{verbatim}
-\item \texttt{OR} is introduced as a logical operator. There is a very important point to note in the use of \texttt{OR} macro. Quoting
-from Chapter 4 in Touretzky - The rule for evaluating \texttt{OR}: Evaluate the clauses one at a time. If a clause
-returns something other than \texttt{NIL}, stop and return that value; otherwise go on to the next clause, or return
-\texttt{NIL} if none are left. \texttt{AND} is not introduced in this chapter. Quoting the evaluation rule for \texttt{AND} - Evaluate
-the clauses one at a time. If a clause returns \texttt{NIL}, stop and return \texttt{NIL}; otherwise go on to the next one. If all
-clauses yield non-NIL results, return the value of the last clause.
-\item \texttt{MEMBER} is a function which returns a \texttt{T} if the input is one of the elements in a list else \texttt{NIL\textasciitilde{}/\#f}. The book
-defines this function using \texttt{OR} whereas it is actually not necessary.
+\item \texttt{or} is introduced as a logical operator. \texttt{or} asks two questions, one at a time. If the first one is true it stops
+answers true. Otherwise it asks the second question and answers with whatever the second question answers.
+\item \texttt{member?} is a function which returns a \texttt{\#t} if the input is one of the elements in a list else \texttt{\#f}. The book
+defines this function using \texttt{or} whereas it is actually not necessary.
 \begin{verbatim}
-(defun my-member (a lat)
-  (cond ((null lat) nil)
-        ((equal a (car lat)) t)
-        (t (my-member a (cdr lat)))))
+    (define member?
+      (lambda (a lat)
+        (cond
+          ((null? lat) #f)
+          (else (or (eq? (car lat) a)
+                     (member? a (cdr lat)))))))
 
-(defun member? (a lat)
-  (cond ((null lat) nil)
-        (t (or (equal (car lat) a) (member? a (cdr lat))))))
+(define my-member?
+  (lambda (a lat)
+    (cond
+      ((null? lat) #f)
+      ((eq? (car lat) a) #t)
+      (else (member? a (cdr lat))))))
 
 \end{verbatim}
 \item The application of \texttt{member?} to find out whether \emph{meat} is in the list \emph{(mashed potatoes and meat gravy)} would
 generate this recursive call
 \begin{verbatim}
-CL-USER> (member? 'meat '(mashed potatoes and meat gravy))
-  0: (MEMBER? MEAT (MASHED POTATOES AND MEAT GRAVY))
-    1: (MEMBER? MEAT (POTATOES AND MEAT GRAVY))
-      2: (MEMBER? MEAT (AND MEAT GRAVY))
-        3: (MEMBER? MEAT (MEAT GRAVY))
-        3: MEMBER? returned T
-      2: MEMBER? returned T
-    1: MEMBER? returned T
-  0: MEMBER? returned T
-T
+> (member? 'meat '(mashed potatoes and meat gravy))
+>(member? 'meat '(mashed potatoes and meat gravy))
+>(member? 'meat '(potatoes and meat gravy))
+>(member? 'meat '(and meat gravy))
+>(member? 'meat '(meat gravy))
+<#t
+#t
 
 \end{verbatim}
 \item Another example
 \begin{verbatim}
-CL-USER> (member? 'liver '(bagels and lox))
-  0: (MEMBER? LIVER (BAGELS AND LOX))
-    1: (MEMBER? LIVER (AND LOX))
-      2: (MEMBER? LIVER (LOX))
-        3: (MEMBER? LIVER NIL)
-        3: MEMBER? returned NIL
-      2: MEMBER? returned NIL
-    1: MEMBER? returned NIL
-  0: MEMBER? returned NIL
-NIL
+> (member? 'liver '(bagels and lox))
+>(member? 'liver '(bagels and lox))
+>(member? 'liver '(and lox))
+>(member? 'liver '(lox))
+>(member? 'liver '())
+<#f
+#f
 
 \end{verbatim}
 \end{itemize}
 
 \textbf{Core Terms/Concepts Learnt}
 \begin{itemize}
-\item \texttt{OR}
-\item Basic template of recursion. Chapter 8 of Touretzky is great for a deeper dive into ways to constuct recursion. Also
-tail optimized recursion is to be studied from the book `Sketchy Scheme' by Nils M Holm
+\item \texttt{or}
+\item Basic template of recursion. Chapter 8 of Touretzky is great for a deeper dive into ways to construct recursion. Also
+tail optimized recursion is to be studied from the book `Sketchy Scheme' by Nils M Holm.
 \end{itemize}
 
 \newpage
 
 \section{Cons the Magnificent}
-\label{sec:orgeb82e47}
+\label{sec:org028c4e4}
 
-This chapter explains the methods to build lists using \texttt{CONS} recursively.
+This chapter explains the methods to build lists using \texttt{cons} recursively.
 
 \vspace{1em}
 
 Key Takeaway:
-\emph{Use \texttt{CONS} to build lists}
+\emph{Use \texttt{cons} to build lists}
 
 \vspace{1em}
 
 \begin{itemize}
-\item In last chapter we made a \texttt{MEMBER?} function and in this chapter we will be making a function which will \emph{remove}
+\item In last chapter we made a \texttt{member?} function and in this chapter we will be making a function which will \emph{remove}
 a member
-\item The first attempt to build the \texttt{REMBER} function fails since it removes all the initial elements before finding the
-one it wants to remove. The authors have nicely demonstrated why \texttt{CONS} is required to define this function.
-\item The way to write \texttt{REMBER} in Common Lisp is as below. Also note as per Scheme semantics there is no \texttt{?} at the end
-of \texttt{REMBER} because it is actually not a predicate.
+\item The first attempt to build the \texttt{rember} function fails since it removes all the initial elements before finding the
+one it wants to remove. The authors have nicely demonstrated why \texttt{cons} is required to define this function.
+\item The way to write \texttt{rember} is as below. Also note as per Scheme semantics there is no \texttt{?} at the end
+of \texttt{rember} because it is actually not a predicate.
 \begin{verbatim}
-(defun rember (a lat)
-  (cond ((null lat) nil)
-        ((equal a (car lat)) (cdr lat))
-        (t (cons (car lat)
-                 (rember a (cdr lat))))))
+(define rember
+  (lambda (a lat)
+    (cond
+      ((null? lat) (quote ()))
+      ((eq? (car lat) a) (cdr lat))
+      (else (cons (car lat)
+                  (rember a (cdr lat)))))))
 
 \end{verbatim}
-\item There is a way to contrast the incorrect \texttt{REMBER} with the correct \texttt{CONS} \texttt{REMBER} by looking at the recursive
-trace calls. The incorrect \texttt{REMBER-WRONG} is below with its trace and return.
+\item There is a way to contrast the incorrect \texttt{rember} with the correct \texttt{cons} \texttt{rember} by looking at the recursive
+trace calls. The incorrect \texttt{rember-wrong} is below with its trace and return.
 \begin{verbatim}
-    (defun rember-wrong (a lat)
-      (cond ((null lat) nil)
-            ((equal a (car lat)) (cdr lat))
-            (t (rember-wrong a (cdr lat)))))
-CL-USER> (rember-wrong 'and '(bacon lettuce and tomato))
-(TOMATO)
+(define rember-wrong
+  (lambda (a lat)
+    (cond
+      ((null? lat) #f)
+      ((eq? (car lat) a) #t)
+      (else (rember-wrong a (cdr lat))))))
 
-CL-USER> (rember-wrong 'and '(bacon lettuce and tomato))
-  0: (REMBER-WRONG AND (BACON LETTUCE AND TOMATO))
-    1: (REMBER-WRONG AND (LETTUCE AND TOMATO))
-      2: (REMBER-WRONG AND (AND TOMATO))
-      2: REMBER-WRONG returned (TOMATO)
-    1: REMBER-WRONG returned (TOMATO)
-  0: REMBER-WRONG returned (TOMATO)
-(TOMATO)
+> (rember-wrong 'and '(bacon lettuce and tomato))
+>(rember-wrong 'and '(bacon lettuce and tomato))
+>(rember-wrong 'and '(lettuce and tomato))
+>(rember-wrong 'and '(and tomato))
+<'(tomato)
+'(tomato)
 
 \end{verbatim}
 Whereas the correct trace and output is as below
 \begin{verbatim}
-CL-USER> (rember 'and '(bacon lettuce and tomato))
-(BACON LETTUCE TOMATO)
-
-CL-USER> (rember 'and '(bacon lettuce and tomato))
-  0: (REMBER AND (BACON LETTUCE AND TOMATO))
-    1: (REMBER AND (LETTUCE AND TOMATO))
-      2: (REMBER AND (AND TOMATO))
-      2: REMBER returned (TOMATO)
-    1: REMBER returned (LETTUCE TOMATO)
-  0: REMBER returned (BACON LETTUCE TOMATO)
-(BACON LETTUCE TOMATO)
+> (rember 'and '(bacon lettuce and tomato))
+>(rember 'and '(bacon lettuce and tomato))
+> (rember 'and '(lettuce and tomato))
+> >(rember 'and '(and tomato))
+< <'(tomato)
+< '(lettuce tomato)
+<'(bacon lettuce tomato)
+'(bacon lettuce tomato)
 
 \end{verbatim}
 Another example
 \begin{verbatim}
-CL-USER> (rember 'sauce '(soy sauce and tomato sauce))
-  0: (REMBER SAUCE (SOY SAUCE AND TOMATO SAUCE))
-    1: (REMBER SAUCE (SAUCE AND TOMATO SAUCE))
-    1: REMBER returned (AND TOMATO SAUCE)
-  0: REMBER returned (SOY AND TOMATO SAUCE)
-(SOY AND TOMATO SAUCE)
+> (rember 'sauce '(soy sauce and tomato sauce))
+>(rember 'sauce '(soy sauce and tomato sauce))
+> (rember 'sauce '(sauce and tomato sauce))
+< '(and tomato sauce)
+<'(soy and tomato sauce)
+'(soy and tomato sauce)
+
+\end{verbatim}
+
+\item Next function is \texttt{firsts} to build a list of the first S-expressions in nested lists. The code and trace is
+\begin{verbatim}
+    (define firsts
+      (lambda (l)
+        (cond
+          ((null? l) (quote ()))
+          (else (cons (car (car l))
+                      (firsts (cdr l)))))))
+
+>(firsts
+  '((apple peach pumpkin)
+    (plum pear cherry)
+    (grape raisin pea)
+    (bean carrot eggplant)))
+> (firsts '((plum pear cherry) (grape raisin pea) (bean carrot eggplant)))
+> >(firsts '((grape raisin pea) (bean carrot eggplant)))
+> > (firsts '((bean carrot eggplant)))
+> > >(firsts '())
+< < <'()
+< < '(bean)
+< <'(grape bean)
+< '(plum grape bean)
+<'(apple plum grape bean)
+'(apple plum grape bean)
+
+\end{verbatim}
+\item The book refers to \texttt{seconds} but doesn't provide code for it. But I will try it out anyways.
+\begin{verbatim}
+    (define seconds
+      (lambda (l)
+        (cond ((null? l) (quote ()))
+              (else (cons (car (cdr (car l)))
+                          (seconds (cdr l)))))))
+
+>(seconds '((a b) (c d) (e f)))
+> (seconds '((c d) (e f)))
+> >(seconds '((e f)))
+> > (seconds '())
+< < '()
+< <'(f)
+< '(d f)
+<'(b d f)
+'(b d f)
 
 \end{verbatim}
 \end{itemize}
@@ -589,52 +609,52 @@ CL-USER> (rember 'sauce '(soy sauce and tomato sauce))
 \newpage
 
 \section{Numbers Games}
-\label{sec:org630f4a8}
+\label{sec:org8caa6d4}
 
 \newpage
 
 \section{* Oh My Gawd *: It's Full of Stars}
-\label{sec:orgbaaf303}
+\label{sec:org0403213}
 
 \newpage
 
 \section{Shadows}
-\label{sec:org9c1bd59}
+\label{sec:org0660fdb}
 
 \newpage
 
 \section{Friends and Relations}
-\label{sec:org0f4838c}
+\label{sec:org88844e1}
 
 \newpage
 
 \section{Lambda the Ultimate}
-\label{sec:org8684633}
+\label{sec:orgc6b5d08}
 
 \newpage
 
 \section{\ldots{} and Again, and Again, and Again, \ldots{}}
-\label{sec:org14d354c}
+\label{sec:org000198e}
 
 \newpage
 
 \section{What Is the Value of All of This?}
-\label{sec:org5f31f86}
+\label{sec:orge6b6483}
 
 \newpage
 
 \section{Intermission}
-\label{sec:org88724fe}
+\label{sec:orged31019}
 
 \newpage
 
 \section{The Ten Commandments}
-\label{sec:org38d3139}
+\label{sec:orge9a6274}
 
 \newpage
 
 \section{The Five Rules}
-\label{sec:orgd771fe0}
+\label{sec:org40a2b6a}
 
 \newpage
 \end{document}

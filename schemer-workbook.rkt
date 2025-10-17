@@ -37,6 +37,83 @@
 (define rember-wrong
   (lambda (a lat)
     (cond
-      ((null? lat) #f)
-      ((eq? (car lat) a) #t)
+      ((null? lat) (quote ()))
+      ((eq? (car lat) a) (cdr lat))
       (else (rember-wrong a (cdr lat))))))
+
+(define firsts
+  (lambda (l)
+    (cond
+      ((null? l) (quote ()))
+      (else (cons (car (car l))
+                  (firsts (cdr l)))))))
+
+(define seconds
+  (lambda (l)
+    (cond ((null? l) (quote ()))
+          (else (cons (car (cdr (car l)))
+                      (seconds (cdr l)))))))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

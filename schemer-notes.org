@@ -452,7 +452,53 @@ Key Takeaway:
     '(soy and tomato sauce)
 
   #+end_src
-  
+
++ Next function is ~firsts~ to build a list of the first S-expressions in nested lists. The code and trace is
+  #+begin_src scheme
+	(define firsts
+	  (lambda (l)
+	    (cond
+	      ((null? l) (quote ()))
+	      (else (cons (car (car l))
+			  (firsts (cdr l)))))))
+
+    >(firsts
+      '((apple peach pumpkin)
+	(plum pear cherry)
+	(grape raisin pea)
+	(bean carrot eggplant)))
+    > (firsts '((plum pear cherry) (grape raisin pea) (bean carrot eggplant)))
+    > >(firsts '((grape raisin pea) (bean carrot eggplant)))
+    > > (firsts '((bean carrot eggplant)))
+    > > >(firsts '())
+    < < <'()
+    < < '(bean)
+    < <'(grape bean)
+    < '(plum grape bean)
+    <'(apple plum grape bean)
+    '(apple plum grape bean)
+    
+  #+end_src
++ The book refers to ~seconds~ but doesn't provide code for it. But I will try it out anyways.
+  #+begin_src scheme
+	(define seconds
+	  (lambda (l)
+	    (cond ((null? l) (quote ()))
+		  (else (cons (car (cdr (car l)))
+			      (seconds (cdr l)))))))
+
+    >(seconds '((a b) (c d) (e f)))
+    > (seconds '((c d) (e f)))
+    > >(seconds '((e f)))
+    > > (seconds '())
+    < < '()
+    < <'(f)
+    < '(d f)
+    <'(b d f)
+    '(b d f)
+    
+  #+end_src
+
 
 
 

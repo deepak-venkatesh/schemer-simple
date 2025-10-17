@@ -1,4 +1,4 @@
-% Created 2025-10-17 Fri 10:41
+% Created 2025-10-17 Fri 11:34
 % Intended LaTeX compiler: pdflatex
 \documentclass[11pt]{article}
 \usepackage[utf8]{inputenc}
@@ -60,7 +60,7 @@ well. I am still new to both Lisp and programming.
 
 \newpage
 \section{Foreword}
-\label{sec:org7e59652}
+\label{sec:org7bd9b0d}
 
 By Gerald Sussman of MIT, co-author of the book SICP (the wizard book).
 
@@ -97,7 +97,7 @@ can be treated as data.
 
 \newpage
 \section{Preface}
-\label{sec:orgaebba4c}
+\label{sec:orgd591f2d}
 
 Key Takeaway:
 \emph{The goal of the book is to teach the reader to think recursively.}
@@ -172,61 +172,64 @@ Some tests for checking \texttt{atom?} in Scheme below
 
 \newpage
 \section{Toys}
-\label{sec:org70c2fc3}
+\label{sec:orge76bfce}
 
-This chapter introduces primitives of Lisp. These are the basic building blocks.
+This chapter introduces primitives of Scheme. These are the basic building blocks.
 
 \vspace{1em}
 
-\subsection{The Law of \texttt{CAR}}
-\label{sec:org0da769e}
+\subsection{The Law of \texttt{car}}
+\label{sec:orga6ab9e8}
 Key Takeaway:
-\emph{The primitive \texttt{CAR} is defined only for non-empty lists. The \texttt{CAR} is the first atom (element) of that list.}
-\emph{But in Common Lisp the \texttt{CAR} of an empty list will give \texttt{NIL}.}
+\emph{The primitive \texttt{car} is defined only for non-empty lists. The \texttt{car} is the first atom (element) of that list.}
 
 \vspace{1em}
 
 \begin{itemize}
-\item In Common Lisp an \texttt{ATOM} is anything which is not a \texttt{CONS}.
-\item \texttt{ATOM} will include single characters, strings, numbers, special characters.
+\item An atom is indivisible - number, strings
 \item Anything enclosed in parenthesis/brackets \texttt{()} is a list.
 \item We can have nested lists which are also called improper lists and non-nested lists which are proper lists.
 \item An S-expression which stands for Symbolic Expression is any Lisp object that can be read and evaluated by the
-Lisp reader. S-expressions include both \texttt{ATOM} and \texttt{CONS} (which is used to make lists).
+Lisp reader.
 \item Q. How many S-expressions are in the list \texttt{(how are you doing so far)} and what are they? The book answers 6 and
-those are the elements in the lists, basically the 6 atoms inside the list. But the list itself is an S-expression
-in Common Lisp so there are actually 7 S-expressions.
-\item The next 2 questions build up on this contradiction in my opinion. A question asks how many S-expressions are in the
-list \texttt{(((how) are) ((you) (doing so)) far)} and gives the answer as 3. It refers to the 3 lists inside the outermost
-list. So a list is an S-expression for this question but a list was not an S-expression for the prior question.
-Furthermore 3 should not be the correct answer here. The answer should be 12 in my opinion - 6 atoms (the words),
-6 lists (nested and outermost).
-\item The difference of \texttt{()} again comes up since it is both a list and an atom in Common Lisp unlike Scheme. The \texttt{CAR}
-of \texttt{()} will be \texttt{NIL} in Common Lisp unlike Scheme. In Common Lisp as per the standards and empty list's \texttt{CAR} and
-\texttt{CDR} are both \texttt{NIL}.
+those are the elements in the lists, basically the 6 atoms inside the list.
+\item A question asks how many S-expressions are in the list \texttt{(((how) are) ((you) (doing so)) far)} and gives the
+answer as 3. It refers to the 3 lists inside the outermost list.
+\item The difference of \texttt{()} again comes up since it is both a list and an atom in Common Lisp unlike Scheme. The \texttt{car}
+of \texttt{()} will be \texttt{NIL} in Common Lisp unlike Scheme. In Common Lisp as per the standards and empty list's \texttt{car} and
+\texttt{cdr} are both \texttt{NIL} (shown below).
 \begin{verbatim}
 (car ())
 » NIL
 
 \end{verbatim}
-\item \texttt{CAR} is the first atom/element of a list. If we try to find the \texttt{CAR} of a string of character or numbers SBCL will
-give us a variable unbound error or say that the number is not of the type list.
+\item \texttt{car} is the first atom/element of a list. If we try to find the \texttt{car} of a string of character or numbers we will
+get an error like below.
+\begin{verbatim}
+  > (car 'a)
+. . car: contract violation
+  expected: pair?
+  given: 'a
+> (car 42)
+. . car: contract violation
+  expected: pair?
+  given: 42
+
+\end{verbatim}
 \end{itemize}
 
-
-\subsection{The Law of \texttt{CDR}}
-\label{sec:org72648de}
+\subsection{The Law of \texttt{cdr}}
+\label{sec:org546d3ab}
 Key Takeaway:
-\emph{The primitive \texttt{CDR} is defined only for non-empty lists. The \texttt{CDR} of any non-empty list is always another list.}
-\emph{The \texttt{CDR} of an empty list in Common Lisp is \texttt{NIL}.}
+\emph{The primitive \texttt{cdr} is defined only for non-empty lists. The \texttt{cdr} of any non-empty list is always another list.}
 
 \vspace{1em}
 
 \begin{itemize}
-\item The book says \texttt{CAR} of \emph{l} is same as \texttt{(car l)}. Similarly for \texttt{CDR}.
-\item \texttt{CDR} of a single atom/element list is \texttt{NIL} or \texttt{()}.
-\item In Tourtezky's book there is a tool called SDRAW. It allows us to do draw \texttt{CONS} cell structures with the \texttt{CAR} \&
-\texttt{CDR} pointers. I have uploaded the code for this tool on Github \href{https://github.com/deepak-venkatesh/sdraw}{here}. For \texttt{(car a)} and \texttt{(cdr a)} where \texttt{a} is
+\item The book says \texttt{car} of \emph{l} is same as \texttt{(car l)}. Similarly for \texttt{cdr}.
+\item \texttt{cdr} of a single atom/element list is \texttt{()}.
+\item In Tourtezky's book there is a tool called SDRAW. It allows us to do draw \texttt{cons} cell structures with the \texttt{car} \&
+\texttt{cdr} pointers. I have uploaded the code for this tool on Github \href{https://github.com/deepak-venkatesh/sdraw}{here}. For \texttt{(car a)} and \texttt{(cdr a)} where \texttt{a} is
 \texttt{samosa} will be represented as:
 
 \texttt{[*|*]-{}-{}-> NIL} \(\newline\)
@@ -235,149 +238,83 @@ Key Takeaway:
 \texttt{V} \(\newline\)
 \texttt{SAMOSA}
 
-\item \texttt{CDR} of an empty list will be \texttt{NIL} as per Common Lisp standards.
+\item \texttt{cdr} of an empty list will be \texttt{()} as per Common Lisp standards but in Scheme it is an error.
 \end{itemize}
 
 
-\subsection{The Law of \texttt{CONS}}
-\label{sec:org3b7e97d}
+\subsection{The Law of \texttt{cons}}
+\label{sec:org6d42956}
 Key Takeaway:
-\emph{The primitive \texttt{CONS} takes two arguments. The second argument to \texttt{CONS} must be a list. The result is a list.}
+\emph{The primitive \texttt{cons} takes two arguments. The second argument to \texttt{cons} must be a list. The result is a list.}
 
 \vspace{1em}
 
 \begin{itemize}
-\item \texttt{CONS} actually creates a \texttt{CONS} cell. The \texttt{CAR} of which is the first input to \texttt{CONS} and the \texttt{CDR} is pointed to
-the second input. The return value of the \texttt{CONS} is a pointer to it. Refer Touretzky's Chapter 2, clearly explained.
+\item \texttt{cons} actually creates a \texttt{cons} cell. The \texttt{car} of which is the first input to \texttt{cons} and the \texttt{cdr} is pointed to
+the second input. The return value of the \texttt{cons} is a pointer to it. Refer Touretzky's Chapter 2, clearly explained.
 \item Q. What is \texttt{(cons s l)} where \texttt{s} is \texttt{((a b c))} and \texttt{l} is \texttt{b}? This brings in the topic of Dotted Lists. In a
-proper list the chain of \texttt{CONS} cells ends with \texttt{NIL} as the atom, meaning the last cell points to a \texttt{NIL} but in a
+proper list the chain of \texttt{cons} cells ends with \texttt{()} as the atom, meaning the last cell points to a \texttt{NIL} but in a
 dotted list the last atom points to a non \texttt{NIL} atom. In the above case we will get the following:
 \begin{verbatim}
-(cons '((a b c)) 'd)
-» (((A B C)) . D)
+> (cons 'a '(b c))
+'(a b c)
+> (cons 'a 'b)
+'(a . b)
 
 \end{verbatim}
 \end{itemize}
 
 
-\subsection{The Law of \texttt{NULL}}
-\label{sec:org95e4f72}
+\subsection{The Law of \texttt{null?}}
+\label{sec:orgdf3c65f}
 Key Takeaway:
-\emph{The primitive \texttt{NULL} is defined only for lists.}
+\emph{The primitive \texttt{null?} is defined only for lists.}
 
 \vspace{1em}
 
 \begin{itemize}
-\item Q. Is it true that the list \texttt{l} is the null list where \texttt{l} is \texttt{()}? Yes, but not because it is the list composed of
-zero S-expressions but because the list \emph{contains} zero S-expressions. In Common Lisp we don't use \texttt{?} at the end
-of predicates. So it is \texttt{NULL} in Common Lisp and \texttt{null?} in Scheme.
+\item Q. Is it true that the list \texttt{l} is the null list where \texttt{l} is \texttt{()}? Yes, because it is  composed of
+zero S-expressions.
 \item Another difference in Common Lisp and Scheme is how they refer to False. In scheme it is explicitly \texttt{\#t} or \texttt{\#f} but
-in Common Lisp it is \texttt{T} for True or else it is \texttt{NIL} which means False. A section of notes on only \texttt{NIL} follows
-the end of this chapter.
+in Common Lisp it is \texttt{T} for True or else it is \texttt{NIL} which means False.
+\item \texttt{null?} of an atom should throw an error for a string or a number but actually it gives \texttt{\#f} since in Scheme \texttt{null?}
+for \texttt{()} is \texttt{\#t} and for everything else it is \texttt{\#f}. See code below.
 \begin{verbatim}
-(null '(gol gappa))
-» NIL
-
-(null '())
-» T
+  > (null? 'a)
+#f
+> (null? (quote ()))
+#t
 
 \end{verbatim}
-\item \texttt{NULL} of an atom will throw a variable unbound error for a string or say the number is not of the type list.
 \end{itemize}
 
-
-\subsection{The Law of \texttt{EQ}}
-\label{sec:org59691ec}
+\subsection{The Law of \texttt{eq?}}
+\label{sec:org6d31b9d}
 Key Takeaway:
-\emph{The function \texttt{EQ} in Common Lisp takes two arguments and compares the unique address of these two arguments.}
+\emph{The primitive \texttt{eq?} in takes two arguments and compares them. Each must be a non numeric atom.}
 
 \vspace{1em}
 
 \begin{itemize}
-\item Now there are major difference here between the ways in which equality can be tested. First in Common Lisp symbols
-are unique where one symbol can have only address in computer's memory (within a given package in Common Lisp).
-This address of the symbol object is unique. So if we have a list as \texttt{(TIME AFTER TIME)} then \texttt{TIME} has the same
-address irrespective of the fact that it is repeated twice. The \texttt{EQ} function does this. This is a deviation from the
-\texttt{eq?} as defined in the book.
-\item Common Lisp has other equality tests
-\begin{itemize}
-\item \texttt{EQ}: As explained above
-\item \texttt{EQL}: Same as \texttt{EQ} but for two numbers it will compare the values. So integer 4 is different from a floating
-point 4.0
-\item \texttt{EQUAL}: This compares the elements of a list one by one. It is slower than \texttt{EQ}. Most common testing method
-probably.
-\item \texttt{EQUALP}: Same as \texttt{EQUAL} but ignores case
-\item \texttt{=} Only for number comparison. Integer 4 and floating point 4.0 yields \texttt{T}
-\end{itemize}
-\item We again come across the treatment of \texttt{()} differently in Scheme and Common Lisp. In Scheme \texttt{()} is only a list and
-not an atom but in Common Lisp it is both.
-\item One key point to note is that \texttt{EQ} is a function and not a primitive predicate in Common Lisp. We can verify this
+\item In \texttt{eq?} the address of the Lisp object is compared. For instance if we create two cons cells with same elements
+\texttt{eq?} will give \texttt{\#f}
 \begin{verbatim}
-(functionp #'eq)
-» T
+> (eq? (cons 'a 'b) (cons 'a 'b))
+#f
 
 \end{verbatim}
-\item The book states that two lists can be compared using \texttt{eq?}. In Common Lisp \texttt{EQ} function will indeed compare two
-lists but even if they contain same elements the lists could be distinct an thus \texttt{EQ} will return a \texttt{NIL}. Here if
-the intent is to compare the contents in the list then we need to use \texttt{EQUAL}.
-\begin{verbatim}
-(setf mithai (list 'ladoo 'barfi 'jalebi))
-(setf sweets (list 'ladoo 'barfi 'jalebi))
-(equal mithai sweets)
- » T
-(eq mithai sweets)
- » NIL
-
-\end{verbatim}
-\item Numbers can also be compared using \texttt{EQ} since it will check their memory addresses.
-\end{itemize}
-
-\subsection{Notes on \texttt{NIL} in Common Lisp}
-\label{sec:org9680814}
-\vspace{1em}
-
-\begin{itemize}
-\item Predicates are functions that answer questions in \texttt{T} or \texttt{NIL} (anything non-NIL is equivalent to \texttt{T}).
-\item \texttt{NIL} is the only way to say ‘no’ in Lisp. For instance the \texttt{NOT} predicate will return \texttt{NIL} for every input
-except \texttt{NIL} itself.
-\item A function is said to return ‘false’ when it returns \texttt{NIL}. But the function is said to return ‘true’ when it
-returns anything other than \texttt{NIL}.
-\item Anything other than \texttt{NIL} is treated as true in Lisp.
-\item A list of zero elements is called an empty list (do not use the term set). It has no cons cells. Denoted by empty
-brackets \texttt{()}.
-\item In the computer \texttt{()} i.e. empty list is represented by the symbol \texttt{NIL}.
-\item The symbol \texttt{NIL} is the empty list \texttt{()}. Thus, \texttt{NIL} is used to mark the end of a \texttt{CONS} cell chain.
-\item In bracket notation \texttt{NIL} at the end of the \texttt{CONS} chain is omitted as a convention.
-\item Since \texttt{NIL} and \texttt{()} are same they can be written interchangeably. Therefore, \texttt{(A () B)} is same as \texttt{(A NIL B)}
-\item The length of the empty list is 0. \texttt{NIL} can be passed to \texttt{LENGTH} since it is an empty list.
-\item \texttt{NIL} is the only thing which is a symbol and a list.
-\item The \texttt{CAR} and \texttt{CDR} of \texttt{NIL} is \texttt{NIL}.
-\item \texttt{NIL} like \texttt{T}, characters and numbers evaluates to itself. This is so because their value cells point to
-themselves.
-\item Explicit use as a symbol can be done by quoting i.e. \texttt{‘NIL}
-\item Historically empty list was treated as false.
-\end{itemize}
-
-The 5 pointers of the symbol \texttt{NIL}
-\begin{itemize}
-\item Name: \texttt{NIL}
-\item Value: \texttt{NIL} (Thus it is self evaluating. The pointer from value of \texttt{NIL} goes back to the symbol \texttt{NIL} itself.
-Same with \texttt{T})
-\item Function: No associated function
-\item plist: No associated properties
-\item Package: In Common Lisp Package
 \end{itemize}
 
 \textbf{Core Terms/Concepts Learnt}
 \begin{itemize}
-\item \texttt{CAR}, \texttt{CDR}, \texttt{CONS}, \texttt{EQ}, \texttt{NULL}, \texttt{NIL}
-\item Dotted Lists
+\item \texttt{car}, \texttt{cdr}, \texttt{cons}, \texttt{eq?}, \texttt{null?}, \texttt{quote} / \texttt{'}, \texttt{\#t}, \texttt{\#f},
+\item Atoms, S-Expressions, Lists, Dotted Lists
 \end{itemize}
 
 
 \newpage
 \section{Do It, Do It Again, and Again, and Again \ldots{}}
-\label{sec:orgc510bd3}
+\label{sec:org933a314}
 
 This chapter explains recursion. The best material for recursion in my opinion is Chapter 8 in Touretzky's book.
 
@@ -534,7 +471,7 @@ tail optimized recursion is to be studied from the book `Sketchy Scheme' by Nils
 \newpage
 
 \section{Cons the Magnificent}
-\label{sec:org4f1af03}
+\label{sec:orgeb82e47}
 
 This chapter explains the methods to build lists using \texttt{CONS} recursively.
 
@@ -652,52 +589,52 @@ CL-USER> (rember 'sauce '(soy sauce and tomato sauce))
 \newpage
 
 \section{Numbers Games}
-\label{sec:org7eeea59}
+\label{sec:org630f4a8}
 
 \newpage
 
 \section{* Oh My Gawd *: It's Full of Stars}
-\label{sec:orgf10e1b8}
+\label{sec:orgbaaf303}
 
 \newpage
 
 \section{Shadows}
-\label{sec:orgc84b211}
+\label{sec:org9c1bd59}
 
 \newpage
 
 \section{Friends and Relations}
-\label{sec:orgfc5c66a}
+\label{sec:org0f4838c}
 
 \newpage
 
 \section{Lambda the Ultimate}
-\label{sec:org769621e}
+\label{sec:org8684633}
 
 \newpage
 
 \section{\ldots{} and Again, and Again, and Again, \ldots{}}
-\label{sec:org3993403}
+\label{sec:org14d354c}
 
 \newpage
 
 \section{What Is the Value of All of This?}
-\label{sec:org5a7eb1b}
+\label{sec:org5f31f86}
 
 \newpage
 
 \section{Intermission}
-\label{sec:org70d0552}
+\label{sec:org88724fe}
 
 \newpage
 
 \section{The Ten Commandments}
-\label{sec:org8e4fd8d}
+\label{sec:org38d3139}
 
 \newpage
 
 \section{The Five Rules}
-\label{sec:org075942c}
+\label{sec:orgd771fe0}
 
 \newpage
 \end{document}

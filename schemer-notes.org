@@ -138,50 +138,53 @@ This chapter introduces primitives of Scheme. These are the basic building block
 
 #+LATEX: \vspace{1em}
 
-** The Law of ~CAR~
+** The Law of ~car~
 Key Takeaway:
-/The primitive ~CAR~ is defined only for non-empty lists. The ~CAR~ is the first atom (element) of that list./
-/But in Common Lisp the ~CAR~ of an empty list will give ~NIL~./
+/The primitive ~car~ is defined only for non-empty lists. The ~car~ is the first atom (element) of that list./
 
 #+LATEX: \vspace{1em}
 
-+ In Common Lisp an ~ATOM~ is anything which is not a ~CONS~.
-+ ~ATOM~ will include single characters, strings, numbers, special characters.
++ An atom is indivisible - number, strings
 + Anything enclosed in parenthesis/brackets ~()~ is a list.
 + We can have nested lists which are also called improper lists and non-nested lists which are proper lists.
 + An S-expression which stands for Symbolic Expression is any Lisp object that can be read and evaluated by the
-  Lisp reader. S-expressions include both ~ATOM~ and ~CONS~ (which is used to make lists).
+  Lisp reader.
 + Q. How many S-expressions are in the list ~(how are you doing so far)~ and what are they? The book answers 6 and
-  those are the elements in the lists, basically the 6 atoms inside the list. But the list itself is an S-expression
-  in Common Lisp so there are actually 7 S-expressions.
-+ The next 2 questions build up on this contradiction in my opinion. A question asks how many S-expressions are in the
-  list ~(((how) are) ((you) (doing so)) far)~ and gives the answer as 3. It refers to the 3 lists inside the outermost
-  list. So a list is an S-expression for this question but a list was not an S-expression for the prior question.
-  Furthermore 3 should not be the correct answer here. The answer should be 12 in my opinion - 6 atoms (the words),
-  6 lists (nested and outermost).
-+ The difference of ~()~ again comes up since it is both a list and an atom in Common Lisp unlike Scheme. The ~CAR~
-  of ~()~ will be ~NIL~ in Common Lisp unlike Scheme. In Common Lisp as per the standards and empty list's ~CAR~ and
-  ~CDR~ are both ~NIL~.
+  those are the elements in the lists, basically the 6 atoms inside the list. 
++ A question asks how many S-expressions are in the list ~(((how) are) ((you) (doing so)) far)~ and gives the
+  answer as 3. It refers to the 3 lists inside the outermost list.
++ The difference of ~()~ again comes up since it is both a list and an atom in Common Lisp unlike Scheme. The ~car~
+  of ~()~ will be ~NIL~ in Common Lisp unlike Scheme. In Common Lisp as per the standards and empty list's ~car~ and
+  ~cdr~ are both ~NIL~ (shown below).
   #+begin_src common-lisp
     (car ())
     » NIL
     
   #+end_src
-+ ~CAR~ is the first atom/element of a list. If we try to find the ~CAR~ of a string of character or numbers SBCL will
-  give us a variable unbound error or say that the number is not of the type list.
++ ~car~ is the first atom/element of a list. If we try to find the ~car~ of a string of character or numbers we will
+  get an error like below.
+  #+begin_src scheme
+      > (car 'a)
+    . . car: contract violation
+      expected: pair?
+      given: 'a
+    > (car 42)
+    . . car: contract violation
+      expected: pair?
+      given: 42
+    
+  #+end_src
 
-
-** The Law of ~CDR~
+** The Law of ~cdr~
 Key Takeaway:
-/The primitive ~CDR~ is defined only for non-empty lists. The ~CDR~ of any non-empty list is always another list./
-/The ~CDR~ of an empty list in Common Lisp is ~NIL~./
+/The primitive ~cdr~ is defined only for non-empty lists. The ~cdr~ of any non-empty list is always another list./
 
 #+LATEX: \vspace{1em}
 
-+ The book says ~CAR~ of /l/ is same as ~(car l)~. Similarly for ~CDR~.
-+ ~CDR~ of a single atom/element list is ~NIL~ or ~()~.
-+ In Tourtezky's book there is a tool called SDRAW. It allows us to do draw ~CONS~ cell structures with the ~CAR~ &
-  ~CDR~ pointers. I have uploaded the code for this tool on Github [[https://github.com/deepak-venkatesh/sdraw][here]]. For ~(car a)~ and ~(cdr a)~ where ~a~ is
++ The book says ~car~ of /l/ is same as ~(car l)~. Similarly for ~cdr~.
++ ~cdr~ of a single atom/element list is ~()~.
++ In Tourtezky's book there is a tool called SDRAW. It allows us to do draw ~cons~ cell structures with the ~car~ &
+  ~cdr~ pointers. I have uploaded the code for this tool on Github [[https://github.com/deepak-venkatesh/sdraw][here]]. For ~(car a)~ and ~(cdr a)~ where ~a~ is
   ~samosa~ will be represented as:
 
   ~[*|*]---> NIL~ $\newline$
@@ -190,125 +193,66 @@ Key Takeaway:
   ~V~ $\newline$
   ~SAMOSA~
  
-+ ~CDR~ of an empty list will be ~NIL~ as per Common Lisp standards.
++ ~cdr~ of an empty list will be ~()~ as per Common Lisp standards but in Scheme it is an error.
 
 
-** The Law of ~CONS~
+** The Law of ~cons~
 Key Takeaway:
-/The primitive ~CONS~ takes two arguments. The second argument to ~CONS~ must be a list. The result is a list./
+/The primitive ~cons~ takes two arguments. The second argument to ~cons~ must be a list. The result is a list./
 
 #+LATEX: \vspace{1em}
 
-+ ~CONS~ actually creates a ~CONS~ cell. The ~CAR~ of which is the first input to ~CONS~ and the ~CDR~ is pointed to
-  the second input. The return value of the ~CONS~ is a pointer to it. Refer Touretzky's Chapter 2, clearly explained.
++ ~cons~ actually creates a ~cons~ cell. The ~car~ of which is the first input to ~cons~ and the ~cdr~ is pointed to
+  the second input. The return value of the ~cons~ is a pointer to it. Refer Touretzky's Chapter 2, clearly explained.
 + Q. What is ~(cons s l)~ where ~s~ is ~((a b c))~ and ~l~ is ~b~? This brings in the topic of Dotted Lists. In a
-  proper list the chain of ~CONS~ cells ends with ~NIL~ as the atom, meaning the last cell points to a ~NIL~ but in a
+  proper list the chain of ~cons~ cells ends with ~()~ as the atom, meaning the last cell points to a ~NIL~ but in a
   dotted list the last atom points to a non ~NIL~ atom. In the above case we will get the following:
-  #+begin_src common-lisp
-    (cons '((a b c)) 'd)
-    » (((A B C)) . D)
+  #+begin_src scheme
+    > (cons 'a '(b c))
+    '(a b c)
+    > (cons 'a 'b)
+    '(a . b)
     
   #+end_src
 
 
-** The Law of ~NULL~
+** The Law of ~null?~
 Key Takeaway:
-/The primitive ~NULL~ is defined only for lists./
+/The primitive ~null?~ is defined only for lists./
 
 #+LATEX: \vspace{1em}
 
-+ Q. Is it true that the list ~l~ is the null list where ~l~ is ~()~? Yes, but not because it is the list composed of
-  zero S-expressions but because the list /contains/ zero S-expressions. In Common Lisp we don't use ~?~ at the end
-  of predicates. So it is ~NULL~ in Common Lisp and ~null?~ in Scheme.
++ Q. Is it true that the list ~l~ is the null list where ~l~ is ~()~? Yes, because it is  composed of
+  zero S-expressions.
 + Another difference in Common Lisp and Scheme is how they refer to False. In scheme it is explicitly ~#t~ or ~#f~ but
-  in Common Lisp it is ~T~ for True or else it is ~NIL~ which means False. A section of notes on only ~NIL~ follows
-  the end of this chapter.
-  #+begin_src common-lisp
-    (null '(gol gappa))
-    » NIL
-
-    (null '())
-    » T
+  in Common Lisp it is ~T~ for True or else it is ~NIL~ which means False.
++ ~null?~ of an atom should throw an error for a string or a number but actually it gives ~#f~ since in Scheme ~null?~
+  for ~()~ is ~#t~ and for everything else it is ~#f~. See code below.
+  #+begin_src scheme
+      > (null? 'a)
+    #f
+    > (null? (quote ()))
+    #t
     
-  #+end_src
-+ ~NULL~ of an atom will throw a variable unbound error for a string or say the number is not of the type list.
+#+end_src
 
-
-** The Law of ~EQ~
+** The Law of ~eq?~
 Key Takeaway:
-/The function ~EQ~ in Common Lisp takes two arguments and compares the unique address of these two arguments./
+/The primitive ~eq?~ in takes two arguments and compares them. Each must be a non numeric atom./
 
 #+LATEX: \vspace{1em}
 
-+ Now there are major difference here between the ways in which equality can be tested. First in Common Lisp symbols
-  are unique where one symbol can have only address in computer's memory (within a given package in Common Lisp).
-  This address of the symbol object is unique. So if we have a list as ~(TIME AFTER TIME)~ then ~TIME~ has the same
-  address irrespective of the fact that it is repeated twice. The ~EQ~ function does this. This is a deviation from the
-  ~eq?~ as defined in the book.
-+ Common Lisp has other equality tests
-  + ~EQ~: As explained above
-  + ~EQL~: Same as ~EQ~ but for two numbers it will compare the values. So integer 4 is different from a floating
-    point 4.0
-  + ~EQUAL~: This compares the elements of a list one by one. It is slower than ~EQ~. Most common testing method
-    probably.
-  + ~EQUALP~: Same as ~EQUAL~ but ignores case
-  + ~=~ Only for number comparison. Integer 4 and floating point 4.0 yields ~T~
-+ We again come across the treatment of ~()~ differently in Scheme and Common Lisp. In Scheme ~()~ is only a list and
-  not an atom but in Common Lisp it is both.
-+ One key point to note is that ~EQ~ is a function and not a primitive predicate in Common Lisp. We can verify this
-  #+begin_src common-lisp
-    (functionp #'eq)
-    » T
++ In ~eq?~ the address of the Lisp object is compared. For instance if we create two cons cells with same elements
+  ~eq?~ will give ~#f~
+  #+begin_src scheme
+    > (eq? (cons 'a 'b) (cons 'a 'b))
+    #f
     
-  #+end_src
-+ The book states that two lists can be compared using ~eq?~. In Common Lisp ~EQ~ function will indeed compare two
-  lists but even if they contain same elements the lists could be distinct an thus ~EQ~ will return a ~NIL~. Here if
-  the intent is to compare the contents in the list then we need to use ~EQUAL~.
-  #+begin_src common-lisp
-    (setf mithai (list 'ladoo 'barfi 'jalebi))
-    (setf sweets (list 'ladoo 'barfi 'jalebi))
-    (equal mithai sweets)
-     » T
-    (eq mithai sweets)
-     » NIL
-    
-  #+end_src
-+ Numbers can also be compared using ~EQ~ since it will check their memory addresses.
-
-** Notes on ~NIL~ in Common Lisp
-#+LATEX: \vspace{1em}
-
-+ Predicates are functions that answer questions in ~T~ or ~NIL~ (anything non-NIL is equivalent to ~T~).
-+ ~NIL~ is the only way to say ‘no’ in Lisp. For instance the ~NOT~ predicate will return ~NIL~ for every input
-  except ~NIL~ itself.
-+ A function is said to return ‘false’ when it returns ~NIL~. But the function is said to return ‘true’ when it
-  returns anything other than ~NIL~.
-+ Anything other than ~NIL~ is treated as true in Lisp.
-+ A list of zero elements is called an empty list (do not use the term set). It has no cons cells. Denoted by empty
-  brackets ~()~.
-+ In the computer ~()~ i.e. empty list is represented by the symbol ~NIL~.
-+ The symbol ~NIL~ is the empty list ~()~. Thus, ~NIL~ is used to mark the end of a ~CONS~ cell chain.
-+ In bracket notation ~NIL~ at the end of the ~CONS~ chain is omitted as a convention.
-+ Since ~NIL~ and ~()~ are same they can be written interchangeably. Therefore, ~(A () B)~ is same as ~(A NIL B)~
-+ The length of the empty list is 0. ~NIL~ can be passed to ~LENGTH~ since it is an empty list.
-+ ~NIL~ is the only thing which is a symbol and a list.
-+ The ~CAR~ and ~CDR~ of ~NIL~ is ~NIL~.
-+ ~NIL~ like ~T~, characters and numbers evaluates to itself. This is so because their value cells point to
-  themselves.
-+ Explicit use as a symbol can be done by quoting i.e. ~‘NIL~
-+ Historically empty list was treated as false. 
-
-The 5 pointers of the symbol ~NIL~
-+ Name: ~NIL~
-+ Value: ~NIL~ (Thus it is self evaluating. The pointer from value of ~NIL~ goes back to the symbol ~NIL~ itself.
-  Same with ~T~)
-+ Function: No associated function
-+ plist: No associated properties
-+ Package: In Common Lisp Package
+#+end_src
 
 *Core Terms/Concepts Learnt*
-+ ~CAR~, ~CDR~, ~CONS~, ~EQ~, ~NULL~, ~NIL~
-+ Dotted Lists
++ ~car~, ~cdr~, ~cons~, ~eq?~, ~null?~, ~quote~ / ~'~, ~#t~, ~#f~, 
++ Atoms, S-Expressions, Lists, Dotted Lists
 
 
 #+LATEX: \newpage
@@ -319,219 +263,193 @@ This chapter explains recursion. The best material for recursion in my opinion i
 #+LATEX: \vspace{1em}
 
 Key Takeaway:
-/The First Commandment (preliminary): Always ask ~NULL~ as the first question in expressing a function/
+/The First Commandment (preliminary): Always ask ~null?~ as the first question in expressing a function/
 
 #+LATEX: \vspace{1em}
 + After reading Touretzky's chapter on recursion this chapter will feel very easy. Also the first commandment is not
-  really true always. Sometimes in recursion the first question is not necessarily ~NULL~. Let's use an example. Make
-  a recursive  function to compute a factorial of a number.
-  #+begin_src common-lisp
-    (defun fact (n)
-      (cond ((zerop n) 1)
-	    (t (* n (fact (- n 1))))))
-    
+  really true always. Sometimes in recursion the first question is not necessarily ~null?~. Later in the book the
+  authors do add in this nuance.
++ The chapter introduces a function named ~lat?~. It stands for a list of atoms. This means every element of the
+  list is an atom. It can be written as below.
+  #+begin_src scheme
+    (define lat?
+      (lambda (l)
+	(cond
+	  ((null? l) #t)
+	  ((atom? (car l)) (lat? (cdr l)))
+	  (else #f))))
+
   #+end_src
-  Here the first question actually asks whether the argument ~n~ is a zero or not. Later in the book the authors do
-  add in this nuance.
-+ The chapter introduces a function named ~LAT?~. It stands for a ~list of atoms~. This means every element of the
-  list is an ~ATOM?~. We will use our own defined ~ATOMP~ predicate so that we do not return ~T~ for a ~()~.
-+ Recursive function definition of ~LAT?~ in Common Lisp.
-  #+begin_src common-lisp
-    (defun lat? (l)
-      (cond ((null l) t)
-	    ((atom? (car l)) (lat? (cdr l)))
-	    (t nil)))
-  
-  #+end_src
-+ It is important to understand how ~COND~ functions. Well ~COND~ is actually a macro. This macro has a series of
++ It is important to understand how ~cond~ functions. Well ~cond~ is actually a macro. This macro has a series of
   tests and results. The macro goes from top to bottom. The cases are processed from left to right under each test.
-  Technically we can have more than one result per test for evaluation. As a Common Lisp `trick' the last test is
-  usually a ~T~ which evaluates to ~TRUE~ always and hence the last result is returned. ~COND~ is a very nice way to
+  Technically we can have more than one result per test for evaluation. As a Lisp `trick' the last test is
+  usually an ~else~ which evaluates to ~#t~ always and hence the last result is returned. ~cond~ is a very nice way to
   implement ~If..then..Else~. I have never seen such seamless conditional in any language yet.
-+ ~LAT~ basically is a ~COND~ which keeps checking through all the elements of a list to test for ~ATOM?~ till the
-  list ends. It checks ~CAR~ one by one for each subsequent ~CDR~ for ~ATOMP~.
++ ~lat?~ basically is a ~cond~ which keeps checking through all the elements of a list to test for ~atom?~ till the
+  list ends. It checks ~car~ one by one for each subsequent ~cdr~ for ~atom?~.
 + I would study Chapter 8 of Touretzky for getting the intuition on recursion right. The author has done a great job.
-+ SBCL comes with an inbuilt tool called ~TRACE~ which lets us see the actual function calls. So lets trace all the
-  recursive examples in this chapter.
-  #+begin_src common-lisp   
-    CL-USER> (lat? '(Jack Sprat could eat no chicken fat))
-      0: (LAT? (JACK SPRAT COULD EAT NO CHICKEN FAT))
-	1: (LAT? (SPRAT COULD EAT NO CHICKEN FAT))
-	  2: (LAT? (COULD EAT NO CHICKEN FAT))
-	    3: (LAT? (EAT NO CHICKEN FAT))
-	      4: (LAT? (NO CHICKEN FAT))
-		5: (LAT? (CHICKEN FAT))
-		  6: (LAT? (FAT))
-		    7: (LAT? NIL)
-		    7: LAT? returned T
-		  6: LAT? returned T
-		5: LAT? returned T
-	      4: LAT? returned T
-	    3: LAT? returned T
-	  2: LAT? returned T
-	1: LAT? returned T
-      0: LAT? returned T
-    T
++ Dr Racket comes with an inbuilt tool called ~trace~ in the library package called ~(racket/trace) which lets us see
+  the actual function calls. So lets trace all the recursive examples in this chapter.
+  #+begin_src scheme   
+    > (lat? '(Jack Sprat could eat no chicken fat))
+    >(lat? '(Jack Sprat could eat no chicken fat))
+    >(lat? '(Sprat could eat no chicken fat))
+    >(lat? '(could eat no chicken fat))
+    >(lat? '(eat no chicken fat))
+    >(lat? '(no chicken fat))
+    >(lat? '(chicken fat))
+    >(lat? '(fat))
+    >(lat? '())
+    <#t
+    #t
 
-  #+end_src  
+  #+end_src
+  
 + Another example which has a nested list
-  #+begin_src common-lisp
-      CL-USER> (lat? '(Jack (Sprat could) eat no chickn fat))
-      0: (LAT? (JACK (SPRAT COULD) EAT NO CHICKN FAT))
-	1: (LAT? ((SPRAT COULD) EAT NO CHICKN FAT))
-	1: LAT? returned NIL
-      0: LAT? returned NIL
-    NIL
+  #+begin_src scheme
+    > (lat? '(Jack (Sprat could) eat no chicken fat))
+    >(lat? '(Jack (Sprat could) eat no chicken fat))
+    >(lat? '((Sprat could) eat no chicken fat))
+    <#f
+    #f
     
   #+end_src
-+ Few more examples from the chapter using ~TRACE~
-  #+begin_src common-lisp
-    CL-USER> (lat? '(bacon and eggs))
-      0: (LAT? (BACON AND EGGS))
-	1: (LAT? (AND EGGS))
-	  2: (LAT? (EGGS))
-	    3: (LAT? NIL)
-	    3: LAT? returned T
-	  2: LAT? returned T
-	1: LAT? returned T
-      0: LAT? returned T
-    T
++ Few more examples from the chapter using ~trace~
+  #+begin_src scheme
+    > (lat? '(bacon and eggs))
+    >(lat? '(bacon and eggs))
+    >(lat? '(and eggs))
+    >(lat? '(eggs))
+    >(lat? '())
+    <#t
+    #t
 
   #+end_src
 
-  #+begin_src common-lisp
-    CL-USER> (lat? '(bacon (and eggs)))
-      0: (LAT? (BACON (AND EGGS)))
-	1: (LAT? ((AND EGGS)))
-	1: LAT? returned NIL
-      0: LAT? returned NIL
-    NIL
+  #+begin_src scheme
+    > (lat? '(bacon (and eggs)))
+    >(lat? '(bacon (and eggs)))
+    >(lat? '((and eggs)))
+    <#f
+    #f
 
   #+end_src
-+ ~OR~ is introduced as a logical operator. There is a very important point to note in the use of ~OR~ macro. Quoting
-  from Chapter 4 in Touretzky - The rule for evaluating ~OR~: Evaluate the clauses one at a time. If a clause
-  returns something other than ~NIL~, stop and return that value; otherwise go on to the next clause, or return
-  ~NIL~ if none are left. ~AND~ is not introduced in this chapter. Quoting the evaluation rule for ~AND~ - Evaluate
-  the clauses one at a time. If a clause returns ~NIL~, stop and return ~NIL~; otherwise go on to the next one. If all
-  clauses yield non-NIL results, return the value of the last clause.
-+ ~MEMBER~ is a function which returns a ~T~ if the input is one of the elements in a list else ~NIL~/#f~. The book
-  defines this function using ~OR~ whereas it is actually not necessary.
-  #+begin_src common-lisp
-    (defun my-member (a lat)
-      (cond ((null lat) nil)
-	    ((equal a (car lat)) t)
-	    (t (my-member a (cdr lat)))))
++ ~or~ is introduced as a logical operator. ~or~ asks two questions, one at a time. If the first one is true it stops
+  answers true. Otherwise it asks the second question and answers with whatever the second question answers.
++ ~member?~ is a function which returns a ~#t~ if the input is one of the elements in a list else ~#f~. The book
+  defines this function using ~or~ whereas it is actually not necessary.
+  #+begin_src scheme
+	(define member?
+	  (lambda (a lat)
+	    (cond
+	      ((null? lat) #f)
+	      (else (or (eq? (car lat) a)
+			 (member? a (cdr lat)))))))
 
-    (defun member? (a lat)
-      (cond ((null lat) nil)
-	    (t (or (equal (car lat) a) (member? a (cdr lat))))))
-
+    (define my-member?
+      (lambda (a lat)
+	(cond
+	  ((null? lat) #f)
+	  ((eq? (car lat) a) #t)
+	  (else (member? a (cdr lat))))))
+    
   #+end_src
 + The application of ~member?~ to find out whether /meat/ is in the list /(mashed potatoes and meat gravy)/ would
   generate this recursive call
-  #+begin_src common-lisp
-    CL-USER> (member? 'meat '(mashed potatoes and meat gravy))
-      0: (MEMBER? MEAT (MASHED POTATOES AND MEAT GRAVY))
-	1: (MEMBER? MEAT (POTATOES AND MEAT GRAVY))
-	  2: (MEMBER? MEAT (AND MEAT GRAVY))
-	    3: (MEMBER? MEAT (MEAT GRAVY))
-	    3: MEMBER? returned T
-	  2: MEMBER? returned T
-	1: MEMBER? returned T
-      0: MEMBER? returned T
-    T
+  #+begin_src scheme
+    > (member? 'meat '(mashed potatoes and meat gravy))
+    >(member? 'meat '(mashed potatoes and meat gravy))
+    >(member? 'meat '(potatoes and meat gravy))
+    >(member? 'meat '(and meat gravy))
+    >(member? 'meat '(meat gravy))
+    <#t
+    #t
 
   #+end_src
 + Another example
-  #+begin_src common-lisp
-    CL-USER> (member? 'liver '(bagels and lox))
-      0: (MEMBER? LIVER (BAGELS AND LOX))
-	1: (MEMBER? LIVER (AND LOX))
-	  2: (MEMBER? LIVER (LOX))
-	    3: (MEMBER? LIVER NIL)
-	    3: MEMBER? returned NIL
-	  2: MEMBER? returned NIL
-	1: MEMBER? returned NIL
-      0: MEMBER? returned NIL
-    NIL
+  #+begin_src scheme
+    > (member? 'liver '(bagels and lox))
+    >(member? 'liver '(bagels and lox))
+    >(member? 'liver '(and lox))
+    >(member? 'liver '(lox))
+    >(member? 'liver '())
+    <#f
+    #f
 
   #+end_src
 
 *Core Terms/Concepts Learnt*
-+ ~OR~
-+ Basic template of recursion. Chapter 8 of Touretzky is great for a deeper dive into ways to constuct recursion. Also
-  tail optimized recursion is to be studied from the book `Sketchy Scheme' by Nils M Holm
++ ~or~
++ Basic template of recursion. Chapter 8 of Touretzky is great for a deeper dive into ways to construct recursion. Also
+  tail optimized recursion is to be studied from the book `Sketchy Scheme' by Nils M Holm.
 
 #+LATEX: \newpage
 
 * Cons the Magnificent
 
-This chapter explains the methods to build lists using ~CONS~ recursively.
+This chapter explains the methods to build lists using ~cons~ recursively.
 
 #+LATEX: \vspace{1em}
 
 Key Takeaway:
-/Use ~CONS~ to build lists/
+/Use ~cons~ to build lists/
 
 #+LATEX: \vspace{1em}
 
-+ In last chapter we made a ~MEMBER?~ function and in this chapter we will be making a function which will /remove/
++ In last chapter we made a ~member?~ function and in this chapter we will be making a function which will /remove/
   a member
-+ The first attempt to build the ~REMBER~ function fails since it removes all the initial elements before finding the
-  one it wants to remove. The authors have nicely demonstrated why ~CONS~ is required to define this function.
-+ The way to write ~REMBER~ in Common Lisp is as below. Also note as per Scheme semantics there is no ~?~ at the end
-  of ~REMBER~ because it is actually not a predicate.
-  #+begin_src common-lisp
-    (defun rember (a lat)
-      (cond ((null lat) nil)
-	    ((equal a (car lat)) (cdr lat))
-	    (t (cons (car lat)
-		     (rember a (cdr lat))))))
++ The first attempt to build the ~rember~ function fails since it removes all the initial elements before finding the
+  one it wants to remove. The authors have nicely demonstrated why ~cons~ is required to define this function.
++ The way to write ~rember~ is as below. Also note as per Scheme semantics there is no ~?~ at the end
+  of ~rember~ because it is actually not a predicate.
+  #+begin_src scheme
+    (define rember
+      (lambda (a lat)
+	(cond
+	  ((null? lat) (quote ()))
+	  ((eq? (car lat) a) (cdr lat))
+	  (else (cons (car lat)
+		      (rember a (cdr lat)))))))
 
   #+end_src
-+ There is a way to contrast the incorrect ~REMBER~ with the correct ~CONS~ ~REMBER~ by looking at the recursive
-  trace calls. The incorrect ~REMBER-WRONG~ is below with its trace and return.
-  #+begin_src common-lisp
-    (defun rember-wrong (a lat)
-      (cond ((null lat) nil)
-	    ((equal a (car lat)) (cdr lat))
-	    (t (rember-wrong a (cdr lat)))))
-CL-USER> (rember-wrong 'and '(bacon lettuce and tomato))
-(TOMATO)
++ There is a way to contrast the incorrect ~rember~ with the correct ~cons~ ~rember~ by looking at the recursive
+  trace calls. The incorrect ~rember-wrong~ is below with its trace and return.
+  #+begin_src scheme
+    (define rember-wrong
+      (lambda (a lat)
+	(cond
+	  ((null? lat) #f)
+	  ((eq? (car lat) a) #t)
+	  (else (rember-wrong a (cdr lat))))))
 
-CL-USER> (rember-wrong 'and '(bacon lettuce and tomato))
-  0: (REMBER-WRONG AND (BACON LETTUCE AND TOMATO))
-    1: (REMBER-WRONG AND (LETTUCE AND TOMATO))
-      2: (REMBER-WRONG AND (AND TOMATO))
-      2: REMBER-WRONG returned (TOMATO)
-    1: REMBER-WRONG returned (TOMATO)
-  0: REMBER-WRONG returned (TOMATO)
-(TOMATO)
-    
+    > (rember-wrong 'and '(bacon lettuce and tomato))
+    >(rember-wrong 'and '(bacon lettuce and tomato))
+    >(rember-wrong 'and '(lettuce and tomato))
+    >(rember-wrong 'and '(and tomato))
+    <'(tomato)
+    '(tomato)
+
   #+end_src
   Whereas the correct trace and output is as below
-  #+begin_src common-lisp
-CL-USER> (rember 'and '(bacon lettuce and tomato))
-(BACON LETTUCE TOMATO)
-
-CL-USER> (rember 'and '(bacon lettuce and tomato))
-  0: (REMBER AND (BACON LETTUCE AND TOMATO))
-    1: (REMBER AND (LETTUCE AND TOMATO))
-      2: (REMBER AND (AND TOMATO))
-      2: REMBER returned (TOMATO)
-    1: REMBER returned (LETTUCE TOMATO)
-  0: REMBER returned (BACON LETTUCE TOMATO)
-(BACON LETTUCE TOMATO)
+  #+begin_src scheme
+    > (rember 'and '(bacon lettuce and tomato))
+    >(rember 'and '(bacon lettuce and tomato))
+    > (rember 'and '(lettuce and tomato))
+    > >(rember 'and '(and tomato))
+    < <'(tomato)
+    < '(lettuce tomato)
+    <'(bacon lettuce tomato)
+    '(bacon lettuce tomato)
 
   #+end_src
   Another example
-  #+begin_src common-lisp
-CL-USER> (rember 'sauce '(soy sauce and tomato sauce))
-  0: (REMBER SAUCE (SOY SAUCE AND TOMATO SAUCE))
-    1: (REMBER SAUCE (SAUCE AND TOMATO SAUCE))
-    1: REMBER returned (AND TOMATO SAUCE)
-  0: REMBER returned (SOY AND TOMATO SAUCE)
-(SOY AND TOMATO SAUCE)
+  #+begin_src scheme
+    > (rember 'sauce '(soy sauce and tomato sauce))
+    >(rember 'sauce '(soy sauce and tomato sauce))
+    > (rember 'sauce '(sauce and tomato sauce))
+    < '(and tomato sauce)
+    <'(soy and tomato sauce)
+    '(soy and tomato sauce)
 
   #+end_src
   

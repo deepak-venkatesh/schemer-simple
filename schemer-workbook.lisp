@@ -23,3 +23,14 @@
 (defun member? (a lat)
   (cond ((null lat) nil)
 	(t (or (equal (car lat) a) (member? a (cdr lat))))))
+
+(defun rember-wrong (a lat)
+  (cond ((null lat) nil)
+	((equal a (car lat)) (cdr lat))
+	(t (rember-wrong a (cdr lat)))))
+
+(defun rember (a lat)
+  (cond ((null lat) nil)
+	((equal a (car lat)) (cdr lat))
+	(t (cons (car lat)
+		 (rember a (cdr lat))))))

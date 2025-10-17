@@ -1,4 +1,4 @@
-% Created 2025-10-15 Wed 13:42
+% Created 2025-10-16 Thu 19:44
 % Intended LaTeX compiler: pdflatex
 \documentclass[11pt]{article}
 \usepackage[utf8]{inputenc}
@@ -59,7 +59,7 @@ well. I am still new to both Lisp and programming.
 
 \newpage
 \section{Foreword}
-\label{sec:orgf30f1c8}
+\label{sec:org3c39b7b}
 
 By Gerald Sussman of MIT, co-author of the book SICP (the wizard book).
 
@@ -96,7 +96,7 @@ can be treated as data.
 
 \newpage
 \section{Preface}
-\label{sec:org0b0861e}
+\label{sec:org1802b9d}
 
 Key Takeaway:
 \emph{The goal of the book is to teach the reader to think recursively.}
@@ -135,6 +135,7 @@ argument is not a \texttt{CONS}, and otherwise is false. In SBCL \texttt{ATOM} w
 \begin{verbatim}
 (atom '())
 » T
+
 \end{verbatim}
 
 We define our own predicate \texttt{ATOMP}
@@ -142,6 +143,7 @@ We define our own predicate \texttt{ATOMP}
 \begin{verbatim}
 (defun atom? (x)
   (not (listp x)))
+
 \end{verbatim}
 
 So now \texttt{ATOMP} for our studies of this book will give \texttt{NIL} when tested for an empty list \texttt{'()}
@@ -149,6 +151,7 @@ So now \texttt{ATOMP} for our studies of this book will give \texttt{NIL} when t
 \begin{verbatim}
 (atom? '())
 » NIL
+
 \end{verbatim}
 
 \item There is another predicate in Common Lisp \texttt{CONSP}. This tests whether the argument to the predicate has a \texttt{CONS}
@@ -164,14 +167,14 @@ means that the empty list in this case is being treated as an \texttt{ATOM}.
 
 \newpage
 \section{Toys}
-\label{sec:org07147a8}
+\label{sec:org1396b99}
 
 This chapter introduces primitives of Lisp. These are the basic building blocks.
 
 \vspace{1em}
 
 \subsection{The Law of \texttt{CAR}}
-\label{sec:org3ebb866}
+\label{sec:org1d9fa4d}
 Key Takeaway:
 \emph{The primitive \texttt{CAR} is defined only for non-empty lists. The \texttt{CAR} is the first atom (element) of that list.}
 \emph{But in Common Lisp the \texttt{CAR} of an empty list will give \texttt{NIL}.}
@@ -199,6 +202,7 @@ of \texttt{()} will be \texttt{NIL} in Common Lisp unlike Scheme. In Common Lisp
 \begin{verbatim}
 (car ())
 » NIL
+
 \end{verbatim}
 \item \texttt{CAR} is the first atom/element of a list. If we try to find the \texttt{CAR} of a string of character or numbers SBCL will
 give us a variable unbound error or say that the number is not of the type list.
@@ -206,7 +210,7 @@ give us a variable unbound error or say that the number is not of the type list.
 
 
 \subsection{The Law of \texttt{CDR}}
-\label{sec:org7649e96}
+\label{sec:org280fcaf}
 Key Takeaway:
 \emph{The primitive \texttt{CDR} is defined only for non-empty lists. The \texttt{CDR} of any non-empty list is always another list.}
 \emph{The \texttt{CDR} of an empty list in Common Lisp is \texttt{NIL}.}
@@ -231,7 +235,7 @@ Key Takeaway:
 
 
 \subsection{The Law of \texttt{CONS}}
-\label{sec:org7be1684}
+\label{sec:org5d19340}
 Key Takeaway:
 \emph{The primitive \texttt{CONS} takes two arguments. The second argument to \texttt{CONS} must be a list. The result is a list.}
 
@@ -246,12 +250,13 @@ dotted list the last atom points to a non \texttt{NIL} atom. In the above case w
 \begin{verbatim}
 (cons '((a b c)) 'd)
 » (((A B C)) . D)
+
 \end{verbatim}
 \end{itemize}
 
 
 \subsection{The Law of \texttt{NULL}}
-\label{sec:orgafdbb81}
+\label{sec:org4225367}
 Key Takeaway:
 \emph{The primitive \texttt{NULL} is defined only for lists.}
 
@@ -270,13 +275,14 @@ the end of this chapter.
 
 (null '())
 » T
+
 \end{verbatim}
 \item \texttt{NULL} of an atom will throw a variable unbound error for a string or say the number is not of the type list.
 \end{itemize}
 
 
 \subsection{The Law of \texttt{EQ}}
-\label{sec:orgc8a66bc}
+\label{sec:org8db2bc8}
 Key Takeaway:
 \emph{The function \texttt{EQ} in Common Lisp takes two arguments and compares the unique address of these two arguments.}
 
@@ -304,6 +310,7 @@ not an atom but in Common Lisp it is both.
 \begin{verbatim}
 (functionp #'eq)
 » T
+
 \end{verbatim}
 \item The book states that two lists can be compared using \texttt{eq?}. In Common Lisp \texttt{EQ} function will indeed compare two
 lists but even if they contain same elements the lists could be distinct an thus \texttt{EQ} will return a \texttt{NIL}. Here if
@@ -315,12 +322,13 @@ the intent is to compare the contents in the list then we need to use \texttt{EQ
  » T
 (eq mithai sweets)
  » NIL
+
 \end{verbatim}
 \item Numbers can also be compared using \texttt{EQ} since it will check their memory addresses.
 \end{itemize}
 
 \subsection{Notes on \texttt{NIL} in Common Lisp}
-\label{sec:orged32ebc}
+\label{sec:orgca51909}
 \vspace{1em}
 
 \begin{itemize}
@@ -364,7 +372,7 @@ Same with \texttt{T})
 
 \newpage
 \section{Do It, Do It Again, and Again, and Again \ldots{}}
-\label{sec:org1960a57}
+\label{sec:orge22f161}
 
 This chapter explains recursion. The best material for recursion in my opinion is Chapter 8 in Touretzky's book.
 
@@ -382,6 +390,7 @@ a recursive  function to compute a factorial of a number.
 (defun fact (n)
   (cond ((zerop n) 1)
         (t (* n (fact (- n 1))))))
+
 \end{verbatim}
 Here the first question actually asks whether the argument \texttt{n} is a zero or not. Later in the book the authors do
 add in this nuance.
@@ -393,6 +402,7 @@ list is an \texttt{ATOM?}. We will use our own defined \texttt{ATOMP} predicate 
   (cond ((null l) t)
         ((atom? (car l)) (lat? (cdr l)))
         (t nil)))
+
 \end{verbatim}
 \item It is important to understand how \texttt{COND} functions. Well \texttt{COND} is actually a macro. This macro has a series of
 tests and results. The macro goes from top to bottom. The cases are processed from left to right under each test.
@@ -423,6 +433,7 @@ CL-USER> (lat? '(Jack Sprat could eat no chicken fat))
     1: LAT? returned T
   0: LAT? returned T
 T
+
 \end{verbatim}
 \item Another example which has a nested list
 \begin{verbatim}
@@ -432,6 +443,7 @@ T
     1: LAT? returned NIL
   0: LAT? returned NIL
 NIL
+
 \end{verbatim}
 \item Few more examples from the chapter using \texttt{TRACE}
 \begin{verbatim}
@@ -445,6 +457,7 @@ CL-USER> (lat? '(bacon and eggs))
     1: LAT? returned T
   0: LAT? returned T
 T
+
 \end{verbatim}
 
 \begin{verbatim}
@@ -454,6 +467,7 @@ CL-USER> (lat? '(bacon (and eggs)))
     1: LAT? returned NIL
   0: LAT? returned NIL
 NIL
+
 \end{verbatim}
 \item \texttt{OR} is introduced as a logical operator. There is a very important point to note in the use of \texttt{OR} macro. Quoting
 from Chapter 4 in Touretzky - The rule for evaluating \texttt{OR}: Evaluate the clauses one at a time. If a clause
@@ -472,6 +486,7 @@ defines this function using \texttt{OR} whereas it is actually not necessary.
 (defun member? (a lat)
   (cond ((null lat) nil)
         (t (or (equal (car lat) a) (member? a (cdr lat))))))
+
 \end{verbatim}
 \item The application of \texttt{member?} to find out whether \emph{meat} is in the list \emph{(mashed potatoes and meat gravy)} would
 generate this recursive call
@@ -486,6 +501,7 @@ CL-USER> (member? 'meat '(mashed potatoes and meat gravy))
     1: MEMBER? returned T
   0: MEMBER? returned T
 T
+
 \end{verbatim}
 \item Another example
 \begin{verbatim}
@@ -499,6 +515,7 @@ CL-USER> (member? 'liver '(bagels and lox))
     1: MEMBER? returned NIL
   0: MEMBER? returned NIL
 NIL
+
 \end{verbatim}
 \end{itemize}
 
@@ -511,9 +528,79 @@ tail optimized recursion is to be studied from the book `Sketchy Scheme' by Nils
 
 \newpage
 
-\section{Cons the Magnificient}
-\label{sec:org1568095}
+\section{Cons the Magnificent}
+\label{sec:org79f8eb9}
 
+This chapter explains the methods to build lists using \texttt{CONS} recursively.
+
+\vspace{1em}
+
+Key Takeaway:
+\emph{Use \texttt{CONS} to build lists}
+
+\vspace{1em}
+
+\begin{itemize}
+\item In last chapter we made a \texttt{MEMBER?} function and in this chapter we will be making a function which will \emph{remove}
+a member
+\item The first attempt to build the \texttt{REMBER} function fails since it removes all the initial elements before finding the
+one it wants to remove. The authors have nicely demonstrated why \texttt{CONS} is required to define this function.
+\item The way to write \texttt{REMBER} in Common Lisp is as below. Also note as per Scheme semantics there is no \texttt{?} at the end
+of \texttt{REMBER} because it is actually not a predicate.
+\begin{verbatim}
+(defun rember (a lat)
+  (cond ((null lat) nil)
+        ((equal a (car lat)) (cdr lat))
+        (t (cons (car lat)
+                 (rember a (cdr lat))))))
+
+\end{verbatim}
+\item There is a way to contrast the incorrect \texttt{REMBER} with the correct \texttt{CONS} \texttt{REMBER} by looking at the recursive
+trace calls. The incorrect \texttt{REMBER-WRONG} is below with its trace and return.
+\begin{verbatim}
+    (defun rember-wrong (a lat)
+      (cond ((null lat) nil)
+            ((equal a (car lat)) (cdr lat))
+            (t (rember-wrong a (cdr lat)))))
+CL-USER> (rember-wrong 'and '(bacon lettuce and tomato))
+(TOMATO)
+
+CL-USER> (rember-wrong 'and '(bacon lettuce and tomato))
+  0: (REMBER-WRONG AND (BACON LETTUCE AND TOMATO))
+    1: (REMBER-WRONG AND (LETTUCE AND TOMATO))
+      2: (REMBER-WRONG AND (AND TOMATO))
+      2: REMBER-WRONG returned (TOMATO)
+    1: REMBER-WRONG returned (TOMATO)
+  0: REMBER-WRONG returned (TOMATO)
+(TOMATO)
+
+\end{verbatim}
+Whereas the correct trace and output is as below
+\begin{verbatim}
+CL-USER> (rember 'and '(bacon lettuce and tomato))
+(BACON LETTUCE TOMATO)
+
+CL-USER> (rember 'and '(bacon lettuce and tomato))
+  0: (REMBER AND (BACON LETTUCE AND TOMATO))
+    1: (REMBER AND (LETTUCE AND TOMATO))
+      2: (REMBER AND (AND TOMATO))
+      2: REMBER returned (TOMATO)
+    1: REMBER returned (LETTUCE TOMATO)
+  0: REMBER returned (BACON LETTUCE TOMATO)
+(BACON LETTUCE TOMATO)
+
+\end{verbatim}
+Another example
+\begin{verbatim}
+CL-USER> (rember 'sauce '(soy sauce and tomato sauce))
+  0: (REMBER SAUCE (SOY SAUCE AND TOMATO SAUCE))
+    1: (REMBER SAUCE (SAUCE AND TOMATO SAUCE))
+    1: REMBER returned (AND TOMATO SAUCE)
+  0: REMBER returned (SOY AND TOMATO SAUCE)
+(SOY AND TOMATO SAUCE)
+
+\end{verbatim}
+\end{itemize}
 
 
 
@@ -558,52 +645,52 @@ tail optimized recursion is to be studied from the book `Sketchy Scheme' by Nils
 \newpage
 
 \section{Numbers Games}
-\label{sec:org0fd4909}
+\label{sec:org314f9f0}
 
 \newpage
 
 \section{* Oh My Gawd *: It's Full of Stars}
-\label{sec:orga8a2bed}
+\label{sec:org87ba164}
 
 \newpage
 
 \section{Shadows}
-\label{sec:org40c8e62}
+\label{sec:orge8ea33e}
 
 \newpage
 
 \section{Friends and Relations}
-\label{sec:org3e22616}
+\label{sec:org5428349}
 
 \newpage
 
 \section{Lambda the Ultimate}
-\label{sec:orgfebdd83}
+\label{sec:org875d455}
 
 \newpage
 
 \section{\ldots{} and Again, and Again, and Again, \ldots{}}
-\label{sec:orgca2bcab}
+\label{sec:org06badd3}
 
 \newpage
 
 \section{What Is the Value of All of This?}
-\label{sec:org0f34921}
+\label{sec:org15845c7}
 
 \newpage
 
 \section{Intermission}
-\label{sec:org61d0f99}
+\label{sec:org7db8531}
 
 \newpage
 
 \section{The Ten Commandments}
-\label{sec:orgec5acdb}
+\label{sec:org440608b}
 
 \newpage
 
 \section{The Five Rules}
-\label{sec:org03bf191}
+\label{sec:orga7f6226}
 
 \newpage
 \end{document}

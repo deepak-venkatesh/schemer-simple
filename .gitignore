@@ -1,0 +1,12 @@
+# Emacs autosave and backup files
+*~
+\#*\#
+
+# Org-mode exports
+*.pdf
+*.tex
+*.aux
+*.log
+
+# macOS metadata
+.DS_Store

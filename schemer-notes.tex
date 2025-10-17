@@ -1,4 +1,4 @@
-% Created 2025-10-16 Thu 19:44
+% Created 2025-10-17 Fri 10:41
 % Intended LaTeX compiler: pdflatex
 \documentclass[11pt]{article}
 \usepackage[utf8]{inputenc}
@@ -39,10 +39,11 @@ unique and playful way. It builds from first principles using only a small set o
 ideas — such as recursion, functional programming, lambda functions, and interpreters — can be expressed using just
 those few building blocks. I am making this public since other beginners could benefit from these notes.
 
-While the book uses Scheme, I prefer to work in Common Lisp and have adapted the examples accordingly. Despite its
-lighthearted tone, the book is far from an easy read — it demands close attention and careful thought. My advice to
-anyone who wants to learn lisp is to first work through Professor David Touretzky's book titled `Common Lisp A Gentle
-Introduction to Symbolic Computing' (2nd ed.). It's a great book for introduction to programming not just Lisp.
+While the book uses Scheme, I initially worked it out using Common Lisp and had adapted the examples accordingly. Now
+I am working through it using Racket, a modern descendent of Scheme. Despite its lighthearted tone, the book is far
+from an easy read — it demands close attention and careful thought. My advice to anyone who wants to learn lisp is to
+first work through Professor David Touretzky's book titled `Common Lisp A Gentle Introduction to Symbolic Computing'
+(2nd ed.). It's a great book for introduction to programming not just Lisp.
 
 All mistakes in these notes, whether typographical or conceptual, are entirely my own. Any misinterpretations are as
 well. I am still new to both Lisp and programming.
@@ -51,15 +52,15 @@ well. I am still new to both Lisp and programming.
 
 \emph{Hardware and Software used for this study}
 \begin{itemize}
-\item Common Lisp SBCL version 2.4.1
-\item emacs
-\item slime for emacs
+\item Language: Racket (a Scheme)
+\item Editor: Dr Racket
+\item emacs for org notes
 \item Macbook Pro 2019 2.6 Ghz I7 Intel chip with 16 GB RAM
 \end{itemize}
 
 \newpage
 \section{Foreword}
-\label{sec:org3c39b7b}
+\label{sec:org7e59652}
 
 By Gerald Sussman of MIT, co-author of the book SICP (the wizard book).
 
@@ -96,7 +97,7 @@ can be treated as data.
 
 \newpage
 \section{Preface}
-\label{sec:org1802b9d}
+\label{sec:orgaebba4c}
 
 Key Takeaway:
 \emph{The goal of the book is to teach the reader to think recursively.}
@@ -108,29 +109,29 @@ Key Takeaway:
 \item Recursion is the act of defining an object or solving a problem in terms of itself.
 \item The authors believe that writing programs recursively in Lisp is essentially pattern recongnition. Well I think
 it's true for any programming language or any programming paradigm.
-\item For recursive programming and studying, this book we will need only a few Common Lisp primitives, namely:
+\item For recursive programming and studying, this book we will need only a few primitives/functions, namely:
 \begin{itemize}
-\item \texttt{CAR}
-\item \texttt{CDR}
-\item \texttt{CONS}
-\item \texttt{ATOM?} (\texttt{ATOM?} actually which is not a primitive in Common Lisp but explanation below)
-\item \texttt{EQ}, \texttt{EQL}, \texttt{EQUAL}, \texttt{EQUALP} (currently unsure if all or only a few will be used but in Scheme \texttt{eq?} is used)
-\item \texttt{NULL}, \texttt{ZEROP}, \texttt{NUMBERP}
-\item \texttt{ADD1}, \texttt{SUB1} (these do not exist in Common Lisp, we will define them when needed or us \texttt{1+} and \texttt{1-})
-\item \texttt{AND}, \texttt{OR}
-\item \texttt{LAMBDA}
-\item \texttt{COND}
-\item \texttt{DEFUN}
+\item \texttt{car}
+\item \texttt{cdr}
+\item \texttt{cons}
+\item \texttt{atom?}
+\item \texttt{eq?}
+\item \texttt{null?}
+\item \texttt{add1}, \texttt{sub1}
+\item \texttt{and}, \texttt{or}
+\item \texttt{else}
+\item \texttt{lambda}
+\item \texttt{cond}
+\item \texttt{define}
 \end{itemize}
 \item The definitions of the above primitives I am not outlining here and will come to it as we work through the book.
 \item Authors advise to read this book slowly. Very slowly and delibrately. Re-read it multiple times. Every concept
 should be clear before going onto the next page.
 \item In the preface we hit the first difference between Scheme and Common Lisp. \texttt{()} in Scheme is actually different
-from that in Common Lisp. Scheme considers \texttt{()} as only a list and not an atom. While in Common Lisp \texttt{()} is
-considered both an atom and a list. Therefore, to stay with the theme of this book we will define our own
-predicate \texttt{ATOM?} in Common Lisp which will work like the \texttt{atom?} in Scheme. \texttt{ATOM} is defined as per the Lisp
-Hyperspec as well as Common Lisp The Language (2nd ed.) by Guy Steele as `The predicate \texttt{ATOM} is true if its
-argument is not a \texttt{CONS}, and otherwise is false. In SBCL \texttt{ATOM} will give \texttt{T}
+from that in Common Lisp. Scheme considers \texttt{()} as \emph{only} a list and \emph{not} an atom. While in Common Lisp \texttt{()} is
+considered both an atom and a list. \texttt{ATOM} is defined as per the Lisp Hyperspec as well as Common Lisp The
+Language (2nd ed.) by Guy Steele as `The predicate \texttt{ATOM} is true if its argument is not a \texttt{CONS}, and otherwise
+is false. In SBCL, a Common Lisp implementation  \texttt{ATOM} will give \texttt{T}
 
 \begin{verbatim}
 (atom '())
@@ -138,43 +139,47 @@ argument is not a \texttt{CONS}, and otherwise is false. In SBCL \texttt{ATOM} w
 
 \end{verbatim}
 
-We define our own predicate \texttt{ATOMP}
+We define our own predicate \texttt{atom?} in Scheme 
 
 \begin{verbatim}
-(defun atom? (x)
-  (not (listp x)))
+(define atom?
+  (lambda (x)
+    (and (not (pair? x)) (not (null? x)))))
 
 \end{verbatim}
 
-So now \texttt{ATOMP} for our studies of this book will give \texttt{NIL} when tested for an empty list \texttt{'()}
+Some tests for checking \texttt{atom?} in Scheme below
 
 \begin{verbatim}
-(atom? '())
-» NIL
+> (atom? 'a)
+#t
+> (atom? (quote ()))
+#f
+> (atom? '(a b c))
+#f
+> (atom? 42)
+#t
 
 \end{verbatim}
-
-\item There is another predicate in Common Lisp \texttt{CONSP}. This tests whether the argument to the predicate has a \texttt{CONS}
-cell or not. But when we check for a \texttt{CONS} cell for an empty list \texttt{()} then \texttt{CONSP} returns \texttt{NIL}. This perhaps
-means that the empty list in this case is being treated as an \texttt{ATOM}.
 \end{itemize}
+
 
 \textbf{Core Terms/Concepts Learnt}
 \begin{itemize}
-\item \texttt{'()} is both an atom and a list in Common Lisp
+\item In Scheme \texttt{()} is only a list and not an atom.
 \end{itemize}
 
 
 \newpage
 \section{Toys}
-\label{sec:org1396b99}
+\label{sec:org70c2fc3}
 
 This chapter introduces primitives of Lisp. These are the basic building blocks.
 
 \vspace{1em}
 
 \subsection{The Law of \texttt{CAR}}
-\label{sec:org1d9fa4d}
+\label{sec:org0da769e}
 Key Takeaway:
 \emph{The primitive \texttt{CAR} is defined only for non-empty lists. The \texttt{CAR} is the first atom (element) of that list.}
 \emph{But in Common Lisp the \texttt{CAR} of an empty list will give \texttt{NIL}.}
@@ -210,7 +215,7 @@ give us a variable unbound error or say that the number is not of the type list.
 
 
 \subsection{The Law of \texttt{CDR}}
-\label{sec:org280fcaf}
+\label{sec:org72648de}
 Key Takeaway:
 \emph{The primitive \texttt{CDR} is defined only for non-empty lists. The \texttt{CDR} of any non-empty list is always another list.}
 \emph{The \texttt{CDR} of an empty list in Common Lisp is \texttt{NIL}.}
@@ -235,7 +240,7 @@ Key Takeaway:
 
 
 \subsection{The Law of \texttt{CONS}}
-\label{sec:org5d19340}
+\label{sec:org3b7e97d}
 Key Takeaway:
 \emph{The primitive \texttt{CONS} takes two arguments. The second argument to \texttt{CONS} must be a list. The result is a list.}
 
@@ -256,7 +261,7 @@ dotted list the last atom points to a non \texttt{NIL} atom. In the above case w
 
 
 \subsection{The Law of \texttt{NULL}}
-\label{sec:org4225367}
+\label{sec:org95e4f72}
 Key Takeaway:
 \emph{The primitive \texttt{NULL} is defined only for lists.}
 
@@ -282,7 +287,7 @@ the end of this chapter.
 
 
 \subsection{The Law of \texttt{EQ}}
-\label{sec:org8db2bc8}
+\label{sec:org59691ec}
 Key Takeaway:
 \emph{The function \texttt{EQ} in Common Lisp takes two arguments and compares the unique address of these two arguments.}
 
@@ -328,7 +333,7 @@ the intent is to compare the contents in the list then we need to use \texttt{EQ
 \end{itemize}
 
 \subsection{Notes on \texttt{NIL} in Common Lisp}
-\label{sec:orgca51909}
+\label{sec:org9680814}
 \vspace{1em}
 
 \begin{itemize}
@@ -372,7 +377,7 @@ Same with \texttt{T})
 
 \newpage
 \section{Do It, Do It Again, and Again, and Again \ldots{}}
-\label{sec:orge22f161}
+\label{sec:orgc510bd3}
 
 This chapter explains recursion. The best material for recursion in my opinion is Chapter 8 in Touretzky's book.
 
@@ -529,7 +534,7 @@ tail optimized recursion is to be studied from the book `Sketchy Scheme' by Nils
 \newpage
 
 \section{Cons the Magnificent}
-\label{sec:org79f8eb9}
+\label{sec:org4f1af03}
 
 This chapter explains the methods to build lists using \texttt{CONS} recursively.
 
@@ -642,55 +647,57 @@ CL-USER> (rember 'sauce '(soy sauce and tomato sauce))
 
 
 
+
+
 \newpage
 
 \section{Numbers Games}
-\label{sec:org314f9f0}
+\label{sec:org7eeea59}
 
 \newpage
 
 \section{* Oh My Gawd *: It's Full of Stars}
-\label{sec:org87ba164}
+\label{sec:orgf10e1b8}
 
 \newpage
 
 \section{Shadows}
-\label{sec:orge8ea33e}
+\label{sec:orgc84b211}
 
 \newpage
 
 \section{Friends and Relations}
-\label{sec:org5428349}
+\label{sec:orgfc5c66a}
 
 \newpage
 
 \section{Lambda the Ultimate}
-\label{sec:org875d455}
+\label{sec:org769621e}
 
 \newpage
 
 \section{\ldots{} and Again, and Again, and Again, \ldots{}}
-\label{sec:org06badd3}
+\label{sec:org3993403}
 
 \newpage
 
 \section{What Is the Value of All of This?}
-\label{sec:org15845c7}
+\label{sec:org5a7eb1b}
 
 \newpage
 
 \section{Intermission}
-\label{sec:org7db8531}
+\label{sec:org70d0552}
 
 \newpage
 
 \section{The Ten Commandments}
-\label{sec:org440608b}
+\label{sec:org8e4fd8d}
 
 \newpage
 
 \section{The Five Rules}
-\label{sec:orga7f6226}
+\label{sec:org075942c}
 
 \newpage
 \end{document}

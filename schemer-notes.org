@@ -14,10 +14,11 @@ unique and playful way. It builds from first principles using only a small set o
 ideas — such as recursion, functional programming, lambda functions, and interpreters — can be expressed using just
 those few building blocks. I am making this public since other beginners could benefit from these notes.
 
-While the book uses Scheme, I prefer to work in Common Lisp and have adapted the examples accordingly. Despite its
-lighthearted tone, the book is far from an easy read — it demands close attention and careful thought. My advice to
-anyone who wants to learn lisp is to first work through Professor David Touretzky's book titled `Common Lisp A Gentle
-Introduction to Symbolic Computing' (2nd ed.). It's a great book for introduction to programming not just Lisp.
+While the book uses Scheme, I initially worked it out using Common Lisp and had adapted the examples accordingly. Now
+I am working through it using Racket, a modern descendent of Scheme. Despite its lighthearted tone, the book is far
+from an easy read — it demands close attention and careful thought. My advice to anyone who wants to learn lisp is to
+first work through Professor David Touretzky's book titled `Common Lisp A Gentle Introduction to Symbolic Computing'
+(2nd ed.). It's a great book for introduction to programming not just Lisp.
 
 All mistakes in these notes, whether typographical or conceptual, are entirely my own. Any misinterpretations are as
 well. I am still new to both Lisp and programming.
@@ -25,9 +26,9 @@ well. I am still new to both Lisp and programming.
 #+LATEX: \vspace{1em}
 
 /Hardware and Software used for this study/
-+ Common Lisp SBCL version 2.4.1
-+ emacs
-+ slime for emacs
++ Language: Racket (a Scheme)
++ Editor: Dr Racket
++ emacs for org notes
 + Macbook Pro 2019 2.6 Ghz I7 Intel chip with 16 GB RAM
 
 #+LATEX: \newpage
@@ -74,27 +75,27 @@ Key Takeaway:
 + Recursion is the act of defining an object or solving a problem in terms of itself.
 + The authors believe that writing programs recursively in Lisp is essentially pattern recongnition. Well I think
   it's true for any programming language or any programming paradigm.
-+ For recursive programming and studying, this book we will need only a few Common Lisp primitives, namely:
-  + ~CAR~
-  + ~CDR~
-  + ~CONS~
-  + ~ATOM?~ (~ATOM?~ actually which is not a primitive in Common Lisp but explanation below)
-  + ~EQ~, ~EQL~, ~EQUAL~, ~EQUALP~ (currently unsure if all or only a few will be used but in Scheme ~eq?~ is used)
-  + ~NULL~, ~ZEROP~, ~NUMBERP~
-  + ~ADD1~, ~SUB1~ (these do not exist in Common Lisp, we will define them when needed or us ~1+~ and ~1-~)
-  + ~AND~, ~OR~
-  + ~LAMBDA~
-  + ~COND~
-  + ~DEFUN~
++ For recursive programming and studying, this book we will need only a few primitives/functions, namely:
+  + ~car~
+  + ~cdr~
+  + ~cons~
+  + ~atom?~
+  + ~eq?~
+  + ~null?~
+  + ~add1~, ~sub1~
+  + ~and~, ~or~
+  + ~else~
+  + ~lambda~
+  + ~cond~
+  + ~define~
 + The definitions of the above primitives I am not outlining here and will come to it as we work through the book.
 + Authors advise to read this book slowly. Very slowly and delibrately. Re-read it multiple times. Every concept
   should be clear before going onto the next page.
 + In the preface we hit the first difference between Scheme and Common Lisp. ~()~ in Scheme is actually different
-  from that in Common Lisp. Scheme considers ~()~ as only a list and not an atom. While in Common Lisp ~()~ is
-  considered both an atom and a list. Therefore, to stay with the theme of this book we will define our own
-  predicate ~ATOM?~ in Common Lisp which will work like the ~atom?~ in Scheme. ~ATOM~ is defined as per the Lisp
-  Hyperspec as well as Common Lisp The Language (2nd ed.) by Guy Steele as `The predicate ~ATOM~ is true if its
-  argument is not a ~CONS~, and otherwise is false. In SBCL ~ATOM~ will give ~T~
+  from that in Common Lisp. Scheme considers ~()~ as /only/ a list and /not/ an atom. While in Common Lisp ~()~ is
+  considered both an atom and a list. ~ATOM~ is defined as per the Lisp Hyperspec as well as Common Lisp The
+  Language (2nd ed.) by Guy Steele as `The predicate ~ATOM~ is true if its argument is not a ~CONS~, and otherwise
+  is false. In SBCL, a Common Lisp implementation  ~ATOM~ will give ~T~
 
   #+begin_src common-lisp
     (atom '())
@@ -102,34 +103,38 @@ Key Takeaway:
     
   #+end_src
 
-  We define our own predicate ~ATOMP~
+  We define our own predicate ~atom?~ in Scheme 
 
-  #+begin_src common-lisp
-    (defun atom? (x)
-      (not (listp x)))
+  #+begin_src scheme
+    (define atom?
+      (lambda (x)
+	(and (not (pair? x)) (not (null? x)))))
     
   #+end_src
 
-  So now ~ATOMP~ for our studies of this book will give ~NIL~ when tested for an empty list ~'()~
+  Some tests for checking ~atom?~ in Scheme below
 
-  #+begin_src common-lisp
-    (atom? '())
-    » NIL
-    
+  #+begin_src scheme
+    > (atom? 'a)
+    #t
+    > (atom? (quote ()))
+    #f
+    > (atom? '(a b c))
+    #f
+    > (atom? 42)
+    #t
+        
   #+end_src
   
-+ There is another predicate in Common Lisp ~CONSP~. This tests whether the argument to the predicate has a ~CONS~
-  cell or not. But when we check for a ~CONS~ cell for an empty list ~()~ then ~CONSP~ returns ~NIL~. This perhaps
-  means that the empty list in this case is being treated as an ~ATOM~.
 
 *Core Terms/Concepts Learnt*
-+ ~'()~ is both an atom and a list in Common Lisp
++ In Scheme ~()~ is only a list and not an atom.
 
 
 #+LATEX: \newpage
 * Toys
 
-This chapter introduces primitives of Lisp. These are the basic building blocks.
+This chapter introduces primitives of Scheme. These are the basic building blocks.
 
 #+LATEX: \vspace{1em}
 
@@ -529,6 +534,8 @@ CL-USER> (rember 'sauce '(soy sauce and tomato sauce))
 (SOY AND TOMATO SAUCE)
 
   #+end_src
+  
+
 
 
 

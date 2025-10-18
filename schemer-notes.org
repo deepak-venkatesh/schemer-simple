@@ -392,7 +392,8 @@ This chapter explains the methods to build lists using ~cons~ recursively.
 #+LATEX: \vspace{1em}
 
 Key Takeaway:
-/Use ~cons~ to build lists/
+/The Second Commandment: Use ~cons~ to build lists/
+/The Third Commandment: When building a list, describe the first typical element, and then ~cons~ it onto the natural recursion/
 
 #+LATEX: \vspace{1em}
 
@@ -498,7 +499,12 @@ Key Takeaway:
     '(b d f)
     
   #+end_src
-
++ In the recursion technique of ~cons~-ing cells the last ~cons~ cells' ~cdr~ pointer will point to a ~nil~ or an
+  empty list ~()~. Therefore, the usual terminal or base condition is to check for ~null?~ then ~cons~ a ~()~.
++ Although the book alludes to the fact that the ~cons~-ing can be in any direction the trace in Dr Racket actually
+  shows the  ~cons~-ing with a ~<~ or a ~>~. So a ~()~ gets ~cons~-ed with the last recurring item and goes back to the
+  first item. In the above example ~()~ is ~cons~-ed to ~f~ to make a list ~(f)~. This ~(f)~ is then ~cons~-ed to ~d~
+  to make the list ~(d f)~. This ~(d f)~ is then ~cons~-ed to ~b~ to finally get ~(b d f)~.
 
 
 

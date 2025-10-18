@@ -1,4 +1,4 @@
-% Created 2025-10-17 Fri 15:11
+% Created 2025-10-17 Fri 16:16
 % Intended LaTeX compiler: pdflatex
 \documentclass[11pt]{article}
 \usepackage[utf8]{inputenc}
@@ -60,7 +60,7 @@ well. I am still new to both Lisp and programming.
 
 \newpage
 \section{Foreword}
-\label{sec:org2568dfe}
+\label{sec:orgc05d4cc}
 
 By Gerald Sussman of MIT, co-author of the book SICP (the wizard book).
 
@@ -97,7 +97,7 @@ can be treated as data.
 
 \newpage
 \section{Preface}
-\label{sec:org2d193ae}
+\label{sec:org567ccbc}
 
 Key Takeaway:
 \emph{The goal of the book is to teach the reader to think recursively.}
@@ -172,14 +172,14 @@ Some tests for checking \texttt{atom?} in Scheme below
 
 \newpage
 \section{Toys}
-\label{sec:org1812920}
+\label{sec:org457d03c}
 
 This chapter introduces primitives of Scheme. These are the basic building blocks.
 
 \vspace{1em}
 
 \subsection{The Law of \texttt{car}}
-\label{sec:org89e547e}
+\label{sec:org73dc7f2}
 Key Takeaway:
 \emph{The primitive \texttt{car} is defined only for non-empty lists. The \texttt{car} is the first atom (element) of that list.}
 
@@ -219,7 +219,7 @@ get an error like below.
 \end{itemize}
 
 \subsection{The Law of \texttt{cdr}}
-\label{sec:orgc55d197}
+\label{sec:org59b69a0}
 Key Takeaway:
 \emph{The primitive \texttt{cdr} is defined only for non-empty lists. The \texttt{cdr} of any non-empty list is always another list.}
 
@@ -243,7 +243,7 @@ Key Takeaway:
 
 
 \subsection{The Law of \texttt{cons}}
-\label{sec:org6206c9c}
+\label{sec:org1a3e22d}
 Key Takeaway:
 \emph{The primitive \texttt{cons} takes two arguments. The second argument to \texttt{cons} must be a list. The result is a list.}
 
@@ -266,7 +266,7 @@ dotted list the last atom points to a non \texttt{NIL} atom. In the above case w
 
 
 \subsection{The Law of \texttt{null?}}
-\label{sec:org76839d2}
+\label{sec:org1b1378d}
 Key Takeaway:
 \emph{The primitive \texttt{null?} is defined only for lists.}
 
@@ -289,7 +289,7 @@ for \texttt{()} is \texttt{\#t} and for everything else it is \texttt{\#f}. See 
 \end{itemize}
 
 \subsection{The Law of \texttt{eq?}}
-\label{sec:org97501f3}
+\label{sec:orgdf7fca9}
 Key Takeaway:
 \emph{The primitive \texttt{eq?} in takes two arguments and compares them. Each must be a non numeric atom.}
 
@@ -314,7 +314,7 @@ Key Takeaway:
 
 \newpage
 \section{Do It, Do It Again, and Again, and Again \ldots{}}
-\label{sec:org175adbe}
+\label{sec:org8acea54}
 
 This chapter explains recursion. The best material for recursion in my opinion is Chapter 8 in Touretzky's book.
 
@@ -448,14 +448,15 @@ tail optimized recursion is to be studied from the book `Sketchy Scheme' by Nils
 \newpage
 
 \section{Cons the Magnificent}
-\label{sec:org028c4e4}
+\label{sec:orgf6d12d1}
 
 This chapter explains the methods to build lists using \texttt{cons} recursively.
 
 \vspace{1em}
 
 Key Takeaway:
-\emph{Use \texttt{cons} to build lists}
+\emph{The Second Commandment: Use \texttt{cons} to build lists}
+\emph{The Third Commandment: When building a list, describe the first typical element, and then \texttt{cons} it onto the natural recursion}
 
 \vspace{1em}
 
@@ -562,8 +563,13 @@ Another example
 '(b d f)
 
 \end{verbatim}
+\item In the recursion technique of \texttt{cons}-ing cells the last \texttt{cons} cells' \texttt{cdr} pointer will point to a \texttt{nil} or an
+empty list \texttt{()}. Therefore, the usual terminal or base condition is to check for \texttt{null?} then \texttt{cons} a \texttt{()}.
+\item Although the book alludes to the fact that the \texttt{cons}-ing can be in any direction the trace in Dr Racket actually
+shows the  \texttt{cons}-ing with a \texttt{<} or a \texttt{>}. So a \texttt{()} gets consed with the last recurring item and goes back to the
+first item. In the above example \texttt{()} is \texttt{cons}-ed to \texttt{f} to make a list \texttt{(f)}. This \texttt{(f)} is then \texttt{cons}-ed to \texttt{d}
+to make the list \texttt{(d f)}. This \texttt{(d f)} is then \texttt{cons}-ed to \texttt{b} to finally get \texttt{(b d f)}.
 \end{itemize}
-
 
 
 
@@ -609,52 +615,52 @@ Another example
 \newpage
 
 \section{Numbers Games}
-\label{sec:org8caa6d4}
+\label{sec:orgf467b4a}
 
 \newpage
 
 \section{* Oh My Gawd *: It's Full of Stars}
-\label{sec:org0403213}
+\label{sec:orgbea7e32}
 
 \newpage
 
 \section{Shadows}
-\label{sec:org0660fdb}
+\label{sec:org5a14d2c}
 
 \newpage
 
 \section{Friends and Relations}
-\label{sec:org88844e1}
+\label{sec:org549a47b}
 
 \newpage
 
 \section{Lambda the Ultimate}
-\label{sec:orgc6b5d08}
+\label{sec:org21fb0d9}
 
 \newpage
 
 \section{\ldots{} and Again, and Again, and Again, \ldots{}}
-\label{sec:org000198e}
+\label{sec:orgd8464e1}
 
 \newpage
 
 \section{What Is the Value of All of This?}
-\label{sec:orge6b6483}
+\label{sec:org977665c}
 
 \newpage
 
 \section{Intermission}
-\label{sec:orged31019}
+\label{sec:orgdc915ce}
 
 \newpage
 
 \section{The Ten Commandments}
-\label{sec:orge9a6274}
+\label{sec:org13543b8}
 
 \newpage
 
 \section{The Five Rules}
-\label{sec:org40a2b6a}
+\label{sec:org70ca723}
 
 \newpage
 \end{document}

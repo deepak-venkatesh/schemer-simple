@@ -1,4 +1,4 @@
-% Created 2025-10-17 Fri 23:13
+% Created 2025-10-18 Sat 06:56
 % Intended LaTeX compiler: pdflatex
 \documentclass[11pt]{article}
 \usepackage[utf8]{inputenc}
@@ -60,7 +60,7 @@ well. I am still new to both Lisp and programming.
 
 \newpage
 \section{Foreword}
-\label{sec:orgbdb162c}
+\label{sec:org825ade0}
 
 By Gerald Sussman of MIT, co-author of the book SICP (the wizard book).
 
@@ -97,7 +97,7 @@ can be treated as data.
 
 \newpage
 \section{Preface}
-\label{sec:org1b66953}
+\label{sec:orgd9d9aa9}
 
 Key Takeaway:
 \emph{The goal of the book is to teach the reader to think recursively.}
@@ -172,14 +172,14 @@ Some tests for checking \texttt{atom?} in Scheme below
 
 \newpage
 \section{Toys}
-\label{sec:org3480ded}
+\label{sec:org0a0babd}
 
 This chapter introduces primitives of Scheme. These are the basic building blocks.
 
 \vspace{1em}
 
 \subsection{The Law of \texttt{car}}
-\label{sec:orgf0873c3}
+\label{sec:orgd50c8a7}
 Key Takeaway:
 \emph{The primitive \texttt{car} is defined only for non-empty lists. The \texttt{car} is the first atom (element) of that list.}
 
@@ -219,7 +219,7 @@ get an error like below.
 \end{itemize}
 
 \subsection{The Law of \texttt{cdr}}
-\label{sec:orga30cd4e}
+\label{sec:org5195ab3}
 Key Takeaway:
 \emph{The primitive \texttt{cdr} is defined only for non-empty lists. The \texttt{cdr} of any non-empty list is always another list.}
 
@@ -230,7 +230,7 @@ Key Takeaway:
 \item \texttt{cdr} of a single atom/element list is \texttt{()}.
 \item In Tourtezky's book there is a tool called SDRAW. It allows us to do draw \texttt{cons} cell structures with the \texttt{car} \&
 \texttt{cdr} pointers. I have uploaded the code for this tool on Github \href{https://github.com/deepak-venkatesh/sdraw}{here}. For \texttt{(car a)} and \texttt{(cdr a)} where \texttt{a} is
-\texttt{samosa} will be represented as:
+\texttt{samosa} will be represented as below (doesn't render well in markdown file on github):
 
 \texttt{[*|*]-{}-{}-> NIL} \(\newline\)
 \texttt{|} \(\newline\)
@@ -243,7 +243,7 @@ Key Takeaway:
 
 
 \subsection{The Law of \texttt{cons}}
-\label{sec:org3a985e7}
+\label{sec:orgc53af0b}
 Key Takeaway:
 \emph{The primitive \texttt{cons} takes two arguments. The second argument to \texttt{cons} must be a list. The result is a list.}
 
@@ -266,7 +266,7 @@ dotted list the last atom points to a non \texttt{NIL} atom. In the above case w
 
 
 \subsection{The Law of \texttt{null?}}
-\label{sec:org82dfb54}
+\label{sec:org84863d5}
 Key Takeaway:
 \emph{The primitive \texttt{null?} is defined only for lists.}
 
@@ -289,7 +289,7 @@ for \texttt{()} is \texttt{\#t} and for everything else it is \texttt{\#f}. See 
 \end{itemize}
 
 \subsection{The Law of \texttt{eq?}}
-\label{sec:orgc571652}
+\label{sec:org815cad1}
 Key Takeaway:
 \emph{The primitive \texttt{eq?} in takes two arguments and compares them. Each must be a non numeric atom.}
 
@@ -314,7 +314,7 @@ Key Takeaway:
 
 \newpage
 \section{Do It, Do It Again, and Again, and Again \ldots{}}
-\label{sec:org92bcc22}
+\label{sec:org6011ab8}
 
 This chapter explains recursion. The best material for recursion in my opinion is Chapter 8 in Touretzky's book.
 
@@ -448,7 +448,7 @@ tail optimized recursion is to be studied from the book `Sketchy Scheme' by Nils
 \newpage
 
 \section{Cons the Magnificent}
-\label{sec:orgc7d7ff0}
+\label{sec:orga76f900}
 
 This chapter explains the methods to build lists using \texttt{cons} recursively.
 
@@ -457,6 +457,8 @@ This chapter explains the methods to build lists using \texttt{cons} recursively
 Key Takeaway:
 \emph{The Second Commandment: Use \texttt{cons} to build lists}
 \emph{The Third Commandment: When building a list, describe the first typical element, and then \texttt{cons} it onto the natural recursion}
+\emph{The Fourth Commandement: Always change at lest one argument while recurring. It must be changed to be closer to termination.
+The changing argument must be tested in the termination condition: when using \texttt{cdr}, test termination with \texttt{null?}.}
 
 \vspace{1em}
 
@@ -599,10 +601,169 @@ to make the list \texttt{(d f)}. This \texttt{(d f)} is then \texttt{cons}-ed to
           (else (cons (car lat) (subst2 new o1 o2 (cdr lat)))))))
 
 \end{verbatim}
-\item 
+\item \texttt{subst2} involves an \texttt{or} but a better example could be used such as below. Since trace will give a better view.
+\begin{verbatim}
+    (define subst2
+      (lambda (new o1 o2 lat)
+        (cond ((null? lat) (quote ()))
+              ((or (eq? (car lat) o1) (eq? (car lat) o2)) (cons new (cdr lat)))
+              (else (cons (car lat) (subst2 new o1 o2 (cdr lat)))))))
+
+> (subst2 'vanilla 'chocolate 'banana
+          '(caramel raspberry ice cream with
+                    chocolate topping with some bananas))
+>(subst2
+  'vanilla
+  'chocolate
+  'banana
+  '(caramel raspberry ice cream with chocolate topping with some bananas))
+> (subst2
+   'vanilla
+   'chocolate
+   'banana
+   '(raspberry ice cream with chocolate topping with some bananas))
+> >(subst2
+    'vanilla
+    'chocolate
+    'banana
+    '(ice cream with chocolate topping with some bananas))
+> > (subst2
+     'vanilla
+     'chocolate
+     'banana
+     '(cream with chocolate topping with some bananas))
+> > >(subst2
+      'vanilla
+      'chocolate
+      'banana
+      '(with chocolate topping with some bananas))
+> > > (subst2
+       'vanilla
+       'chocolate
+       'banana
+       '(chocolate topping with some bananas))
+< < < '(vanilla topping with some bananas)
+< < <'(with vanilla topping with some bananas)
+< < '(cream with vanilla topping with some bananas)
+< <'(ice cream with vanilla topping with some bananas)
+< '(raspberry ice cream with vanilla topping with some bananas)
+<'(caramel raspberry ice cream with vanilla topping with some bananas)
+'(caramel raspberry ice cream with vanilla topping with some bananas)
+
+\end{verbatim}
+\item \texttt{multirember} is below. I am unsure why two \texttt{else} is used by the author. Probably I will learn it down the line. But the
+\texttt{trace} captures the series of recursive steps beautifully. Note the \texttt{>} and \texttt{<} they capture the stack trace nicely.
+\begin{verbatim}
+    (define multirember
+      (lambda (a lat)
+        (cond ((null? lat) (quote ()))
+              ((eq? (car lat) a) (multirember a (cdr lat)))
+              (else (cons (car lat) (multirember a (cdr lat)))))))
+
+> (multirember 'cup '(coffee cup tea cup and hick cup))
+>(multirember 'cup '(coffee cup tea cup and hick cup))
+> (multirember 'cup '(cup tea cup and hick cup))
+> (multirember 'cup '(tea cup and hick cup))
+> >(multirember 'cup '(cup and hick cup))
+> >(multirember 'cup '(and hick cup))
+> > (multirember 'cup '(hick cup))
+> > >(multirember 'cup '(cup))
+> > >(multirember 'cup '())
+< < <'()
+< < '(hick)
+< <'(and hick)
+< '(tea and hick)
+<'(coffee tea and hick)
+'(coffee tea and hick)
+
+\end{verbatim}
+\item Function definition for other `multi' variants below: \texttt{multiinsertR}, \texttt{multiinsertL}, and \texttt{multisubst}.
+\begin{verbatim}
+    (define multiinsertR
+      (lambda (new old lat)
+        (cond ((null? lat) (quote ()))
+              ((eq? old (car lat))
+               (cons (car lat)(cons new (multiinsertR new old (cdr lat)))))
+              (else (cons (car lat) (multiinsertR new old (cdr lat)))))))
+
+> (multiinsertR 'bag 'cup '(coffee cup tea cup and hick cup))
+>(multiinsertR 'bag 'cup '(coffee cup tea cup and hick cup))
+> (multiinsertR 'bag 'cup '(cup tea cup and hick cup))
+> >(multiinsertR 'bag 'cup '(tea cup and hick cup))
+> > (multiinsertR 'bag 'cup '(cup and hick cup))
+> > >(multiinsertR 'bag 'cup '(and hick cup))
+> > > (multiinsertR 'bag 'cup '(hick cup))
+> > > >(multiinsertR 'bag 'cup '(cup))
+> > > > (multiinsertR 'bag 'cup '())
+< < < < '()
+< < < <'(cup bag)
+< < < '(hick cup bag)
+< < <'(and hick cup bag)
+< < '(cup bag and hick cup bag)
+< <'(tea cup bag and hick cup bag)
+< '(cup bag tea cup bag and hick cup bag)
+<'(coffee cup bag tea cup bag and hick cup bag)
+'(coffee cup bag tea cup bag and hick cup bag)
+
+\end{verbatim}
+
+\begin{verbatim}
+    (define multiinsertL
+      (lambda (new old lat)
+        (cond ((null? lat) (quote ()))
+              ((eq? old (car lat))
+               (cons new (cons (car lat) (multiinsertL new old (cdr lat)))))
+              (else (cons (car lat) (multiinsertL new old (cdr lat)))))))
+
+    > (multiinsertL 'bag 'cup '(coffee cup tea cup and hick cup))
+>(multiinsertL 'bag 'cup '(coffee cup tea cup and hick cup))
+> (multiinsertL 'bag 'cup '(cup tea cup and hick cup))
+> >(multiinsertL 'bag 'cup '(tea cup and hick cup))
+> > (multiinsertL 'bag 'cup '(cup and hick cup))
+> > >(multiinsertL 'bag 'cup '(and hick cup))
+> > > (multiinsertL 'bag 'cup '(hick cup))
+> > > >(multiinsertL 'bag 'cup '(cup))
+> > > > (multiinsertL 'bag 'cup '())
+< < < < '()
+< < < <'(bag cup)
+< < < '(hick bag cup)
+< < <'(and hick bag cup)
+< < '(bag cup and hick bag cup)
+< <'(tea bag cup and hick bag cup)
+< '(bag cup tea bag cup and hick bag cup)
+<'(coffee bag cup tea bag cup and hick bag cup)
+'(coffee bag cup tea bag cup and hick bag cup)
+
+\end{verbatim}
+
+\begin{verbatim}
+    (define multisubst
+      (lambda (new old lat)
+        (cond ((null? lat) (quote ()))
+              ((eq? (car lat) old) (cons new (multisubst new old (cdr lat))))
+              (else (cons (car lat) (multisubst new old (cdr lat)))))))
+
+> (multisubst 'bag 'cup '(coffee cup tea cup and hick cup))
+>(multisubst 'bag 'cup '(coffee cup tea cup and hick cup))
+> (multisubst 'bag 'cup '(cup tea cup and hick cup))
+> >(multisubst 'bag 'cup '(tea cup and hick cup))
+> > (multisubst 'bag 'cup '(cup and hick cup))
+> > >(multisubst 'bag 'cup '(and hick cup))
+> > > (multisubst 'bag 'cup '(hick cup))
+> > > >(multisubst 'bag 'cup '(cup))
+> > > > (multisubst 'bag 'cup '())
+< < < < '()
+< < < <'(bag)
+< < < '(hick bag)
+< < <'(and hick bag)
+< < '(bag and hick bag)
+< <'(tea bag and hick bag)
+< '(bag tea bag and hick bag)
+<'(coffee bag tea bag and hick bag)
+'(coffee bag tea bag and hick bag)
+
+\end{verbatim}
 \end{itemize}
-
-
 
 
 
@@ -646,52 +807,52 @@ to make the list \texttt{(d f)}. This \texttt{(d f)} is then \texttt{cons}-ed to
 \newpage
 
 \section{Numbers Games}
-\label{sec:org0d161ae}
+\label{sec:org706230a}
 
 \newpage
 
 \section{* Oh My Gawd *: It's Full of Stars}
-\label{sec:org11f67c1}
+\label{sec:org2d1e157}
 
 \newpage
 
 \section{Shadows}
-\label{sec:orgf56de38}
+\label{sec:org807fa2c}
 
 \newpage
 
 \section{Friends and Relations}
-\label{sec:org72eef1a}
+\label{sec:org13390d4}
 
 \newpage
 
 \section{Lambda the Ultimate}
-\label{sec:org4284c71}
+\label{sec:org9a7c49d}
 
 \newpage
 
 \section{\ldots{} and Again, and Again, and Again, \ldots{}}
-\label{sec:org3d7aaec}
+\label{sec:org75ed019}
 
 \newpage
 
 \section{What Is the Value of All of This?}
-\label{sec:org3f31995}
+\label{sec:orgd97391a}
 
 \newpage
 
 \section{Intermission}
-\label{sec:orgcdb6f6c}
+\label{sec:org876e00e}
 
 \newpage
 
 \section{The Ten Commandments}
-\label{sec:orgd13d003}
+\label{sec:orgf069e4e}
 
 \newpage
 
 \section{The Five Rules}
-\label{sec:org465f8cb}
+\label{sec:orgeb5aa39}
 
 \newpage
 \end{document}

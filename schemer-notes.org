@@ -185,14 +185,14 @@ Key Takeaway:
 + ~cdr~ of a single atom/element list is ~()~.
 + In Tourtezky's book there is a tool called SDRAW. It allows us to do draw ~cons~ cell structures with the ~car~ &
   ~cdr~ pointers. I have uploaded the code for this tool on Github [[https://github.com/deepak-venkatesh/sdraw][here]]. For ~(car a)~ and ~(cdr a)~ where ~a~ is
-  ~samosa~ will be represented as:
+  ~samosa~ will be represented as below (doesn't render well in markdown file on github):
 
   ~[*|*]---> NIL~ $\newline$
   ~|~ $\newline$
   ~|~ $\newline$
   ~V~ $\newline$
   ~SAMOSA~
- 
+
 + ~cdr~ of an empty list will be ~()~ as per Common Lisp standards but in Scheme it is an error.
 
 
@@ -544,8 +544,10 @@ The changing argument must be tested in the termination condition: when using ~c
 	    (cond ((null? lat) (quote ()))
 		  ((or (eq? (car lat) o1) (eq? (car lat) o2)) (cons new (cdr lat)))
 		  (else (cons (car lat) (subst2 new o1 o2 (cdr lat)))))))
-    
-    > (subst2 'vanilla 'chocolate 'banana '(caramel raspberry ice cream with chocolate topping with some bananas))
+
+    > (subst2 'vanilla 'chocolate 'banana
+	      '(caramel raspberry ice cream with
+			chocolate topping with some bananas))
     >(subst2
       'vanilla
       'chocolate
@@ -616,7 +618,8 @@ The changing argument must be tested in the termination condition: when using ~c
 	(define multiinsertR
 	  (lambda (new old lat)
 	    (cond ((null? lat) (quote ()))
-		  ((eq? old (car lat)) (cons (car lat) (cons new (multiinsertR new old (cdr lat)))))
+		  ((eq? old (car lat))
+		   (cons (car lat)(cons new (multiinsertR new old (cdr lat)))))
 		  (else (cons (car lat) (multiinsertR new old (cdr lat)))))))
 
     > (multiinsertR 'bag 'cup '(coffee cup tea cup and hick cup))
@@ -644,10 +647,11 @@ The changing argument must be tested in the termination condition: when using ~c
 	(define multiinsertL
 	  (lambda (new old lat)
 	    (cond ((null? lat) (quote ()))
-		  ((eq? old (car lat)) (cons new (cons (car lat) (multiinsertL new old (cdr lat)))))
+		  ((eq? old (car lat))
+		   (cons new (cons (car lat) (multiinsertL new old (cdr lat)))))
 		  (else (cons (car lat) (multiinsertL new old (cdr lat)))))))
 
-        > (multiinsertL 'bag 'cup '(coffee cup tea cup and hick cup))
+	> (multiinsertL 'bag 'cup '(coffee cup tea cup and hick cup))
     >(multiinsertL 'bag 'cup '(coffee cup tea cup and hick cup))
     > (multiinsertL 'bag 'cup '(cup tea cup and hick cup))
     > >(multiinsertL 'bag 'cup '(tea cup and hick cup))

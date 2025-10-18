@@ -505,6 +505,27 @@ Key Takeaway:
   shows the  ~cons~-ing with a ~<~ or a ~>~. So a ~()~ gets ~cons~-ed with the last recurring item and goes back to the
   first item. In the above example ~()~ is ~cons~-ed to ~f~ to make a list ~(f)~. This ~(f)~ is then ~cons~-ed to ~d~
   to make the list ~(d f)~. This ~(d f)~ is then ~cons~-ed to ~b~ to finally get ~(b d f)~.
++ Without looking into the questions we are able to build these ~cons~-es for ~insertR~, ~insertL~, and ~subst~.
+  #+begin_src scheme
+    (define insertR
+      (lambda (new old lat)
+	(cond ((null? lat) (quote ()))
+	      ((eq? old (car lat)) (cons (car lat) (cons new (cdr lat))))
+	      (else (cons (car lat) (insertR new old (cdr lat)))))))
+
+    (define insertL
+      (lambda (new old lat)
+	(cond ((null? lat) (quote ()))
+	      ((eq? old (car lat)) (cons new (cons (car lat) (cdr lat))))
+	      (else (cons (car lat) (insertL new old (cdr lat)))))))
+
+    (define subst
+      (lambda (new old lat)
+	(cond ((null? lat) (quote ()))
+	      ((eq? old (car lat)) (cons new (cdr lat)))
+	      (else (cons (car lat) (subst new old (cdr lat)))))))
+
+  #+end_src
 
 
 

@@ -505,7 +505,7 @@ Key Takeaway:
   shows the  ~cons~-ing with a ~<~ or a ~>~. So a ~()~ gets ~cons~-ed with the last recurring item and goes back to the
   first item. In the above example ~()~ is ~cons~-ed to ~f~ to make a list ~(f)~. This ~(f)~ is then ~cons~-ed to ~d~
   to make the list ~(d f)~. This ~(d f)~ is then ~cons~-ed to ~b~ to finally get ~(b d f)~.
-+ Without looking into the questions we are able to build these ~cons~-es for ~insertR~, ~insertL~, and ~subst~.
++ Without looking into the questions was able to build these ~cons~-es for ~insertR~, ~insertL~, and ~subst~.
   #+begin_src scheme
     (define insertR
       (lambda (new old lat)
@@ -526,6 +526,16 @@ Key Takeaway:
 	      (else (cons (car lat) (subst new old (cdr lat)))))))
 
   #+end_src
++ ~subst2~ is another function defined in the book, it substitutes either the first occurrence of one thing or another.
+  #+begin_src scheme
+    (define subst2
+      (lambda (new o1 o2 lat)
+	(cond ((null? lat) (quote ()))
+	      ((or (eq? (car lat) o1) (eq? (car lat) o2)) (cons new (cdr lat)))
+	      (else (cons (car lat) (subst2 new o1 o2 (cdr lat)))))))
+
+  #+end_src
++ 
 
 
 

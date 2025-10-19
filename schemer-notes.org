@@ -699,49 +699,64 @@ The changing argument must be tested in the termination condition: when using ~c
     '(coffee bag tea bag and hick bag)
     
   #+end_src
+  
+*Core Terms/Concepts Learnt*
++ <<<>>>>>>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+* TODO 
 #+LATEX: \newpage
 
 * Numbers Games
+
+This chapter explains <>
+
+#+LATEX: \vspace{1em}
+
+Key Takeaway:
+
+
+#+LATEX: \vspace{1em}
+
++ In
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 #+LATEX: \newpage
 

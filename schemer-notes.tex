@@ -1,4 +1,4 @@
-% Created 2025-10-19 Sun 09:15
+% Created 2025-10-19 Sun 10:28
 % Intended LaTeX compiler: pdflatex
 \documentclass[11pt]{article}
 \usepackage[utf8]{inputenc}
@@ -60,7 +60,7 @@ well. I am still new to both Lisp and programming.
 
 \newpage
 \section{Foreword}
-\label{sec:orgd1cf032}
+\label{sec:org8c71ecc}
 
 By Gerald Sussman of MIT, co-author of the book SICP (the wizard book).
 
@@ -97,7 +97,7 @@ can be treated as data.
 
 \newpage
 \section{Preface}
-\label{sec:org2a0c147}
+\label{sec:org774e738}
 
 Key Takeaway:
 \emph{The goal of the book is to teach the reader to think recursively.}
@@ -172,14 +172,14 @@ Some tests for checking \texttt{atom?} in Scheme below
 
 \newpage
 \section{Toys}
-\label{sec:org5c57d48}
+\label{sec:orge4e568a}
 
 This chapter introduces primitives of Scheme. These are the basic building blocks.
 
 \vspace{1em}
 
 \subsection{The Law of \texttt{car}}
-\label{sec:orgd3209c9}
+\label{sec:org7b7a44b}
 Key Takeaway:
 \emph{The primitive \texttt{car} is defined only for non-empty lists. The \texttt{car} is the first atom (element) of that list.}
 
@@ -219,7 +219,7 @@ get an error like below.
 \end{itemize}
 
 \subsection{The Law of \texttt{cdr}}
-\label{sec:orga4bb2f9}
+\label{sec:orgf187da7}
 Key Takeaway:
 \emph{The primitive \texttt{cdr} is defined only for non-empty lists. The \texttt{cdr} of any non-empty list is always another list.}
 
@@ -243,7 +243,7 @@ Key Takeaway:
 
 
 \subsection{The Law of \texttt{cons}}
-\label{sec:orgd8f7e6d}
+\label{sec:org3dc4642}
 Key Takeaway:
 \emph{The primitive \texttt{cons} takes two arguments. The second argument to \texttt{cons} must be a list. The result is a list.}
 
@@ -266,7 +266,7 @@ dotted list the last atom points to a non \texttt{NIL} atom. In the above case w
 
 
 \subsection{The Law of \texttt{null?}}
-\label{sec:orgc5196be}
+\label{sec:org26b7a1b}
 Key Takeaway:
 \emph{The primitive \texttt{null?} is defined only for lists.}
 
@@ -289,7 +289,7 @@ for \texttt{()} is \texttt{\#t} and for everything else it is \texttt{\#f}. See 
 \end{itemize}
 
 \subsection{The Law of \texttt{eq?}}
-\label{sec:org8198cee}
+\label{sec:org4e4cbd9}
 Key Takeaway:
 \emph{The primitive \texttt{eq?} in takes two arguments and compares them. Each must be a non numeric atom.}
 
@@ -314,7 +314,7 @@ Key Takeaway:
 
 \newpage
 \section{Do It, Do It Again, and Again, and Again \ldots{}}
-\label{sec:org5a58507}
+\label{sec:orga67aeaa}
 
 This chapter explains recursion. The best material for recursion in my opinion is Chapter 8 in Touretzky's book.
 
@@ -448,7 +448,7 @@ tail optimized recursion is to be studied from the book `Sketchy Scheme' by Nils
 \newpage
 
 \section{Cons the Magnificent}
-\label{sec:org46ff4a1}
+\label{sec:org3dc3720}
 
 This chapter explains the methods to build lists using \texttt{cons} recursively.
 
@@ -773,7 +773,7 @@ to make the list \texttt{(d f)}. This \texttt{(d f)} is then \texttt{cons}-ed to
 \newpage
 
 \section{Numbers Games}
-\label{sec:orgb5bf20a}
+\label{sec:org81c8de0}
 
 This chapter explains how numbers can be built with recursion.
 
@@ -800,6 +800,45 @@ number set.
     (- n 1)))
 
 \end{verbatim}
+Is we do \texttt{(sub1 0)} we will actually get \texttt{-1} but for the sake of the book we will deal only with non-negative integers.
+\item \texttt{zero?} is an inbuilt predicate just like \texttt{ZEROP} in Common Lisp.
+\item We define addition of two numbers by making a decrementing counter of one of the numbers till it reaches zero. For every decrement we \texttt{add1}
+to the other number. So for instance we need to add 3 to 2 then the 3 goes to 2 then 1 then 0. So there are three steps 3 to 2, 2 to 1 and 1
+to 0. So these three steps gets added to 2. Thus we get 5. Better to look at the stack trace for the example below.
+
+\begin{verbatim}
+> (o+ 2 3)
+>(o+ 2 3)
+> (o+ 2 2)
+> >(o+ 2 1)
+> > (o+ 2 0)
+< < 2
+< <3
+< 4
+<5
+5
+
+\end{verbatim}
+\item In the earlier chapter the authors had referred to using \texttt{(null?)} as the first test and now they correctly say that for numbers we can
+use \texttt{zero?} as the test.
+\item \texttt{zero?} is like \texttt{null?} and \texttt{add1} is like \texttt{cons}
+\item Exactly like \texttt{o+} we can build \texttt{o-} . The only difference is that we do not \texttt{add1} on every decrement but rather subtract using \texttt{sub1}. Looking
+at the stack trace below.
+\begin{verbatim}
+> (o- 5 3)
+>(o- 5 3)
+> (o- 5 2)
+> >(o- 5 1)
+> > (o- 5 0)
+< < 5
+< <4
+< 3
+<2
+2
+
+\end{verbatim}
+\item Tuple is defined as a list of numbers. In this case I am assuming non negative numbers and also the book say an empty list will be also a
+tuple. I don't think tuple is defined formally in the R\textsuperscript{5}RS standard.
 \end{itemize}
 
 
@@ -844,47 +883,47 @@ number set.
 \newpage
 
 \section{* Oh My Gawd *: It's Full of Stars}
-\label{sec:org7383879}
+\label{sec:org69f33ef}
 
 \newpage
 
 \section{Shadows}
-\label{sec:org79ac792}
+\label{sec:org46780d1}
 
 \newpage
 
 \section{Friends and Relations}
-\label{sec:org1287471}
+\label{sec:org9cc8b16}
 
 \newpage
 
 \section{Lambda the Ultimate}
-\label{sec:orgc6e13cd}
+\label{sec:org30c8e86}
 
 \newpage
 
 \section{\ldots{} and Again, and Again, and Again, \ldots{}}
-\label{sec:org51af007}
+\label{sec:orga391bd5}
 
 \newpage
 
 \section{What Is the Value of All of This?}
-\label{sec:orgb14b8fb}
+\label{sec:org6bf68a3}
 
 \newpage
 
 \section{Intermission}
-\label{sec:org80f2491}
+\label{sec:org67e6496}
 
 \newpage
 
 \section{The Ten Commandments}
-\label{sec:orgf4efea8}
+\label{sec:orga483941}
 
 \newpage
 
 \section{The Five Rules}
-\label{sec:org0b53024}
+\label{sec:org805f12c}
 
 \newpage
 \end{document}

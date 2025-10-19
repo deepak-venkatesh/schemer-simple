@@ -731,6 +731,45 @@ recurring on a number, ~n~, ask two questions about it: ~(zero? n)~ and ~else~./
 	(- n 1)))
 
   #+end_src
+  Is we do ~(sub1 0)~ we will actually get ~-1~ but for the sake of the book we will deal only with non-negative integers.
++ ~zero?~ is an inbuilt predicate just like ~ZEROP~ in Common Lisp.
++ We define addition of two numbers by making a decrementing counter of one of the numbers till it reaches zero. For every decrement we ~add1~
+  to the other number. So for instance we need to add 3 to 2 then the 3 goes to 2 then 1 then 0. So there are three steps 3 to 2, 2 to 1 and 1
+  to 0. So these three steps gets added to 2. Thus we get 5. Better to look at the stack trace for the example below.
+  
+  #+begin_src scheme
+    > (o+ 2 3)
+    >(o+ 2 3)
+    > (o+ 2 2)
+    > >(o+ 2 1)
+    > > (o+ 2 0)
+    < < 2
+    < <3
+    < 4
+    <5
+    5
+
+  #+end_src
++ In the earlier chapter the authors had referred to using ~(null?)~ as the first test and now they correctly say that for numbers we can
+  use ~zero?~ as the test.
++ ~zero?~ is like ~null?~ and ~add1~ is like ~cons~
++ Exactly like ~o+~ we can build ~o-~ . The only difference is that we do not ~add1~ on every decrement but rather subtract using ~sub1~. Looking
+  at the stack trace below.
+  #+begin_src scheme
+    > (o- 5 3)
+    >(o- 5 3)
+    > (o- 5 2)
+    > >(o- 5 1)
+    > > (o- 5 0)
+    < < 5
+    < <4
+    < 3
+    <2
+    2
+
+  #+end_src
++ Tuple is defined as a list of numbers. In this case I am assuming non negative numbers and also the book say an empty list will be also a
+  tuple. I don't think tuple is defined formally in the R^{5}RS standard.
 
 
 

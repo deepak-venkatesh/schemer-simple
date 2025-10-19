@@ -1,9 +1,13 @@
 #lang racket
 (require racket/trace)
 
+;; Preface
+
 (define atom?
   (lambda (x)
     (and (not (pair? x)) (not (null? x)))))
+
+;; Book Ch02: Do It, Do It Again, and Again, and Again...
 
 (define lat?
   (lambda (l)
@@ -25,6 +29,8 @@
       ((null? lat) #f)
       ((eq? (car lat) a) #t)
       (else (member? a (cdr lat))))))
+
+;; Book Ch03: Cons the Magnificent
 
 (define rember
   (lambda (a lat)
@@ -102,8 +108,15 @@
           ((eq? (car lat) old) (cons new (multisubst new old (cdr lat))))
           (else (cons (car lat) (multisubst new old (cdr lat)))))))
 
-(trace multisubst)
+;; Book Ch04: Number Games
 
+(define add1
+  (lambda (n)
+    (+ n 1)))
+
+(define sub1
+  (lambda (n)
+    (- n 1)))
 
 
 

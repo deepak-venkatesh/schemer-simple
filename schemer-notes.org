@@ -251,7 +251,7 @@ Key Takeaway:
 #+end_src
 
 *Core Terms/Concepts Learnt*
-+ ~car~, ~cdr~, ~cons~, ~eq?~, ~null?~, ~quote~ / ~'~, ~#t~, ~#f~, 
++ ~car~, ~cdr~, ~cons~, ~eq?~, ~null?~, ~quote~ / ~'~, ~#t~, ~#f~
 + Atoms, S-Expressions, Lists, Dotted Lists
 
 
@@ -701,23 +701,36 @@ The changing argument must be tested in the termination condition: when using ~c
   #+end_src
   
 *Core Terms/Concepts Learnt*
-+ <<<>>>>>>
++ Method to generate lists by using ~cons~ in recursions.
 
-* TODO 
 #+LATEX: \newpage
 
 * Numbers Games
 
-This chapter explains <>
+This chapter explains how numbers can be built with recursion.
 
 #+LATEX: \vspace{1em}
 
 Key Takeaway:
+/The First Commandment (first revision): When recurring on a list of atoms, ~lat~, asks two questions about it: ~(null? lat)~ and ~else~. When
+recurring on a number, ~n~, ask two questions about it: ~(zero? n)~ and ~else~./
 
 
 #+LATEX: \vspace{1em}
 
-+ In
++ In this chapter we are focusing on only the elements in the set of whole numbers.
++ We define the basic primitive functions to add 1 or subtract 1. Using this increment or decrement my assumption is we will create the Whole
+  number set.
+  #+begin_src scheme
+    (define add1
+      (lambda (n)
+	(+ n 1)))
+
+    (define sub1
+      (lambda (n)
+	(- n 1)))
+
+  #+end_src
 
 
 

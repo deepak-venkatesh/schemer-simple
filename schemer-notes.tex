@@ -1,4 +1,4 @@
-% Created 2025-10-19 Sun 10:28
+% Created 2025-10-20 Mon 13:06
 % Intended LaTeX compiler: pdflatex
 \documentclass[11pt]{article}
 \usepackage[utf8]{inputenc}
@@ -60,7 +60,7 @@ well. I am still new to both Lisp and programming.
 
 \newpage
 \section{Foreword}
-\label{sec:org8c71ecc}
+\label{sec:orge18580a}
 
 By Gerald Sussman of MIT, co-author of the book SICP (the wizard book).
 
@@ -97,7 +97,7 @@ can be treated as data.
 
 \newpage
 \section{Preface}
-\label{sec:org774e738}
+\label{sec:orgcdd0809}
 
 Key Takeaway:
 \emph{The goal of the book is to teach the reader to think recursively.}
@@ -172,14 +172,14 @@ Some tests for checking \texttt{atom?} in Scheme below
 
 \newpage
 \section{Toys}
-\label{sec:orge4e568a}
+\label{sec:orgf867e63}
 
 This chapter introduces primitives of Scheme. These are the basic building blocks.
 
 \vspace{1em}
 
 \subsection{The Law of \texttt{car}}
-\label{sec:org7b7a44b}
+\label{sec:org7b431cf}
 Key Takeaway:
 \emph{The primitive \texttt{car} is defined only for non-empty lists. The \texttt{car} is the first atom (element) of that list.}
 
@@ -219,7 +219,7 @@ get an error like below.
 \end{itemize}
 
 \subsection{The Law of \texttt{cdr}}
-\label{sec:orgf187da7}
+\label{sec:orge1e24f6}
 Key Takeaway:
 \emph{The primitive \texttt{cdr} is defined only for non-empty lists. The \texttt{cdr} of any non-empty list is always another list.}
 
@@ -243,7 +243,7 @@ Key Takeaway:
 
 
 \subsection{The Law of \texttt{cons}}
-\label{sec:org3dc4642}
+\label{sec:org32c6611}
 Key Takeaway:
 \emph{The primitive \texttt{cons} takes two arguments. The second argument to \texttt{cons} must be a list. The result is a list.}
 
@@ -266,7 +266,7 @@ dotted list the last atom points to a non \texttt{NIL} atom. In the above case w
 
 
 \subsection{The Law of \texttt{null?}}
-\label{sec:org26b7a1b}
+\label{sec:org4b64613}
 Key Takeaway:
 \emph{The primitive \texttt{null?} is defined only for lists.}
 
@@ -289,7 +289,7 @@ for \texttt{()} is \texttt{\#t} and for everything else it is \texttt{\#f}. See 
 \end{itemize}
 
 \subsection{The Law of \texttt{eq?}}
-\label{sec:org4e4cbd9}
+\label{sec:orgf240a8c}
 Key Takeaway:
 \emph{The primitive \texttt{eq?} in takes two arguments and compares them. Each must be a non numeric atom.}
 
@@ -314,7 +314,7 @@ Key Takeaway:
 
 \newpage
 \section{Do It, Do It Again, and Again, and Again \ldots{}}
-\label{sec:orga67aeaa}
+\label{sec:org60a7b09}
 
 This chapter explains recursion. The best material for recursion in my opinion is Chapter 8 in Touretzky's book.
 
@@ -448,7 +448,7 @@ tail optimized recursion is to be studied from the book `Sketchy Scheme' by Nils
 \newpage
 
 \section{Cons the Magnificent}
-\label{sec:org3dc3720}
+\label{sec:orgbbde993}
 
 This chapter explains the methods to build lists using \texttt{cons} recursively.
 
@@ -773,7 +773,7 @@ to make the list \texttt{(d f)}. This \texttt{(d f)} is then \texttt{cons}-ed to
 \newpage
 
 \section{Numbers Games}
-\label{sec:org81c8de0}
+\label{sec:orgc5c27d9}
 
 This chapter explains how numbers can be built with recursion.
 
@@ -839,6 +839,9 @@ at the stack trace below.
 \end{verbatim}
 \item Tuple is defined as a list of numbers. In this case I am assuming non negative numbers and also the book say an empty list will be also a
 tuple. I don't think tuple is defined formally in the R\textsuperscript{5}RS standard.
+\item \texttt{()} is also a tuple as it is a list of zero numbers.
+\item \texttt{addtup} is essentially a function which does digit-sum (sums the numbers in the tuple).
+\item We will use \texttt{o+} to build numbers just like \texttt{cons} is used to build lists.
 \end{itemize}
 
 
@@ -883,47 +886,47 @@ tuple. I don't think tuple is defined formally in the R\textsuperscript{5}RS sta
 \newpage
 
 \section{* Oh My Gawd *: It's Full of Stars}
-\label{sec:org69f33ef}
+\label{sec:org5a23cc0}
 
 \newpage
 
 \section{Shadows}
-\label{sec:org46780d1}
+\label{sec:org0b1246c}
 
 \newpage
 
 \section{Friends and Relations}
-\label{sec:org9cc8b16}
+\label{sec:org75612c1}
 
 \newpage
 
 \section{Lambda the Ultimate}
-\label{sec:org30c8e86}
+\label{sec:org4f2f05f}
 
 \newpage
 
 \section{\ldots{} and Again, and Again, and Again, \ldots{}}
-\label{sec:orga391bd5}
+\label{sec:org2b57c9d}
 
 \newpage
 
 \section{What Is the Value of All of This?}
-\label{sec:org6bf68a3}
+\label{sec:orgf278596}
 
 \newpage
 
 \section{Intermission}
-\label{sec:org67e6496}
+\label{sec:orgc8b0b26}
 
 \newpage
 
 \section{The Ten Commandments}
-\label{sec:orga483941}
+\label{sec:org6f93f3a}
 
 \newpage
 
 \section{The Five Rules}
-\label{sec:org805f12c}
+\label{sec:org95d5ca3}
 
 \newpage
 \end{document}

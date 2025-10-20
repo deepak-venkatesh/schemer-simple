@@ -770,6 +770,9 @@ recurring on a number, ~n~, ask two questions about it: ~(zero? n)~ and ~else~./
   #+end_src
 + Tuple is defined as a list of numbers. In this case I am assuming non negative numbers and also the book say an empty list will be also a
   tuple. I don't think tuple is defined formally in the R^{5}RS standard.
++ ~()~ is also a tuple as it is a list of zero numbers.
++ ~addtup~ is essentially a function which does digit-sum (sums the numbers in the tuple).
++ We will use ~o+~ to build numbers just like ~cons~ is used to build lists.
 
 
 

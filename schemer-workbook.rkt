@@ -128,7 +128,10 @@
     (cond ((zero? m) n)
           (else (sub1 (o- n (sub1 m)))))))
 
-(trace o-)
+(define addtup
+  (lambda (tup)
+    (cond ((null? tup) 0)
+          (else (o+ (car tup) (addtup (cdr tup)))))))
 
 
 

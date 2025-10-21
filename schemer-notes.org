@@ -715,6 +715,8 @@ Key Takeaway:
 /The First Commandment (first revision): When recurring on a list of atoms, ~lat~, asks two questions about it: ~(null? lat)~ and ~else~. When
 recurring on a number, ~n~, ask two questions about it: ~(zero? n)~ and ~else~./
 
+/The Fourth Commandment (first revision): Always change one argument while recurring. It must be changed closer to termination. The changing
+argument must be tested in the termination condition: when using ~cdr~ test termination with null? and when using ~sub1~, test termination with ~zero?~./
 
 #+LATEX: \vspace{1em}
 
@@ -773,6 +775,39 @@ recurring on a number, ~n~, ask two questions about it: ~(zero? n)~ and ~else~./
 + ~()~ is also a tuple as it is a list of zero numbers.
 + ~addtup~ is essentially a function which does digit-sum (sums the numbers in the tuple).
 + We will use ~o+~ to build numbers just like ~cons~ is used to build lists.
++ Writing ~addtup~ seems easy given the exercises prior to this and reading Touretzky. Side comment: This book is actually really fun!
+  #+begin_src scheme
+	(define addtup
+	  (lambda (tup)
+	    (cond ((null? tup) 0)
+		  (else (o+ (car tup) (addtup (cdr tup)))))))
+    
+    > (addtup '(1 2 3 4 5 6 7 8 9 10))
+    >(addtup '(1 2 3 4 5 6 7 8 9 10))
+    > (addtup '(2 3 4 5 6 7 8 9 10))
+    > >(addtup '(3 4 5 6 7 8 9 10))
+    > > (addtup '(4 5 6 7 8 9 10))
+    > > >(addtup '(5 6 7 8 9 10))
+    > > > (addtup '(6 7 8 9 10))
+    > > > >(addtup '(7 8 9 10))
+    > > > > (addtup '(8 9 10))
+    > > > > >(addtup '(9 10))
+    > > > > > (addtup '(10))
+    > > > >[10] (addtup '())
+    < < < <[10] 0
+    < < < < < 10
+    < < < < <19
+    < < < < 27
+    < < < <34
+    < < < 40
+    < < <45
+    < < 49
+    < <52
+    < 54
+    <55
+    55
+
+  #+end_src
 
 
 

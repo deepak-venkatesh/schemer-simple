@@ -133,7 +133,23 @@
     (cond ((null? tup) 0)
           (else (o+ (car tup) (addtup (cdr tup)))))))
 
+(define x
+  (lambda (n m)
+    (cond ((zero? m) 0)
+          (else (o+ n (x n (sub1 m)))))))
 
+(define tup+v1       ; this v1 version will work only if length of tup1 and tup2 is same
+  (lambda (tup1 tup2)
+    (cond ((and (null? tup1) (null? tup2)) (quote ()))
+          (else (cons (o+ (car tup1) (car tup2)) (tup+v1 (cdr tup1) (cdr tup2)))))))
+
+(define tup+
+  (lambda (tup1 tup2)
+    (cond ((null? tup1) tup2)
+          ((null? tup2) tup1)
+          (else (cons (o+ (car tup1) (car tup2)) (tup+ (cdr tup1) (cdr tup2)))))))
+
+(trace tup+)
 
 
 

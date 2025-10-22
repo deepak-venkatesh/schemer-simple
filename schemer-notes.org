@@ -393,7 +393,9 @@ This chapter explains the methods to build lists using ~cons~ recursively.
 
 Key Takeaway:
 /The Second Commandment: Use ~cons~ to build lists/
+#+LATEX: \vspace{0.5em}
 /The Third Commandment: When building a list, describe the first typical element, and then ~cons~ it onto the natural recursion/
+#+LATEX: \vspace{0.5em}
 /The Fourth Commandement: Always change at lest one argument while recurring. It must be changed to be closer to termination.
 The changing argument must be tested in the termination condition: when using ~cdr~, test termination with ~null?~./
 
@@ -714,9 +716,12 @@ This chapter explains how numbers can be built with recursion.
 Key Takeaway:
 /The First Commandment (first revision): When recurring on a list of atoms, ~lat~, asks two questions about it: ~(null? lat)~ and ~else~. When
 recurring on a number, ~n~, ask two questions about it: ~(zero? n)~ and ~else~./
-
+#+LATEX: \vspace{0.5em}
 /The Fourth Commandment (first revision): Always change one argument while recurring. It must be changed closer to termination. The changing
 argument must be tested in the termination condition: when using ~cdr~ test termination with null? and when using ~sub1~, test termination with ~zero?~./
+#+LATEX: \vspace{0.5em}
+/The Fifth Commandment: When building a value with ~+~, always use 0 for the value of the terminating line, for adding 0 does not change the
+value of an addition. When building a value with ~x~, always use 1 for the value of the terminating line, for multiplying by 1 does not change the value of a multiplication. When building a value with ~cons~, always consider ~()~ for the value of the terminating line./
 
 #+LATEX: \vspace{1em}
 
@@ -808,7 +813,121 @@ argument must be tested in the termination condition: when using ~cdr~ test term
     55
 
   #+end_src
++ Multiplication is repetitive addition. So to build ~x~ we have to decrement one number and for every decrement add the other number to itself.
+  #+begin_src scheme
+	(define x
+	  (lambda (n m)
+	    (cond ((zero? m) 0)
+		  (else (o+ n (x n (sub1 m)))))))
 
+    > (x 4 3)
+    >(x 4 3)
+    > (x 4 2)
+    > >(x 4 1)
+    > > (x 4 0)
+    < < 0
+    < <4
+    < 8
+    <12
+    12
+    
+  #+end_src
++ A nice expansion in the book is for ~(x 12 3)~ fairly similar to the ~trace~ Dr Racket generates
+  #+begin_src scheme
+    (x 12 3)
+    = 12 + (x 12 2)
+    = 12 + 12 + (x 12 1)
+    = 12 + 12 + 12 + (x 12 0)
+    = 12 + 12 + 12 + 0
+    = 12 + 24
+    = 36
+    
+  #+end_src
++ A question is asked why is 0 the value for the terminal condition line in ~x~ and the answer to this is because 0 will not affect ~+~. That
+  is ~n + 0 = n~. The actual math behind lies in abstract algebra. In an operation such as ~+~ there is a concept of identity and inverse. The
+  ~identity~ or ~neutral~ element in the set of this operation does not affect the value of other elements when the operation is applied between
+  an element and this identity. For example, in the operation of ~+~ the ~identity~ element is ~0~. The operation ~+~ say is applied to the set
+  of non-negative numbers (as done in this book). So ~+~ 2 and the ~identity~ should yield 2 itself. Thus the identity in this set of whole
+  numbers for this specific ~+~ operation is 0. Similarly for the operation of ~x~ in the set of natural numbers the identity is 1. 2 multiplied
+  by 1 yields 2 again. Now we get back to scheme and away from abstract algebra.
++ The next function we write is addition of two tuples. In this all elements in the tuple at their respective positions are added. The first version
+  of the code adds two tuples of the same length (code is below). When we supply it with varying length tuples we get an error because it tries to
+  add a number to an empty list. The trace diagram shows the error. Now we will write a cleaner function which will take varying length tuples.
+  #+begin_src scheme
+	(define tup+v1       ; this v1 version will work only if length of tup1 and tup2 is same
+	  (lambda (tup1 tup2)
+	    (cond ((and (null? tup1) (null? tup2)) (quote ()))
+		  (else (cons (o+ (car tup1) (car tup2)) (tup+v1 (cdr tup1) (cdr tup2)))))))
+    
+    > (tup+v1 '(1 2 3 4) '(4 3 2 1))
+    >(tup+v1 '(1 2 3 4) '(4 3 2 1))
+    > (tup+v1 '(2 3 4) '(3 2 1))
+    > >(tup+v1 '(3 4) '(2 1))
+    > > (tup+v1 '(4) '(1))
+    > > >(tup+v1 '() '())
+    < < <'()
+    < < '(5)
+    < <'(5 5)
+    < '(5 5 5)
+    <'(5 5 5 5)
+    '(5 5 5 5)
+
+    > (tup+v1 '(1 2 3 4) '(4 3 2))
+    >(tup+v1 '(1 2 3 4) '(4 3 2))
+    > (tup+v1 '(2 3 4) '(3 2))
+    > >(tup+v1 '(3 4) '(2))
+    > > (tup+v1 '(4) '())
+    . . car: contract violation
+      expected: pair?
+      given: '()
+
+  #+end_src
++ ~tup+~ below is the correct way to define addition of the elements of two tuples. The trace diagram helps understand why. When one of the tuples
+  runs out of elements i.e. it is an empty tuple, then at that time whatever the present recurring state of the other tuple is that is used for
+  ~cons~-ing when the stack frames start returning values.
+  #+begin_src scheme
+	(define tup+
+	  (lambda (tup1 tup2)
+	    (cond ((null? tup1) tup2)
+		  ((null? tup2) tup1)
+		  (else (cons (o+ (car tup1) (car tup2)) (tup+ (cdr tup1) (cdr tup2)))))))
+
+    > (tup+ '(1 2 3 4) '(4 3 2 1))
+    >(tup+ '(1 2 3 4) '(4 3 2 1))
+    > (tup+ '(2 3 4) '(3 2 1))
+    > >(tup+ '(3 4) '(2 1))
+    > > (tup+ '(4) '(1))
+    > > >(tup+ '() '())
+    < < <'()
+    < < '(5)
+    < <'(5 5)
+    < '(5 5 5)
+    <'(5 5 5 5)
+    '(5 5 5 5)
+
+    > (tup+ '(1 2 3 ) '(4 3 2 1))
+    >(tup+ '(1 2 3) '(4 3 2 1))
+    > (tup+ '(2 3) '(3 2 1))
+    > >(tup+ '(3) '(2 1))
+    > > (tup+ '() '(1))
+    < < '(1)
+    < <'(5 1)
+    < '(5 5 1)
+    <'(5 5 5 1)
+    '(5 5 5 1)
+    
+    > (tup+ '(1 2 3 4) '(4 3 2))
+    >(tup+ '(1 2 3 4) '(4 3 2))
+    > (tup+ '(2 3 4) '(3 2))
+    > >(tup+ '(3 4) '(2))
+    > > (tup+ '(4) '())
+    < < '(4)
+    < <'(5 4)
+    < '(5 5 4)
+    <'(5 5 5 4)
+    '(5 5 5 4)
+
+  #+end_src
 
 
 

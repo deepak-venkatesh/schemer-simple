@@ -854,11 +854,13 @@ value of an addition. When building a value with ~x~, always use 1 for the value
   of the code adds two tuples of the same length (code is below). When we supply it with varying length tuples we get an error because it tries to
   add a number to an empty list. The trace diagram shows the error. Now we will write a cleaner function which will take varying length tuples.
   #+begin_src scheme
-	(define tup+v1       ; this v1 version will work only if length of tup1 and tup2 is same
+    ; this v1 version will work only if length of tup1 and tup2 is same
+	(define tup+v1       
 	  (lambda (tup1 tup2)
 	    (cond ((and (null? tup1) (null? tup2)) (quote ()))
-		  (else (cons (o+ (car tup1) (car tup2)) (tup+v1 (cdr tup1) (cdr tup2)))))))
-    
+		  (else (cons (o+ (car tup1) (car tup2))
+			      (tup+v1 (cdr tup1) (cdr tup2)))))))
+
     > (tup+v1 '(1 2 3 4) '(4 3 2 1))
     >(tup+v1 '(1 2 3 4) '(4 3 2 1))
     > (tup+v1 '(2 3 4) '(3 2 1))
@@ -890,7 +892,8 @@ value of an addition. When building a value with ~x~, always use 1 for the value
 	  (lambda (tup1 tup2)
 	    (cond ((null? tup1) tup2)
 		  ((null? tup2) tup1)
-		  (else (cons (o+ (car tup1) (car tup2)) (tup+ (cdr tup1) (cdr tup2)))))))
+		  (else (cons (o+ (car tup1) (car tup2))
+			      (tup+ (cdr tup1) (cdr tup2)))))))
 
     > (tup+ '(1 2 3 4) '(4 3 2 1))
     >(tup+ '(1 2 3 4) '(4 3 2 1))
@@ -915,7 +918,7 @@ value of an addition. When building a value with ~x~, always use 1 for the value
     < '(5 5 1)
     <'(5 5 5 1)
     '(5 5 5 1)
-    
+
     > (tup+ '(1 2 3 4) '(4 3 2))
     >(tup+ '(1 2 3 4) '(4 3 2))
     > (tup+ '(2 3 4) '(3 2))

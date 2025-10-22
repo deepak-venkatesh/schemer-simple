@@ -149,7 +149,31 @@
           ((null? tup2) tup1)
           (else (cons (o+ (car tup1) (car tup2)) (tup+ (cdr tup1) (cdr tup2)))))))
 
-(trace tup+)
+(define >
+  (lambda (n m)
+    (cond ((zero? n) #f)
+          ((zero? m) #t)
+          (else (> (sub1 n) (sub1 m))))))
+
+(define <
+  (lambda (n m)
+    (cond ((zero? m) #f)
+          ((zero? n) #t)
+          (else (< (sub1 n) (sub1 m))))))
+
+(define o=
+  (lambda (n m)
+    (cond ((zero? m) (zero? n))
+          ((zero? n) #f)
+          (else (= (sub1 n) (sub1 m))))))
+
+(define =
+  (lambda (n m)
+    (cond ((> n m) #f)
+          ((< n m) #f)
+          (else #t))))
+
+(trace =)
 
 
 

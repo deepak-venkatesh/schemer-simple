@@ -1,4 +1,4 @@
-% Created 2025-10-21 Tue 19:54
+% Created 2025-10-22 Wed 07:09
 % Intended LaTeX compiler: pdflatex
 \documentclass[11pt]{article}
 \usepackage[utf8]{inputenc}
@@ -60,7 +60,7 @@ well. I am still new to both Lisp and programming.
 
 \newpage
 \section{Foreword}
-\label{sec:org4f62715}
+\label{sec:org1de7cc9}
 
 By Gerald Sussman of MIT, co-author of the book SICP (the wizard book).
 
@@ -97,7 +97,7 @@ can be treated as data.
 
 \newpage
 \section{Preface}
-\label{sec:org3837527}
+\label{sec:orgab2d100}
 
 Key Takeaway:
 \emph{The goal of the book is to teach the reader to think recursively.}
@@ -172,14 +172,14 @@ Some tests for checking \texttt{atom?} in Scheme below
 
 \newpage
 \section{Toys}
-\label{sec:org8349979}
+\label{sec:org0b19dad}
 
 This chapter introduces primitives of Scheme. These are the basic building blocks.
 
 \vspace{1em}
 
 \subsection{The Law of \texttt{car}}
-\label{sec:orgce203e5}
+\label{sec:org6ea36cf}
 Key Takeaway:
 \emph{The primitive \texttt{car} is defined only for non-empty lists. The \texttt{car} is the first atom (element) of that list.}
 
@@ -219,7 +219,7 @@ get an error like below.
 \end{itemize}
 
 \subsection{The Law of \texttt{cdr}}
-\label{sec:org75b8711}
+\label{sec:org39bf180}
 Key Takeaway:
 \emph{The primitive \texttt{cdr} is defined only for non-empty lists. The \texttt{cdr} of any non-empty list is always another list.}
 
@@ -243,7 +243,7 @@ Key Takeaway:
 
 
 \subsection{The Law of \texttt{cons}}
-\label{sec:org005f998}
+\label{sec:org40ea3df}
 Key Takeaway:
 \emph{The primitive \texttt{cons} takes two arguments. The second argument to \texttt{cons} must be a list. The result is a list.}
 
@@ -266,7 +266,7 @@ dotted list the last atom points to a non \texttt{NIL} atom. In the above case w
 
 
 \subsection{The Law of \texttt{null?}}
-\label{sec:org47ef1f0}
+\label{sec:org700531a}
 Key Takeaway:
 \emph{The primitive \texttt{null?} is defined only for lists.}
 
@@ -289,7 +289,7 @@ for \texttt{()} is \texttt{\#t} and for everything else it is \texttt{\#f}. See 
 \end{itemize}
 
 \subsection{The Law of \texttt{eq?}}
-\label{sec:org4829429}
+\label{sec:orgdf3a7f7}
 Key Takeaway:
 \emph{The primitive \texttt{eq?} in takes two arguments and compares them. Each must be a non numeric atom.}
 
@@ -314,7 +314,7 @@ Key Takeaway:
 
 \newpage
 \section{Do It, Do It Again, and Again, and Again \ldots{}}
-\label{sec:org6e99865}
+\label{sec:org0cf2fbc}
 
 This chapter explains recursion. The best material for recursion in my opinion is Chapter 8 in Touretzky's book.
 
@@ -448,7 +448,7 @@ tail optimized recursion is to be studied from the book `Sketchy Scheme' by Nils
 \newpage
 
 \section{Cons the Magnificent}
-\label{sec:orgb991d6a}
+\label{sec:org8d46d96}
 
 This chapter explains the methods to build lists using \texttt{cons} recursively.
 
@@ -775,7 +775,7 @@ to make the list \texttt{(d f)}. This \texttt{(d f)} is then \texttt{cons}-ed to
 \newpage
 
 \section{Numbers Games}
-\label{sec:orgb95a0ba}
+\label{sec:org94a039a}
 
 This chapter explains how numbers can be built with recursion.
 
@@ -807,11 +807,12 @@ number set.
     (- n 1)))
 
 \end{verbatim}
-Is we do \texttt{(sub1 0)} we will actually get \texttt{-1} but for the sake of the book we will deal only with non-negative integers.
+If we do \texttt{(sub1 0)} we will actually get \texttt{-1} but for the sake of the book we will deal only with non-negative integers.
 \item \texttt{zero?} is an inbuilt predicate just like \texttt{ZEROP} in Common Lisp.
 \item We define addition of two numbers by making a decrementing counter of one of the numbers till it reaches zero. For every decrement we \texttt{add1}
 to the other number. So for instance we need to add 3 to 2 then the 3 goes to 2 then 1 then 0. So there are three steps 3 to 2, 2 to 1 and 1
-to 0. So these three steps gets added to 2. Thus we get 5. Better to look at the stack trace for the example below.
+to 0. So these three steps gets added to 2. Thus we get 5. Better to look at the stack trace for the example below. We are using the letter \texttt{o}
+to denote that its our `own' definition.
 
 \begin{verbatim}
 > (o+ 2 3)
@@ -1000,6 +1001,83 @@ runs out of elements i.e. it is an empty tuple, then at that time whatever the p
 '(5 5 5 4)
 
 \end{verbatim}
+\item Definitions of greater than and smaller than \texttt{>} and \texttt{<} is tricky. For greater than \texttt{>} the order of tests  matter. The \texttt{\#f} needs to
+be tested first for the base condition. This is so because when \texttt{n} reaches zero we know for sure that \texttt{n} is \texttt{<=> \textasciitilde{}m} thus the overall test
+is \texttt{\#f}. But if we had tested \texttt{m} as zero which would return \texttt{\#t} even if the condition \texttt{=} is satisfied. Similarly we can compose a function
+for lesser than \texttt{<}
+\begin{verbatim}
+    (define >
+      (lambda (n m)
+        (cond ((zero? n) #f)
+              ((zero? m) #t)
+              (else (> (sub1 n) (sub1 m))))))
+> (> 3 1)
+>(> 3 1)
+>(> 2 0)
+<#t
+#t
+
+> (> 1 4)
+>(> 1 4)
+>(> 0 3)
+<#f
+#f
+
+> (> 4 4)
+>(> 4 4)
+>(> 3 3)
+>(> 2 2)
+>(> 1 1)
+>(> 0 0)
+<#f
+#f
+
+\end{verbatim}
+
+\begin{verbatim}
+    (define <
+      (lambda (n m)
+        (cond ((zero? m) #f)
+              ((zero? n) #t)
+              (else (< (sub1 n) (sub1 m))))))
+
+> (< 1 4)
+>(< 1 4)
+>(< 0 3)
+<#t
+#t
+> (< 4 1)
+>(< 4 1)
+>(< 3 0)
+<#f
+#f
+> (< 4 4)
+>(< 4 4)
+>(< 3 3)
+>(< 2 2)
+>(< 1 1)
+>(< 0 0)
+<#f
+#f
+
+\end{verbatim}
+\item Next we compose the equality function \texttt{=} for numbers. The plain vanilla method is to check if one is zero and whether at the same time the
+other is zero too. If not then it is false. Also if one reaches zero while decrementing and the other is still not zero then it is not equal.
+The code is simple below. The other way which build up on \texttt{>} and \texttt{<} is to check if these two are false then \texttt{=} will be true.
+\begin{verbatim}
+(define o=
+  (lambda (n m)
+    (cond ((zero? m) (zero? n))
+          ((zero? n) #f)
+          (else (= (sub1 n) (sub1 m))))))
+
+(define =
+  (lambda (n m)
+    (cond ((> n m) #f)
+          ((< n m) #f)
+          (else #t))))
+
+\end{verbatim}
 \end{itemize}
 
 
@@ -1043,47 +1121,47 @@ runs out of elements i.e. it is an empty tuple, then at that time whatever the p
 \newpage
 
 \section{* Oh My Gawd *: It's Full of Stars}
-\label{sec:orged9986f}
+\label{sec:orgdcde5bb}
 
 \newpage
 
 \section{Shadows}
-\label{sec:org499ebc7}
+\label{sec:org0ecd72c}
 
 \newpage
 
 \section{Friends and Relations}
-\label{sec:org0a461d7}
+\label{sec:org4082ba0}
 
 \newpage
 
 \section{Lambda the Ultimate}
-\label{sec:org9bd3bcd}
+\label{sec:org03dd8dc}
 
 \newpage
 
 \section{\ldots{} and Again, and Again, and Again, \ldots{}}
-\label{sec:orgeb1df20}
+\label{sec:orgee2a936}
 
 \newpage
 
 \section{What Is the Value of All of This?}
-\label{sec:org2927b80}
+\label{sec:org489bf4f}
 
 \newpage
 
 \section{Intermission}
-\label{sec:org0eee76e}
+\label{sec:org8aedccd}
 
 \newpage
 
 \section{The Ten Commandments}
-\label{sec:org639c603}
+\label{sec:orgbf494e0}
 
 \newpage
 
 \section{The Five Rules}
-\label{sec:org3f82351}
+\label{sec:org3045d8f}
 
 \newpage
 \end{document}

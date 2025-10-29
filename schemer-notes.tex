@@ -1,4 +1,4 @@
-% Created 2025-10-28 Tue 19:51
+% Created 2025-10-29 Wed 07:15
 % Intended LaTeX compiler: pdflatex
 \documentclass[11pt]{article}
 \usepackage[utf8]{inputenc}
@@ -66,7 +66,7 @@ well. I am still new to both Lisp and programming.
 \clearpage
 
 \section{Foreword}
-\label{sec:org2af1fda}
+\label{sec:org01f8f39}
 
 By Gerald Sussman of MIT, co-author of the book SICP (the wizard book).
 
@@ -103,7 +103,7 @@ can be treated as data.
 
 \clearpage
 \section{Preface}
-\label{sec:org9e9782e}
+\label{sec:org7370de6}
 
 Key Takeaway:
 \emph{The goal of the book is to teach the reader to think recursively.}
@@ -178,14 +178,14 @@ Some tests for checking \texttt{atom?} in Scheme below
 
 \newpage
 \section{Toys}
-\label{sec:org7ab4ca8}
+\label{sec:orgf4b5954}
 
 This chapter introduces primitives of Scheme. These are the basic building blocks.
 
 \bigskip
 
 \subsection{The Law of \texttt{car}}
-\label{sec:org7ab3290}
+\label{sec:orgb933a4f}
 Key Takeaway:
 \emph{The primitive \texttt{car} is defined only for non-empty lists. The \texttt{car} is the first atom (element) of that list.}
 
@@ -225,7 +225,7 @@ get an error like below.
 \end{itemize}
 
 \subsection{The Law of \texttt{cdr}}
-\label{sec:org511a27d}
+\label{sec:orgc448b7a}
 Key Takeaway:
 \emph{The primitive \texttt{cdr} is defined only for non-empty lists. The \texttt{cdr} of any non-empty list is always another list.}
 
@@ -249,7 +249,7 @@ Key Takeaway:
 
 
 \subsection{The Law of \texttt{cons}}
-\label{sec:orgdab33e1}
+\label{sec:orgc869f7b}
 Key Takeaway:
 \emph{The primitive \texttt{cons} takes two arguments. The second argument to \texttt{cons} must be a list. The result is a list.}
 
@@ -272,7 +272,7 @@ dotted list the last atom points to a non \texttt{NIL} atom. In the above case w
 
 
 \subsection{The Law of \texttt{null?}}
-\label{sec:org9c32ff2}
+\label{sec:org59a0764}
 Key Takeaway:
 \emph{The primitive \texttt{null?} is defined only for lists.}
 
@@ -295,7 +295,7 @@ for \texttt{()} is \texttt{\#t} and for everything else it is \texttt{\#f}. See 
 \end{itemize}
 
 \subsection{The Law of \texttt{eq?}}
-\label{sec:org8ec9348}
+\label{sec:org4915ed5}
 Key Takeaway:
 \emph{The primitive \texttt{eq?} in takes two arguments and compares them. Each must be a non numeric atom.}
 
@@ -320,7 +320,7 @@ Key Takeaway:
 
 \newpage
 \section{Do It, Do It Again, and Again, and Again \ldots{}}
-\label{sec:org1223484}
+\label{sec:org63b7309}
 
 This chapter explains recursion. The best material for recursion in my opinion is Chapter 8 in Touretzky's book.
 
@@ -454,7 +454,7 @@ tail optimized recursion is to be studied from the book `Sketchy Scheme' by Nils
 \newpage
 
 \section{Cons the Magnificent}
-\label{sec:orgc031e1f}
+\label{sec:orgdfeb663}
 
 This chapter explains the methods to build lists using \texttt{cons} recursively.
 
@@ -781,7 +781,7 @@ to make the list \texttt{(d f)}. This \texttt{(d f)} is then \texttt{cons}-ed to
 \newpage
 
 \section{Numbers Games}
-\label{sec:orgd22275d}
+\label{sec:orge54e27f}
 
 This chapter explains how numbers can be built with recursion.
 
@@ -868,6 +868,7 @@ at the stack trace below.
 2
 
 \end{verbatim}
+
 \begin{itemize}
 \item Tuple is defined as a list of numbers. In this case I am assuming non negative numbers and also the book say an empty list will be also a
 tuple. I don't think tuple is defined formally in the R\textsuperscript{5}RS standard.
@@ -1147,8 +1148,94 @@ remainder. Wonder how remainder can be obtained via recursion especially for rec
 5
 
 \end{verbatim}
-\end{itemize}
 
+\item In Common Lisp \texttt{LENGTH} is provided in the common user package as a function but here in Scheme we have to build it ourselves. Its quite easy.
+\begin{verbatim}
+    (define length
+      (lambda (lat)
+        (cond ((null? lat) 0)
+              (else (add1 (length (cdr lat)))))))
+
+> (length '(gulab jamun ladoo jalebi))
+>(length '(gulab jamun ladoo jalebi))
+> (length '(jamun ladoo jalebi))
+> >(length '(ladoo jalebi))
+> > (length '(jalebi))
+> > >(length '())
+< < <0
+< < 1
+< <2
+< 3
+<4
+4
+
+\end{verbatim}
+\item Indexing a list or like in Python we refer to elements of a list starting with 0. In this example the book starts indexing with 1. Here I show
+both indexes one starting with 0 and the other as in the book starting with 1.
+\begin{verbatim}
+(define pick-zero
+  (lambda (n lat)
+    (cond ((zero? n) (car lat))
+          (else (pick-zero (sub1 n) (cdr lat))))))
+
+(define pick
+  (lambda (n lat)
+    (cond ((zero? (sub1 n)) (car lat))
+          (else (pick (sub1 n) (cdr lat))))))
+
+    > (pick-zero 2 '(paneer butter masala curry))
+    >(pick-zero 2 '(paneer butter masala curry))
+    >(pick-zero 1 '(butter masala curry))
+    >(pick-zero 0 '(masala curry))
+    <'masala
+    'masala
+
+    > (pick 2 '(paneer butter masala curry))
+    >(pick 2 '(paneer butter masala curry))
+    >(pick 1 '(butter masala curry))
+    <'butter
+    'butter
+\end{verbatim}
+\item Removing an element in the list is consing like we did before.
+\begin{verbatim}
+(define rempick
+  (lambda (n lat)
+    (cond
+      ((zero? (sub1 n)) (cdr lat))
+      (else (cons (car lat)
+                  (rempick (sub1 n) (cdr lat)))))))
+
+\end{verbatim}
+\item \texttt{number?} is a primitive in Scheme just like \texttt{NUMERBP} in Common Lisp.
+\begin{verbatim}
+> (number? 5)
+#t
+> (number? 'dosa)
+#f
+
+\end{verbatim}
+\item Removing all numbers from a given list is a combination of using \texttt{number?} and a \texttt{cons} recursion. Unsure why the authors use two \texttt{else}'s. It makes
+the function long and a tad bit complicated.
+\begin{verbatim}
+(define no-nums
+  (lambda (lat)
+    (cond
+      ((null? lat) (quote ()))
+      ((number? (car lat)) (no-nums (cdr lat)))
+      (else (cons (car lat) (no-nums (cdr lat)))))))
+
+(define no-nums-else
+  (lambda (lat)
+    (cond
+      ((null? lat) (quote ()))
+      (else (cond
+              ((number? (car lat))
+               (no-nums-else (cdr lat)))
+              (else (cons (car lat)
+                          (no-nums-else (cdr lat)))))))))
+
+\end{verbatim}
+\end{itemize}
 
 
 
@@ -1189,47 +1276,47 @@ remainder. Wonder how remainder can be obtained via recursion especially for rec
 \newpage
 
 \section{* Oh My Gawd *: It's Full of Stars}
-\label{sec:orgcd99708}
+\label{sec:org1231ebe}
 
 \newpage
 
 \section{Shadows}
-\label{sec:org8b7bb4c}
+\label{sec:org38270d2}
 
 \newpage
 
 \section{Friends and Relations}
-\label{sec:orgfb4b8a2}
+\label{sec:org2915a5d}
 
 \newpage
 
 \section{Lambda the Ultimate}
-\label{sec:orgd84a2fd}
+\label{sec:org26bbe1c}
 
 \newpage
 
 \section{\ldots{} and Again, and Again, and Again, \ldots{}}
-\label{sec:orge3a267f}
+\label{sec:orgde49c4a}
 
 \newpage
 
 \section{What Is the Value of All of This?}
-\label{sec:orgca0aa53}
+\label{sec:org20dfc58}
 
 \newpage
 
 \section{Intermission}
-\label{sec:org83c9172}
+\label{sec:orgc2c6917}
 
 \newpage
 
 \section{The Ten Commandments}
-\label{sec:org5f4ae2e}
+\label{sec:org8b73ae8}
 
 \newpage
 
 \section{The Five Rules}
-\label{sec:org8c0ab25}
+\label{sec:org7c647a3}
 
 \newpage
 \end{document}

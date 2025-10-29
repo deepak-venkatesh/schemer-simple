@@ -183,8 +183,48 @@
     (cond ((< n m) 0)
           (else (add1 (o-div (o- n m) m))))))
 
+(define length
+  (lambda (lat)
+    (cond ((null? lat) 0)
+          (else (add1 (length (cdr lat)))))))
 
+(define pick-zero
+  (lambda (n lat)
+    (cond ((zero? n) (car lat))
+          (else (pick-zero (sub1 n) (cdr lat))))))
 
+(define pick
+  (lambda (n lat)
+    (cond ((zero? (sub1 n)) (car lat))
+          (else (pick (sub1 n) (cdr lat))))))
+
+(define rempick
+  (lambda (n lat)
+    (cond
+      ((zero? (sub1 n)) (cdr lat))
+      (else (cons (car lat)
+                  (rempick (sub1 n) (cdr lat)))))))
+                           
+(define no-nums
+  (lambda (lat)
+    (cond
+      ((null? lat) (quote ()))
+      ((number? (car lat)) (no-nums (cdr lat)))
+      (else (cons (car lat) (no-nums (cdr lat)))))))
+
+(trace no-nums)
+
+(define no-nums-else
+  (lambda (lat)
+    (cond
+      ((null? lat) (quote ()))
+      (else (cond
+              ((number? (car lat))
+               (no-nums-else (cdr lat)))
+              (else (cons (car lat)
+                          (no-nums-else (cdr lat)))))))))
+
+(trace no-nums-else)
 
 
 

@@ -801,6 +801,7 @@ value of an addition. When building a value with ~x~, always use 1 for the value
     2
 
   #+end_src
+  
 + Tuple is defined as a list of numbers. In this case I am assuming non negative numbers and also the book say an empty list will be also a
   tuple. I don't think tuple is defined formally in the R^{5}RS standard.
 + ~()~ is also a tuple as it is a list of zero numbers.
@@ -1080,6 +1081,92 @@ value of an addition. When building a value with ~x~, always use 1 for the value
     
   #+end_src
 
++ In Common Lisp ~LENGTH~ is provided in the common user package as a function but here in Scheme we have to build it ourselves. Its quite easy.
+  #+begin_src scheme
+	(define length
+	  (lambda (lat)
+	    (cond ((null? lat) 0)
+		  (else (add1 (length (cdr lat)))))))
+
+    > (length '(gulab jamun ladoo jalebi))
+    >(length '(gulab jamun ladoo jalebi))
+    > (length '(jamun ladoo jalebi))
+    > >(length '(ladoo jalebi))
+    > > (length '(jalebi))
+    > > >(length '())
+    < < <0
+    < < 1
+    < <2
+    < 3
+    <4
+    4
+    
+  #+end_src
++ Indexing a list or like in Python we refer to elements of a list starting with 0. In this example the book starts indexing with 1. Here I show
+  both indexes one starting with 0 and the other as in the book starting with 1.
+  #+begin_src scheme
+    (define pick-zero
+      (lambda (n lat)
+	(cond ((zero? n) (car lat))
+	      (else (pick-zero (sub1 n) (cdr lat))))))
+
+    (define pick
+      (lambda (n lat)
+	(cond ((zero? (sub1 n)) (car lat))
+	      (else (pick (sub1 n) (cdr lat))))))
+    
+	> (pick-zero 2 '(paneer butter masala curry))
+	>(pick-zero 2 '(paneer butter masala curry))
+	>(pick-zero 1 '(butter masala curry))
+	>(pick-zero 0 '(masala curry))
+	<'masala
+	'masala
+    
+	> (pick 2 '(paneer butter masala curry))
+	>(pick 2 '(paneer butter masala curry))
+	>(pick 1 '(butter masala curry))
+	<'butter
+	'butter
+  #+end_src
++ Removing an element in the list is consing like we did before.
+  #+begin_src scheme
+    (define rempick
+      (lambda (n lat)
+	(cond
+	  ((zero? (sub1 n)) (cdr lat))
+	  (else (cons (car lat)
+		      (rempick (sub1 n) (cdr lat)))))))
+
+  #+end_src
++ ~number?~ is a primitive in Scheme just like ~NUMERBP~ in Common Lisp.
+  #+begin_src scheme
+    > (number? 5)
+    #t
+    > (number? 'dosa)
+    #f
+    
+  #+end_src
++ Removing all numbers from a given list is a combination of using ~number?~ and a ~cons~ recursion. Unsure why the authors use two ~else~'s. It makes
+  the function long and a tad bit complicated.
+  #+begin_src scheme
+    (define no-nums
+      (lambda (lat)
+	(cond
+	  ((null? lat) (quote ()))
+	  ((number? (car lat)) (no-nums (cdr lat)))
+	  (else (cons (car lat) (no-nums (cdr lat)))))))
+
+    (define no-nums-else
+      (lambda (lat)
+	(cond
+	  ((null? lat) (quote ()))
+	  (else (cond
+		  ((number? (car lat))
+		   (no-nums-else (cdr lat)))
+		  (else (cons (car lat)
+			      (no-nums-else (cdr lat)))))))))
+
+  #+end_src
 
 
 

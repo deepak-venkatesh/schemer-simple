@@ -1,4 +1,4 @@
-% Created 2025-10-22 Wed 07:09
+% Created 2025-10-28 Tue 19:51
 % Intended LaTeX compiler: pdflatex
 \documentclass[11pt]{article}
 \usepackage[utf8]{inputenc}
@@ -26,24 +26,25 @@
 \begin{document}
 
 \maketitle
-\tableofcontents
+\maketitle
 
-\newpage
-\textbf{Note:}
+\begin{abstract}
+These are my personal notes created to deepen my understanding of Lisp and programming in general.
+\textit{The Little Schemer} (4th edition) by Daniel Friedman and Matthias Felleisen is a remarkable book
+that teaches programming concepts in a unique and playful way. It builds from first principles using only
+a small set of primitives, showing how powerful ideas — such as recursion, functional programming, lambda
+functions, closures, higher order functions, and interpreters — can be expressed using just those few building
+blocks. I am sharing this since other beginners could benefit from these notes.
 
-\vspace{1em}
-
-These are my personal notes created to deepen my understanding of Lisp and programming in general. `The Little Schemer'
-(4th edition) by Daniel Friedman and Matthias Felleisen is a remarkable book that teaches programming concepts in a
-unique and playful way. It builds from first principles using only a small set of primitives, showing how powerful
-ideas — such as recursion, functional programming, lambda functions, and interpreters — can be expressed using just
-those few building blocks. I am making this public since other beginners could benefit from these notes.
+\bigskip
 
 While the book uses Scheme, I initially worked it out using Common Lisp and had adapted the examples accordingly. Now
 I am working through it using Racket, a modern descendent of Scheme. Despite its lighthearted tone, the book is far
-from an easy read — it demands close attention and careful thought. My advice to anyone who wants to learn lisp is to
+from an easy read — it demands close attention and careful thought. My advice to anyone who wants to learn Lisp is to
 first work through Professor David Touretzky's book titled `Common Lisp A Gentle Introduction to Symbolic Computing'
 (2nd ed.). It's a great book for introduction to programming not just Lisp.
+
+\bigskip
 
 All mistakes in these notes, whether typographical or conceptual, are entirely my own. Any misinterpretations are as
 well. I am still new to both Lisp and programming.
@@ -57,14 +58,19 @@ well. I am still new to both Lisp and programming.
 \item emacs for org notes
 \item Macbook Pro 2019 2.6 Ghz I7 Intel chip with 16 GB RAM
 \end{itemize}
+\end{abstract}
 
-\newpage
+\clearpage
+\setcounter{tocdepth}{1}
+\tableofcontents
+\clearpage
+
 \section{Foreword}
-\label{sec:org1de7cc9}
+\label{sec:org2af1fda}
 
 By Gerald Sussman of MIT, co-author of the book SICP (the wizard book).
 
-\vspace{1em}
+\bigskip
 
 Key Takeaway:
 \emph{In order to be creative one must first gain control of the medium.}
@@ -88,21 +94,21 @@ are composite functions which are usually taught in pre-calculus.
 can be treated as data.
 \end{itemize}
 
-\vspace{1em}
+\bigskip
 
 \textbf{Core Terms/Concepts Learnt}
 \begin{itemize}
 \item None
 \end{itemize}
 
-\newpage
+\clearpage
 \section{Preface}
-\label{sec:orgab2d100}
+\label{sec:org9e9782e}
 
 Key Takeaway:
 \emph{The goal of the book is to teach the reader to think recursively.}
 
-\vspace{1em}
+\bigskip
 
 \begin{itemize}
 \item Programs take data, apply a process on that data, and then produce some data.
@@ -172,14 +178,14 @@ Some tests for checking \texttt{atom?} in Scheme below
 
 \newpage
 \section{Toys}
-\label{sec:org0b19dad}
+\label{sec:org7ab4ca8}
 
 This chapter introduces primitives of Scheme. These are the basic building blocks.
 
-\vspace{1em}
+\bigskip
 
 \subsection{The Law of \texttt{car}}
-\label{sec:org6ea36cf}
+\label{sec:org7ab3290}
 Key Takeaway:
 \emph{The primitive \texttt{car} is defined only for non-empty lists. The \texttt{car} is the first atom (element) of that list.}
 
@@ -219,7 +225,7 @@ get an error like below.
 \end{itemize}
 
 \subsection{The Law of \texttt{cdr}}
-\label{sec:org39bf180}
+\label{sec:org511a27d}
 Key Takeaway:
 \emph{The primitive \texttt{cdr} is defined only for non-empty lists. The \texttt{cdr} of any non-empty list is always another list.}
 
@@ -243,7 +249,7 @@ Key Takeaway:
 
 
 \subsection{The Law of \texttt{cons}}
-\label{sec:org40ea3df}
+\label{sec:orgdab33e1}
 Key Takeaway:
 \emph{The primitive \texttt{cons} takes two arguments. The second argument to \texttt{cons} must be a list. The result is a list.}
 
@@ -266,7 +272,7 @@ dotted list the last atom points to a non \texttt{NIL} atom. In the above case w
 
 
 \subsection{The Law of \texttt{null?}}
-\label{sec:org700531a}
+\label{sec:org9c32ff2}
 Key Takeaway:
 \emph{The primitive \texttt{null?} is defined only for lists.}
 
@@ -289,7 +295,7 @@ for \texttt{()} is \texttt{\#t} and for everything else it is \texttt{\#f}. See 
 \end{itemize}
 
 \subsection{The Law of \texttt{eq?}}
-\label{sec:orgdf3a7f7}
+\label{sec:org8ec9348}
 Key Takeaway:
 \emph{The primitive \texttt{eq?} in takes two arguments and compares them. Each must be a non numeric atom.}
 
@@ -314,7 +320,7 @@ Key Takeaway:
 
 \newpage
 \section{Do It, Do It Again, and Again, and Again \ldots{}}
-\label{sec:org0cf2fbc}
+\label{sec:org1223484}
 
 This chapter explains recursion. The best material for recursion in my opinion is Chapter 8 in Touretzky's book.
 
@@ -448,7 +454,7 @@ tail optimized recursion is to be studied from the book `Sketchy Scheme' by Nils
 \newpage
 
 \section{Cons the Magnificent}
-\label{sec:org8d46d96}
+\label{sec:orgc031e1f}
 
 This chapter explains the methods to build lists using \texttt{cons} recursively.
 
@@ -775,7 +781,7 @@ to make the list \texttt{(d f)}. This \texttt{(d f)} is then \texttt{cons}-ed to
 \newpage
 
 \section{Numbers Games}
-\label{sec:org94a039a}
+\label{sec:orgd22275d}
 
 This chapter explains how numbers can be built with recursion.
 
@@ -813,6 +819,13 @@ If we do \texttt{(sub1 0)} we will actually get \texttt{-1} but for the sake of 
 to the other number. So for instance we need to add 3 to 2 then the 3 goes to 2 then 1 then 0. So there are three steps 3 to 2, 2 to 1 and 1
 to 0. So these three steps gets added to 2. Thus we get 5. Better to look at the stack trace for the example below. We are using the letter \texttt{o}
 to denote that its our `own' definition.
+\begin{verbatim}
+(define o+
+  (lambda (n m)
+    (cond ((zero? m) n)
+          (else (add1 (o+ n (sub1 m)))))))
+
+\end{verbatim}
 
 \begin{verbatim}
 > (o+ 2 3)
@@ -833,6 +846,16 @@ use \texttt{zero?} as the test.
 \item Exactly like \texttt{o+} we can build \texttt{o-} . The only difference is that we do not \texttt{add1} on every decrement but rather subtract using \texttt{sub1}. Looking
 at the stack trace below.
 \begin{verbatim}
+(define o-
+  (lambda (n m)
+    (cond ((zero? m) n)
+          (else (sub1 (o- n (sub1 m)))))))
+
+\end{verbatim}
+\end{itemize}
+
+
+\begin{verbatim}
 > (o- 5 3)
 >(o- 5 3)
 > (o- 5 2)
@@ -845,6 +868,7 @@ at the stack trace below.
 2
 
 \end{verbatim}
+\begin{itemize}
 \item Tuple is defined as a list of numbers. In this case I am assuming non negative numbers and also the book say an empty list will be also a
 tuple. I don't think tuple is defined formally in the R\textsuperscript{5}RS standard.
 \item \texttt{()} is also a tuple as it is a list of zero numbers.
@@ -1002,7 +1026,7 @@ runs out of elements i.e. it is an empty tuple, then at that time whatever the p
 
 \end{verbatim}
 \item Definitions of greater than and smaller than \texttt{>} and \texttt{<} is tricky. For greater than \texttt{>} the order of tests  matter. The \texttt{\#f} needs to
-be tested first for the base condition. This is so because when \texttt{n} reaches zero we know for sure that \texttt{n} is \texttt{<=> \textasciitilde{}m} thus the overall test
+be tested first for the base condition. This is so because when \texttt{n} reaches zero we know for sure that \texttt{n} is \texttt{<= m} thus the overall test
 is \texttt{\#f}. But if we had tested \texttt{m} as zero which would return \texttt{\#t} even if the condition \texttt{=} is satisfied. Similarly we can compose a function
 for lesser than \texttt{<}
 \begin{verbatim}
@@ -1078,8 +1102,52 @@ The code is simple below. The other way which build up on \texttt{>} and \texttt
           (else #t))))
 
 \end{verbatim}
-\end{itemize}
+\item Exponents (or raising to power) is also simple.
+\begin{verbatim}
+    (define o-exp
+      (lambda (n m)
+        (cond ((zero? m) 1)
+              (else (x n (o-exp n (sub1 m)))))))
 
+> (o-exp 2 4)
+>(o-exp 2 4)
+> (o-exp 2 3)
+> >(o-exp 2 2)
+> > (o-exp 2 1)
+> > >(o-exp 2 0)
+< < <1
+< < 2
+< <4
+< 8
+<16
+16
+
+\end{verbatim}
+
+\item Integer division is implemented smartly by basically figuring out the how many wholes of a number fits into another. Thus discarding any of the
+remainder. Wonder how remainder can be obtained via recursion especially for recurring decimals or if I throw an irrational number.
+\begin{verbatim}
+    (define o-div
+      (lambda (n m)
+        (cond ((< n m) 0)
+              (else (add1 (o-div (o- n m) m))))))
+> (o-div 16 3)
+>(o-div 16 3)
+> (o-div 13 3)
+> >(o-div 10 3)
+> > (o-div 7 3)
+> > >(o-div 4 3)
+> > > (o-div 1 3)
+< < < 0
+< < <1
+< < 2
+< <3
+< 4
+<5
+5
+
+\end{verbatim}
+\end{itemize}
 
 
 
@@ -1121,47 +1189,47 @@ The code is simple below. The other way which build up on \texttt{>} and \texttt
 \newpage
 
 \section{* Oh My Gawd *: It's Full of Stars}
-\label{sec:orgdcde5bb}
+\label{sec:orgcd99708}
 
 \newpage
 
 \section{Shadows}
-\label{sec:org0ecd72c}
+\label{sec:org8b7bb4c}
 
 \newpage
 
 \section{Friends and Relations}
-\label{sec:org4082ba0}
+\label{sec:orgfb4b8a2}
 
 \newpage
 
 \section{Lambda the Ultimate}
-\label{sec:org03dd8dc}
+\label{sec:orgd84a2fd}
 
 \newpage
 
 \section{\ldots{} and Again, and Again, and Again, \ldots{}}
-\label{sec:orgee2a936}
+\label{sec:orge3a267f}
 
 \newpage
 
 \section{What Is the Value of All of This?}
-\label{sec:org489bf4f}
+\label{sec:orgca0aa53}
 
 \newpage
 
 \section{Intermission}
-\label{sec:org8aedccd}
+\label{sec:org83c9172}
 
 \newpage
 
 \section{The Ten Commandments}
-\label{sec:orgbf494e0}
+\label{sec:org5f4ae2e}
 
 \newpage
 
 \section{The Five Rules}
-\label{sec:org3045d8f}
+\label{sec:org8c0ab25}
 
 \newpage
 \end{document}

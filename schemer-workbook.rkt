@@ -173,7 +173,15 @@
           ((< n m) #f)
           (else #t))))
 
-(trace =)
+(define o-exp
+  (lambda (n m)
+    (cond ((zero? m) 1)
+          (else (x n (o-exp n (sub1 m)))))))
+
+(define o-div
+  (lambda (n m)
+    (cond ((< n m) 0)
+          (else (add1 (o-div (o- n m) m))))))
 
 
 

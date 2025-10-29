@@ -3,22 +3,27 @@
 #+title: The Little Schemer Simplified
 #+author: Deepak Venkatesh
 
-#+LATEX: \newpage
-*Note:*
+#+OPTIONS: toc:nil           ; disable auto ToC
 
-#+LATEX: \vspace{1em}
+#+LATEX: \maketitle
 
-These are my personal notes created to deepen my understanding of Lisp and programming in general. `The Little Schemer'
-(4th edition) by Daniel Friedman and Matthias Felleisen is a remarkable book that teaches programming concepts in a
-unique and playful way. It builds from first principles using only a small set of primitives, showing how powerful
-ideas — such as recursion, functional programming, lambda functions, and interpreters — can be expressed using just
-those few building blocks. I am making this public since other beginners could benefit from these notes.
+#+LATEX: \begin{abstract}
+These are my personal notes created to deepen my understanding of Lisp and programming in general.
+\textit{The Little Schemer} (4th edition) by Daniel Friedman and Matthias Felleisen is a remarkable book
+that teaches programming concepts in a unique and playful way. It builds from first principles using only
+a small set of primitives, showing how powerful ideas — such as recursion, functional programming, lambda
+functions, closures, higher order functions, and interpreters — can be expressed using just those few building
+blocks. I am sharing this since other beginners could benefit from these notes.
+
+#+LATEX: \bigskip
 
 While the book uses Scheme, I initially worked it out using Common Lisp and had adapted the examples accordingly. Now
 I am working through it using Racket, a modern descendent of Scheme. Despite its lighthearted tone, the book is far
-from an easy read — it demands close attention and careful thought. My advice to anyone who wants to learn lisp is to
+from an easy read — it demands close attention and careful thought. My advice to anyone who wants to learn Lisp is to
 first work through Professor David Touretzky's book titled `Common Lisp A Gentle Introduction to Symbolic Computing'
 (2nd ed.). It's a great book for introduction to programming not just Lisp.
+
+#+LATEX: \bigskip
 
 All mistakes in these notes, whether typographical or conceptual, are entirely my own. Any misinterpretations are as
 well. I am still new to both Lisp and programming.
@@ -30,13 +35,17 @@ well. I am still new to both Lisp and programming.
 + Editor: Dr Racket
 + emacs for org notes
 + Macbook Pro 2019 2.6 Ghz I7 Intel chip with 16 GB RAM
+#+LATEX: \end{abstract}
 
-#+LATEX: \newpage
+#+LATEX: \clearpage
+#+TOC: headlines 1          ; insert ToC here (on its own page)
+#+LATEX: \clearpage
+
 * Foreword
 
 By Gerald Sussman of MIT, co-author of the book SICP (the wizard book).
 
-#+LATEX: \vspace{1em}
+#+LATEX: \bigskip
 
 Key Takeaway:
 /In order to be creative one must first gain control of the medium./
@@ -58,18 +67,18 @@ Key Takeaway:
 + Lisp programs can manipulate representations of Lisp programs - this likely refers to macros and how in Lisp code
   can be treated as data.
 
-#+LATEX: \vspace{1em}
+#+LATEX: \bigskip
 
 *Core Terms/Concepts Learnt*
 + None
 
-#+LATEX: \newpage
+#+LATEX: \clearpage
 * Preface
 
 Key Takeaway:
 /The goal of the book is to teach the reader to think recursively./
 
-#+LATEX: \vspace{1em}
+#+LATEX: \bigskip
 
 + Programs take data, apply a process on that data, and then produce some data.
 + Recursion is the act of defining an object or solving a problem in terms of itself.
@@ -136,7 +145,7 @@ Key Takeaway:
 
 This chapter introduces primitives of Scheme. These are the basic building blocks.
 
-#+LATEX: \vspace{1em}
+#+LATEX: \bigskip
 
 ** The Law of ~car~
 Key Takeaway:
@@ -744,18 +753,25 @@ value of an addition. When building a value with ~x~, always use 1 for the value
   to the other number. So for instance we need to add 3 to 2 then the 3 goes to 2 then 1 then 0. So there are three steps 3 to 2, 2 to 1 and 1
   to 0. So these three steps gets added to 2. Thus we get 5. Better to look at the stack trace for the example below. We are using the letter ~o~
   to denote that its our `own' definition.
-  
   #+begin_src scheme
-    > (o+ 2 3)
-    >(o+ 2 3)
-    > (o+ 2 2)
-    > >(o+ 2 1)
-    > > (o+ 2 0)
-    < < 2
-    < <3
-    < 4
-    <5
-    5
+    (define o+
+      (lambda (n m)
+	(cond ((zero? m) n)
+	      (else (add1 (o+ n (sub1 m)))))))
+    
+  #+end_src
+  
+    #+begin_src scheme
+      > (o+ 2 3)
+      >(o+ 2 3)
+      > (o+ 2 2)
+      > >(o+ 2 1)
+      > > (o+ 2 0)
+      < < 2
+      < <3
+      < 4
+      <5
+      5
 
   #+end_src
 + In the earlier chapter the authors had referred to using ~(null?)~ as the first test and now they correctly say that for numbers we can
@@ -763,6 +779,15 @@ value of an addition. When building a value with ~x~, always use 1 for the value
 + ~zero?~ is like ~null?~ and ~add1~ is like ~cons~
 + Exactly like ~o+~ we can build ~o-~ . The only difference is that we do not ~add1~ on every decrement but rather subtract using ~sub1~. Looking
   at the stack trace below.
+  #+begin_src scheme
+    (define o-
+      (lambda (n m)
+	(cond ((zero? m) n)
+	      (else (sub1 (o- n (sub1 m)))))))
+    
+  #+end_src
+
+  
   #+begin_src scheme
     > (o- 5 3)
     >(o- 5 3)
@@ -933,7 +958,7 @@ value of an addition. When building a value with ~x~, always use 1 for the value
 
   #+end_src
 + Definitions of greater than and smaller than ~>~ and ~<~ is tricky. For greater than ~>~ the order of tests  matter. The ~#f~ needs to
-  be tested first for the base condition. This is so because when ~n~ reaches zero we know for sure that ~n~ is ~<=> ~m~ thus the overall test
+  be tested first for the base condition. This is so because when ~n~ reaches zero we know for sure that ~n~ is ~<= m~ thus the overall test
   is ~#f~. But if we had tested ~m~ as zero which would return ~#t~ even if the condition ~=~ is satisfied. Similarly we can compose a function
   for lesser than ~<~
   #+begin_src scheme
@@ -1009,7 +1034,51 @@ value of an addition. When building a value with ~x~, always use 1 for the value
 	      (else #t))))
 
   #+end_src
++ Exponents (or raising to power) is also simple.
+  #+begin_src scheme
+	(define o-exp
+	  (lambda (n m)
+	    (cond ((zero? m) 1)
+		  (else (x n (o-exp n (sub1 m)))))))
 
+    > (o-exp 2 4)
+    >(o-exp 2 4)
+    > (o-exp 2 3)
+    > >(o-exp 2 2)
+    > > (o-exp 2 1)
+    > > >(o-exp 2 0)
+    < < <1
+    < < 2
+    < <4
+    < 8
+    <16
+    16
+        
+  #+end_src
+
++ Integer division is implemented smartly by basically figuring out the how many wholes of a number fits into another. Thus discarding any of the
+  remainder. Wonder how remainder can be obtained via recursion especially for recurring decimals or if I throw an irrational number.
+  #+begin_src scheme
+	(define o-div
+	  (lambda (n m)
+	    (cond ((< n m) 0)
+		  (else (add1 (o-div (o- n m) m))))))
+    > (o-div 16 3)
+    >(o-div 16 3)
+    > (o-div 13 3)
+    > >(o-div 10 3)
+    > > (o-div 7 3)
+    > > >(o-div 4 3)
+    > > > (o-div 1 3)
+    < < < 0
+    < < <1
+    < < 2
+    < <3
+    < 4
+    <5
+    5
+    
+  #+end_src
 
 
 

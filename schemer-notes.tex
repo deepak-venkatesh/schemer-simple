@@ -1,4 +1,4 @@
-% Created 2025-10-29 Wed 07:15
+% Created 2025-10-31 Fri 05:58
 % Intended LaTeX compiler: pdflatex
 \documentclass[11pt]{article}
 \usepackage[utf8]{inputenc}
@@ -66,7 +66,7 @@ well. I am still new to both Lisp and programming.
 \clearpage
 
 \section{Foreword}
-\label{sec:org01f8f39}
+\label{sec:orga907833}
 
 By Gerald Sussman of MIT, co-author of the book SICP (the wizard book).
 
@@ -103,7 +103,7 @@ can be treated as data.
 
 \clearpage
 \section{Preface}
-\label{sec:org7370de6}
+\label{sec:org26c291e}
 
 Key Takeaway:
 \emph{The goal of the book is to teach the reader to think recursively.}
@@ -178,14 +178,14 @@ Some tests for checking \texttt{atom?} in Scheme below
 
 \newpage
 \section{Toys}
-\label{sec:orgf4b5954}
+\label{sec:org173ab81}
 
 This chapter introduces primitives of Scheme. These are the basic building blocks.
 
 \bigskip
 
 \subsection{The Law of \texttt{car}}
-\label{sec:orgb933a4f}
+\label{sec:orgd8c89bb}
 Key Takeaway:
 \emph{The primitive \texttt{car} is defined only for non-empty lists. The \texttt{car} is the first atom (element) of that list.}
 
@@ -225,7 +225,7 @@ get an error like below.
 \end{itemize}
 
 \subsection{The Law of \texttt{cdr}}
-\label{sec:orgc448b7a}
+\label{sec:org39a9476}
 Key Takeaway:
 \emph{The primitive \texttt{cdr} is defined only for non-empty lists. The \texttt{cdr} of any non-empty list is always another list.}
 
@@ -249,7 +249,7 @@ Key Takeaway:
 
 
 \subsection{The Law of \texttt{cons}}
-\label{sec:orgc869f7b}
+\label{sec:org4ac76b2}
 Key Takeaway:
 \emph{The primitive \texttt{cons} takes two arguments. The second argument to \texttt{cons} must be a list. The result is a list.}
 
@@ -272,7 +272,7 @@ dotted list the last atom points to a non \texttt{NIL} atom. In the above case w
 
 
 \subsection{The Law of \texttt{null?}}
-\label{sec:org59a0764}
+\label{sec:orgaf46ee2}
 Key Takeaway:
 \emph{The primitive \texttt{null?} is defined only for lists.}
 
@@ -295,7 +295,7 @@ for \texttt{()} is \texttt{\#t} and for everything else it is \texttt{\#f}. See 
 \end{itemize}
 
 \subsection{The Law of \texttt{eq?}}
-\label{sec:org4915ed5}
+\label{sec:orgbf801c8}
 Key Takeaway:
 \emph{The primitive \texttt{eq?} in takes two arguments and compares them. Each must be a non numeric atom.}
 
@@ -320,7 +320,7 @@ Key Takeaway:
 
 \newpage
 \section{Do It, Do It Again, and Again, and Again \ldots{}}
-\label{sec:org63b7309}
+\label{sec:orgcb4ca54}
 
 This chapter explains recursion. The best material for recursion in my opinion is Chapter 8 in Touretzky's book.
 
@@ -454,7 +454,7 @@ tail optimized recursion is to be studied from the book `Sketchy Scheme' by Nils
 \newpage
 
 \section{Cons the Magnificent}
-\label{sec:orgdfeb663}
+\label{sec:org6dfde6a}
 
 This chapter explains the methods to build lists using \texttt{cons} recursively.
 
@@ -781,21 +781,23 @@ to make the list \texttt{(d f)}. This \texttt{(d f)} is then \texttt{cons}-ed to
 \newpage
 
 \section{Numbers Games}
-\label{sec:orge54e27f}
+\label{sec:org07ccde9}
 
 This chapter explains how numbers can be built with recursion.
 
 \vspace{1em}
 
 Key Takeaway:
-\emph{The First Commandment (first revision): When recurring on a list of atoms, \texttt{lat}, asks two questions about it: \texttt{(null? lat)} and \texttt{else}. When
-recurring on a number, \texttt{n}, ask two questions about it: \texttt{(zero? n)} and \texttt{else}.}
-\vspace{0.5em}
-\emph{The Fourth Commandment (first revision): Always change one argument while recurring. It must be changed closer to termination. The changing
-argument must be tested in the termination condition: when using \texttt{cdr} test termination with null? and when using \texttt{sub1}, test termination with \texttt{zero?}.}
-\vspace{0.5em}
-\emph{The Fifth Commandment: When building a value with \texttt{+}, always use 0 for the value of the terminating line, for adding 0 does not change the
-value of an addition. When building a value with \texttt{x}, always use 1 for the value of the terminating line, for multiplying by 1 does not change the value of a multiplication. When building a value with \texttt{cons}, always consider \texttt{()} for the value of the terminating line.}
+
+\emph{The First Commandment (first revision): When recurring on a list of atoms, \texttt{lat}, asks two questions about it: \texttt{(null? lat)} and \texttt{else}. When recurring on a number, \texttt{n}, ask two questions about it: \texttt{(zero? n)} and \texttt{else}.}
+
+\bigskip
+
+\emph{The Fourth Commandment (first revision): Always change one argument while recurring. It must be changed closer to termination. The changing argument must be tested in the termination condition: when using \texttt{cdr} test termination with null? and when using \texttt{sub1}, test termination with \texttt{zero?}.}
+
+\bigskip
+
+\emph{The Fifth Commandment: When building a value with \texttt{+}, always use 0 for the value of the terminating line, for adding 0 does not change the value of an addition. When building a value with \texttt{x}, always use 1 for the value of the terminating line, for multiplying by 1 does not change the value of a multiplication. When building a value with \texttt{cons}, always consider \texttt{()} for the value of the terminating line.}
 
 \vspace{1em}
 
@@ -840,6 +842,7 @@ to denote that its our `own' definition.
 5
 
 \end{verbatim}
+
 \item In the earlier chapter the authors had referred to using \texttt{(null?)} as the first test and now they correctly say that for numbers we can
 use \texttt{zero?} as the test.
 \item \texttt{zero?} is like \texttt{null?} and \texttt{add1} is like \texttt{cons}
@@ -851,11 +854,6 @@ at the stack trace below.
     (cond ((zero? m) n)
           (else (sub1 (o- n (sub1 m)))))))
 
-\end{verbatim}
-\end{itemize}
-
-
-\begin{verbatim}
 > (o- 5 3)
 >(o- 5 3)
 > (o- 5 2)
@@ -869,7 +867,6 @@ at the stack trace below.
 
 \end{verbatim}
 
-\begin{itemize}
 \item Tuple is defined as a list of numbers. In this case I am assuming non negative numbers and also the book say an empty list will be also a
 tuple. I don't think tuple is defined formally in the R\textsuperscript{5}RS standard.
 \item \texttt{()} is also a tuple as it is a list of zero numbers.
@@ -908,6 +905,7 @@ tuple. I don't think tuple is defined formally in the R\textsuperscript{5}RS sta
 55
 
 \end{verbatim}
+
 \item Multiplication is repetitive addition. So to build \texttt{x} we have to decrement one number and for every decrement add the other number to itself.
 \begin{verbatim}
     (define x
@@ -927,6 +925,7 @@ tuple. I don't think tuple is defined formally in the R\textsuperscript{5}RS sta
 12
 
 \end{verbatim}
+
 \item A nice expansion in the book is for \texttt{(x 12 3)} fairly similar to the \texttt{trace} Dr Racket generates
 \begin{verbatim}
 (x 12 3)
@@ -938,6 +937,7 @@ tuple. I don't think tuple is defined formally in the R\textsuperscript{5}RS sta
 = 36
 
 \end{verbatim}
+
 \item A question is asked why is 0 the value for the terminal condition line in \texttt{x} and the answer to this is because 0 will not affect \texttt{+}. That
 is \texttt{n + 0 = n}. The actual math behind lies in abstract algebra. In an operation such as \texttt{+} there is a concept of identity and inverse. The
 \texttt{identity} or \texttt{neutral} element in the set of this operation does not affect the value of other elements when the operation is applied between
@@ -945,6 +945,7 @@ an element and this identity. For example, in the operation of \texttt{+} the \t
 of non-negative numbers (as done in this book). So \texttt{+} 2 and the \texttt{identity} should yield 2 itself. Thus the identity in this set of whole
 numbers for this specific \texttt{+} operation is 0. Similarly for the operation of \texttt{x} in the set of natural numbers the identity is 1. 2 multiplied
 by 1 yields 2 again. Now we get back to scheme and away from abstract algebra.
+
 \item The next function we write is addition of two tuples. In this all elements in the tuple at their respective positions are added. The first version
 of the code adds two tuples of the same length (code is below). When we supply it with varying length tuples we get an error because it tries to
 add a number to an empty list. The trace diagram shows the error. Now we will write a cleaner function which will take varying length tuples.
@@ -979,6 +980,7 @@ add a number to an empty list. The trace diagram shows the error. Now we will wr
   given: '()
 
 \end{verbatim}
+
 \item \texttt{tup+} below is the correct way to define addition of the elements of two tuples. The trace diagram helps understand why. When one of the tuples
 runs out of elements i.e. it is an empty tuple, then at that time whatever the present recurring state of the other tuple is that is used for
 \texttt{cons}-ing when the stack frames start returning values.
@@ -1026,6 +1028,7 @@ runs out of elements i.e. it is an empty tuple, then at that time whatever the p
 '(5 5 5 4)
 
 \end{verbatim}
+
 \item Definitions of greater than and smaller than \texttt{>} and \texttt{<} is tricky. For greater than \texttt{>} the order of tests  matter. The \texttt{\#f} needs to
 be tested first for the base condition. This is so because when \texttt{n} reaches zero we know for sure that \texttt{n} is \texttt{<= m} thus the overall test
 is \texttt{\#f}. But if we had tested \texttt{m} as zero which would return \texttt{\#t} even if the condition \texttt{=} is satisfied. Similarly we can compose a function
@@ -1086,6 +1089,7 @@ for lesser than \texttt{<}
 #f
 
 \end{verbatim}
+
 \item Next we compose the equality function \texttt{=} for numbers. The plain vanilla method is to check if one is zero and whether at the same time the
 other is zero too. If not then it is false. Also if one reaches zero while decrementing and the other is still not zero then it is not equal.
 The code is simple below. The other way which build up on \texttt{>} and \texttt{<} is to check if these two are false then \texttt{=} will be true.
@@ -1103,6 +1107,7 @@ The code is simple below. The other way which build up on \texttt{>} and \texttt
           (else #t))))
 
 \end{verbatim}
+
 \item Exponents (or raising to power) is also simple.
 \begin{verbatim}
     (define o-exp
@@ -1170,6 +1175,7 @@ remainder. Wonder how remainder can be obtained via recursion especially for rec
 4
 
 \end{verbatim}
+
 \item Indexing a list or like in Python we refer to elements of a list starting with 0. In this example the book starts indexing with 1. Here I show
 both indexes one starting with 0 and the other as in the book starting with 1.
 \begin{verbatim}
@@ -1196,6 +1202,7 @@ both indexes one starting with 0 and the other as in the book starting with 1.
     <'butter
     'butter
 \end{verbatim}
+
 \item Removing an element in the list is consing like we did before.
 \begin{verbatim}
 (define rempick
@@ -1206,6 +1213,7 @@ both indexes one starting with 0 and the other as in the book starting with 1.
                   (rempick (sub1 n) (cdr lat)))))))
 
 \end{verbatim}
+
 \item \texttt{number?} is a primitive in Scheme just like \texttt{NUMERBP} in Common Lisp.
 \begin{verbatim}
 > (number? 5)
@@ -1214,6 +1222,7 @@ both indexes one starting with 0 and the other as in the book starting with 1.
 #f
 
 \end{verbatim}
+
 \item Removing all numbers from a given list is a combination of using \texttt{number?} and a \texttt{cons} recursion. Unsure why the authors use two \texttt{else}'s. It makes
 the function long and a tad bit complicated.
 \begin{verbatim}
@@ -1235,88 +1244,240 @@ the function long and a tad bit complicated.
                           (no-nums-else (cdr lat)))))))))
 
 \end{verbatim}
+
+\item The next function is inverse of the former \texttt{no-nums}. In this \texttt{all-nums} we keep only the numbers and do away with everything else. This is also simple.
+\begin{verbatim}
+(define all-nums
+  (lambda (lat)
+    (cond
+      ((null? lat) (quote ()))
+      ((number? (car lat)) (cons
+                            (car lat) (all-nums (cdr lat))))
+      (else (all-nums (cdr lat))))))
+
+\end{verbatim}
+
+\item In Touretzky's book on Common Lisp there is a very nice explanation of equality tests such as \texttt{EQUAL}, \texttt{=}, \texttt{EQ} etc. Similarly in Scheme there are differences
+in the way equality tests are done. The table below captures the notes on this topic.
+
+\begin{center}
+\begin{tabular}{lll}
+Predicate & Meaning & Works On\\[0pt]
+\hline
+\texttt{eq?} & Object identity - Are these the same objects? & symbols, booleans\\[0pt]
+\texttt{eqv?} & Value identity (atomic) - Do these denote the same values? & numbers, chars\\[0pt]
+\texttt{equal?} & Structural equality - Are these structurally the same? & lists, strings, etc.\\[0pt]
+\texttt{=} & Numeric equality - Are these numbers same? & numbers\\[0pt]
+\end{tabular}
+\end{center}
+
+\bigskip
+
+\begin{center}
+\begin{tabular}{ll}
+Predicate & Example\\[0pt]
+\hline
+\texttt{eq?} & (eq? 'a 'a) → \#t\\[0pt]
+\texttt{eqv?} & (eqv? 3 3) → \#t\\[0pt]
+\texttt{equal?} & (equal? '(a b) '(a b)) → \#t\\[0pt]
+\texttt{=} & (= 3 3.0) → \#t\\[0pt]
+\end{tabular}
+\end{center}
+
+My assumption is that the \emph{object} refers to the Lisp object therefore it is that specific location in memory which is being compared. Essentially are these two
+things in the same memory location? I will need to confirm this. Rest of the equality predicates are straightforward. Test to check the Lisp Object hypothesis:
+\begin{verbatim}
+> (eq? '(a b) '(a b))
+#f
+> (equal? '(a b) '(a b))
+#t
+
+\end{verbatim}
+
+\item Next we write a function to check if the atoms are same. Here we use \texttt{=} for comparing numbers, and rightly so.
+\begin{verbatim}
+(define eqan?
+  (lambda (a1 a2)
+    (cond
+      ((and (number? a1) (number? a2))
+       (= a1 a2))
+      ((or (number? a1) (number? a2)) #f)
+      (else (eq? a1 a2)))))
+
+\end{verbatim}
+
+\item Not sure of the answer to the question "Can we assume that all functions written using \texttt{eq?} can be generalized by replacing \texttt{eq?} by \texttt{eqan?}". The answer
+given is "Yes" except for \texttt{equan?} itself. Is it because we can't write \texttt{equan?} without \texttt{eq?}. Not sure if I understood this correctly.
+
+\item \texttt{occur} is defined which basically counts the frequency of occurrence in a list.
+\begin{verbatim}
+(define occur
+  (lambda (a lat)
+    (cond
+      ((null? lat) 0)
+      ((eq? a (car lat)) (add1 (occur a (cdr lat))))
+      (else (occur a (cdr lat))))))
+
+\end{verbatim}
+
+\item The chapter suddenly jumps to defining \texttt{one?} predicate which essentially checks if a number is \texttt{1} or not. We do it in multiple ways but we learn that \texttt{cond}
+is not necessary to construct this predicate.
+\begin{verbatim}
+(define one-zero?
+  (lambda (n)
+    (cond
+      ((zero? n) #f)
+      (else (zero? (sub1 n))))))
+
+(define one-equal?
+  (lambda (n)
+    (cond
+      (else (= n 1)))))
+
+(define one?
+  (lambda (n)
+    (= n 1)))
+
+\end{verbatim}
+
+\item The last function of the chapter is \texttt{rempick} using \texttt{one?}. This is just a small change to our original \texttt{rempick} function.
+\begin{verbatim}
+(define rempick-one
+  (lambda (n lat)
+    (cond
+      ((one? n) (cdr lat))
+      (else (cons (car lat)
+                  (rempick-one (sub1 n) (cdr lat)))))))
+
+\end{verbatim}
 \end{itemize}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+\textbf{Core Terms/Concepts Learnt}
+\begin{itemize}
+\item Building numbers by adding or subtracting 1
+\item Building primitive arithmetic operations of \texttt{+}, \texttt{-}, \texttt{x} and \texttt{/} (integer)
+\item Operations on tuples
+\item Different  ways to do equality testing and counting frequency of occurrence
+\end{itemize}
 
 
 \newpage
 
 \section{* Oh My Gawd *: It's Full of Stars}
-\label{sec:org1231ebe}
+\label{sec:orgbdc29f3}
+
+This chapter we start looking at nested lists.
+
+\vspace{1em}
+
+Key Takeaway:
+\emph{To be done}
+
+\vspace{1em}
+
+\begin{itemize}
+\item Removing a member in a nested list. In earlier chapters we only focused on proper non-nested lists but in this we will look at lists within lists. There could
+be any level of nesting theoretically speaking.
+\end{itemize}
 
 \newpage
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 \section{Shadows}
-\label{sec:org38270d2}
+\label{sec:org07c2ab6}
 
 \newpage
 
 \section{Friends and Relations}
-\label{sec:org2915a5d}
+\label{sec:org2c7654f}
 
 \newpage
 
 \section{Lambda the Ultimate}
-\label{sec:org26bbe1c}
+\label{sec:org819f237}
 
 \newpage
 
 \section{\ldots{} and Again, and Again, and Again, \ldots{}}
-\label{sec:orgde49c4a}
+\label{sec:org7f9d76b}
 
 \newpage
 
 \section{What Is the Value of All of This?}
-\label{sec:org20dfc58}
+\label{sec:org3f866fa}
 
 \newpage
 
 \section{Intermission}
-\label{sec:orgc2c6917}
+\label{sec:org5025f31}
 
 \newpage
 
 \section{The Ten Commandments}
-\label{sec:org8b73ae8}
+\label{sec:orgc1e0f08}
 
 \newpage
 
 \section{The Five Rules}
-\label{sec:org7c647a3}
+\label{sec:org8b2eb98}
 
 \newpage
 \end{document}

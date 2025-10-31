@@ -212,8 +212,6 @@
       ((number? (car lat)) (no-nums (cdr lat)))
       (else (cons (car lat) (no-nums (cdr lat)))))))
 
-(trace no-nums)
-
 (define no-nums-else
   (lambda (lat)
     (cond
@@ -224,12 +222,52 @@
               (else (cons (car lat)
                           (no-nums-else (cdr lat)))))))))
 
-(trace no-nums-else)
+(define all-nums
+  (lambda (lat)
+    (cond
+      ((null? lat) (quote ()))
+      ((number? (car lat)) (cons
+                            (car lat) (all-nums (cdr lat))))
+      (else (all-nums (cdr lat))))))
 
+(define eqan?
+  (lambda (a1 a2)
+    (cond
+      ((and (number? a1) (number? a2))
+       (= a1 a2))
+      ((or (number? a1) (number? a2)) #f)
+      (else (eq? a1 a2)))))
 
+(define occur
+  (lambda (a lat)
+    (cond
+      ((null? lat) 0)
+      ((eq? a (car lat)) (add1 (occur a (cdr lat))))
+      (else (occur a (cdr lat))))))
 
+(define one-zero?
+  (lambda (n)
+    (cond
+      ((zero? n) #f)
+      (else (zero? (sub1 n))))))
 
+(define one-equal?
+  (lambda (n)
+    (cond
+      (else (= n 1)))))
 
+(define one?
+  (lambda (n)
+    (= n 1)))
+
+(define rempick-one
+  (lambda (n lat)
+    (cond
+      ((one? n) (cdr lat))
+      (else (cons (car lat)
+                  (rempick-one (sub1 n) (cdr lat)))))))
+
+(trace rempick-one)
 
 
 

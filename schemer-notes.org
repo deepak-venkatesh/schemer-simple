@@ -723,14 +723,16 @@ This chapter explains how numbers can be built with recursion.
 #+LATEX: \vspace{1em}
 
 Key Takeaway:
-/The First Commandment (first revision): When recurring on a list of atoms, ~lat~, asks two questions about it: ~(null? lat)~ and ~else~. When
-recurring on a number, ~n~, ask two questions about it: ~(zero? n)~ and ~else~./
-#+LATEX: \vspace{0.5em}
-/The Fourth Commandment (first revision): Always change one argument while recurring. It must be changed closer to termination. The changing
-argument must be tested in the termination condition: when using ~cdr~ test termination with null? and when using ~sub1~, test termination with ~zero?~./
-#+LATEX: \vspace{0.5em}
-/The Fifth Commandment: When building a value with ~+~, always use 0 for the value of the terminating line, for adding 0 does not change the
-value of an addition. When building a value with ~x~, always use 1 for the value of the terminating line, for multiplying by 1 does not change the value of a multiplication. When building a value with ~cons~, always consider ~()~ for the value of the terminating line./
+
+/The First Commandment (first revision): When recurring on a list of atoms, ~lat~, asks two questions about it: ~(null? lat)~ and ~else~. When recurring on a number, ~n~, ask two questions about it: ~(zero? n)~ and ~else~./
+
+#+LATEX: \bigskip
+
+/The Fourth Commandment (first revision): Always change one argument while recurring. It must be changed closer to termination. The changing argument must be tested in the termination condition: when using ~cdr~ test termination with null? and when using ~sub1~, test termination with ~zero?~./
+
+#+LATEX: \bigskip
+
+/The Fifth Commandment: When building a value with ~+~, always use 0 for the value of the terminating line, for adding 0 does not change the value of an addition. When building a value with ~x~, always use 1 for the value of the terminating line, for multiplying by 1 does not change the value of a multiplication. When building a value with ~cons~, always consider ~()~ for the value of the terminating line./
 
 #+LATEX: \vspace{1em}
 
@@ -774,6 +776,7 @@ value of an addition. When building a value with ~x~, always use 1 for the value
       5
 
   #+end_src
+
 + In the earlier chapter the authors had referred to using ~(null?)~ as the first test and now they correctly say that for numbers we can
   use ~zero?~ as the test.
 + ~zero?~ is like ~null?~ and ~add1~ is like ~cons~
@@ -785,10 +788,6 @@ value of an addition. When building a value with ~x~, always use 1 for the value
 	(cond ((zero? m) n)
 	      (else (sub1 (o- n (sub1 m)))))))
     
-  #+end_src
-
-  
-  #+begin_src scheme
     > (o- 5 3)
     >(o- 5 3)
     > (o- 5 2)
@@ -840,6 +839,7 @@ value of an addition. When building a value with ~x~, always use 1 for the value
     55
 
   #+end_src
+  
 + Multiplication is repetitive addition. So to build ~x~ we have to decrement one number and for every decrement add the other number to itself.
   #+begin_src scheme
 	(define x
@@ -859,6 +859,7 @@ value of an addition. When building a value with ~x~, always use 1 for the value
     12
     
   #+end_src
+  
 + A nice expansion in the book is for ~(x 12 3)~ fairly similar to the ~trace~ Dr Racket generates
   #+begin_src scheme
     (x 12 3)
@@ -870,6 +871,7 @@ value of an addition. When building a value with ~x~, always use 1 for the value
     = 36
     
   #+end_src
+  
 + A question is asked why is 0 the value for the terminal condition line in ~x~ and the answer to this is because 0 will not affect ~+~. That
   is ~n + 0 = n~. The actual math behind lies in abstract algebra. In an operation such as ~+~ there is a concept of identity and inverse. The
   ~identity~ or ~neutral~ element in the set of this operation does not affect the value of other elements when the operation is applied between
@@ -877,6 +879,7 @@ value of an addition. When building a value with ~x~, always use 1 for the value
   of non-negative numbers (as done in this book). So ~+~ 2 and the ~identity~ should yield 2 itself. Thus the identity in this set of whole
   numbers for this specific ~+~ operation is 0. Similarly for the operation of ~x~ in the set of natural numbers the identity is 1. 2 multiplied
   by 1 yields 2 again. Now we get back to scheme and away from abstract algebra.
+  
 + The next function we write is addition of two tuples. In this all elements in the tuple at their respective positions are added. The first version
   of the code adds two tuples of the same length (code is below). When we supply it with varying length tuples we get an error because it tries to
   add a number to an empty list. The trace diagram shows the error. Now we will write a cleaner function which will take varying length tuples.
@@ -911,6 +914,7 @@ value of an addition. When building a value with ~x~, always use 1 for the value
       given: '()
 
   #+end_src
+  
 + ~tup+~ below is the correct way to define addition of the elements of two tuples. The trace diagram helps understand why. When one of the tuples
   runs out of elements i.e. it is an empty tuple, then at that time whatever the present recurring state of the other tuple is that is used for
   ~cons~-ing when the stack frames start returning values.
@@ -958,6 +962,7 @@ value of an addition. When building a value with ~x~, always use 1 for the value
     '(5 5 5 4)
 
   #+end_src
+  
 + Definitions of greater than and smaller than ~>~ and ~<~ is tricky. For greater than ~>~ the order of tests  matter. The ~#f~ needs to
   be tested first for the base condition. This is so because when ~n~ reaches zero we know for sure that ~n~ is ~<= m~ thus the overall test
   is ~#f~. But if we had tested ~m~ as zero which would return ~#t~ even if the condition ~=~ is satisfied. Similarly we can compose a function
@@ -1018,6 +1023,7 @@ value of an addition. When building a value with ~x~, always use 1 for the value
     #f
     
   #+end_src
+  
 + Next we compose the equality function ~=~ for numbers. The plain vanilla method is to check if one is zero and whether at the same time the
   other is zero too. If not then it is false. Also if one reaches zero while decrementing and the other is still not zero then it is not equal.
   The code is simple below. The other way which build up on ~>~ and ~<~ is to check if these two are false then ~=~ will be true.
@@ -1035,6 +1041,7 @@ value of an addition. When building a value with ~x~, always use 1 for the value
 	      (else #t))))
 
   #+end_src
+  
 + Exponents (or raising to power) is also simple.
   #+begin_src scheme
 	(define o-exp
@@ -1102,6 +1109,7 @@ value of an addition. When building a value with ~x~, always use 1 for the value
     4
     
   #+end_src
+  
 + Indexing a list or like in Python we refer to elements of a list starting with 0. In this example the book starts indexing with 1. Here I show
   both indexes one starting with 0 and the other as in the book starting with 1.
   #+begin_src scheme
@@ -1128,6 +1136,7 @@ value of an addition. When building a value with ~x~, always use 1 for the value
 	<'butter
 	'butter
   #+end_src
+  
 + Removing an element in the list is consing like we did before.
   #+begin_src scheme
     (define rempick
@@ -1138,6 +1147,7 @@ value of an addition. When building a value with ~x~, always use 1 for the value
 		      (rempick (sub1 n) (cdr lat)))))))
 
   #+end_src
+  
 + ~number?~ is a primitive in Scheme just like ~NUMERBP~ in Common Lisp.
   #+begin_src scheme
     > (number? 5)
@@ -1146,6 +1156,7 @@ value of an addition. When building a value with ~x~, always use 1 for the value
     #f
     
   #+end_src
+  
 + Removing all numbers from a given list is a combination of using ~number?~ and a ~cons~ recursion. Unsure why the authors use two ~else~'s. It makes
   the function long and a tad bit complicated.
   #+begin_src scheme
@@ -1167,48 +1178,188 @@ value of an addition. When building a value with ~x~, always use 1 for the value
 			      (no-nums-else (cdr lat)))))))))
 
   #+end_src
+  
++ The next function is inverse of the former ~no-nums~. In this ~all-nums~ we keep only the numbers and do away with everything else. This is also simple.
+  #+begin_src scheme
+    (define all-nums
+      (lambda (lat)
+	(cond
+	  ((null? lat) (quote ()))
+	  ((number? (car lat)) (cons
+				(car lat) (all-nums (cdr lat))))
+	  (else (all-nums (cdr lat))))))
 
+  #+end_src
+  
++ In Touretzky's book on Common Lisp there is a very nice explanation of equality tests such as ~EQUAL~, ~=~, ~EQ~ etc. Similarly in Scheme there are differences
+  in the way equality tests are done. The table below captures the notes on this topic.
 
+ | Predicate  | Meaning                                                    | Works On              |
+ |------------+------------------------------------------------------------+-----------------------|
+ | ~eq?~      | Object identity - Are these the same objects?              | symbols, booleans     |
+ | ~eqv?~     | Value identity (atomic) - Do these denote the same values? | numbers, chars        | 
+ | ~equal?~   | Structural equality - Are these structurally the same?     | lists, strings, etc.  |
+ | ~=~        | Numeric equality - Are these numbers same?                 | numbers               | 
 
+ #+LATEX: \bigskip
 
+ | Predicate   | Example                       |
+ |-------------+-------------------------------|
+ | ~eq?~       | (eq? 'a 'a) → #t              |
+ | ~eqv?~      | (eqv? 3 3) → #t               | 
+ | ~equal?~    | (equal? '(a b) '(a b)) → #t   |
+ | ~=~         | (= 3 3.0) → #t                | 
 
+ My assumption is that the /object/ refers to the Lisp object therefore it is that specific location in memory which is being compared. Essentially are these two
+ things in the same memory location? I will need to confirm this. Rest of the equality predicates are straightforward. Test to check the Lisp Object hypothesis:
+ #+begin_src scheme
+   > (eq? '(a b) '(a b))
+   #f
+   > (equal? '(a b) '(a b))
+   #t
 
+ #+end_src
+ 
++ Next we write a function to check if the atoms are same. Here we use ~=~ for comparing numbers, and rightly so.
+  #+begin_src scheme
+    (define eqan?
+      (lambda (a1 a2)
+	(cond
+	  ((and (number? a1) (number? a2))
+	   (= a1 a2))
+	  ((or (number? a1) (number? a2)) #f)
+	  (else (eq? a1 a2)))))
 
+  #+end_src
 
++ Not sure of the answer to the question "Can we assume that all functions written using ~eq?~ can be generalized by replacing ~eq?~ by ~eqan?~". The answer
+  given is "Yes" except for ~equan?~ itself. Is it because we can't write ~equan?~ without ~eq?~. Not sure if I understood this correctly.
 
++ ~occur~ is defined which basically counts the frequency of occurrence in a list.
+  #+begin_src scheme
+    (define occur
+      (lambda (a lat)
+	(cond
+	  ((null? lat) 0)
+	  ((eq? a (car lat)) (add1 (occur a (cdr lat))))
+	  (else (occur a (cdr lat))))))
 
+  #+end_src
 
++ The chapter suddenly jumps to defining ~one?~ predicate which essentially checks if a number is ~1~ or not. We do it in multiple ways but we learn that ~cond~
+  is not necessary to construct this predicate.
+  #+begin_src scheme
+    (define one-zero?
+      (lambda (n)
+	(cond
+	  ((zero? n) #f)
+	  (else (zero? (sub1 n))))))
 
+    (define one-equal?
+      (lambda (n)
+	(cond
+	  (else (= n 1)))))
 
+    (define one?
+      (lambda (n)
+	(= n 1)))
 
+  #+end_src
 
++ The last function of the chapter is ~rempick~ using ~one?~. This is just a small change to our original ~rempick~ function.
+  #+begin_src scheme
+    (define rempick-one
+      (lambda (n lat)
+	(cond
+	  ((one? n) (cdr lat))
+	  (else (cons (car lat)
+		      (rempick-one (sub1 n) (cdr lat)))))))
 
+  #+end_src
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+*Core Terms/Concepts Learnt*
++ Building numbers by adding or subtracting 1
++ Building primitive arithmetic operations of ~+~, ~-~, ~x~ and ~/~ (integer)
++ Operations on tuples
++ Different  ways to do equality testing and counting frequency of occurrence
+  
 
 #+LATEX: \newpage
 
 * * Oh My Gawd *: It's Full of Stars
 
+This chapter we start looking at nested lists.
+
+#+LATEX: \vspace{1em}
+
+Key Takeaway:
+/To be done/
+
+#+LATEX: \vspace{1em}
+
++ Removing a member in a nested list. In earlier chapters we only focused on proper non-nested lists but in this we will look at lists within lists. There could
+  be any level of nesting theoretically speaking.
+
 #+LATEX: \newpage
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 * Shadows
 

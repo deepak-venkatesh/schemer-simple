@@ -278,7 +278,7 @@
           (else (cons (rember* a (car l))
                       (rember* a (cdr l)))))))
 
-(trace rember*)
+
 
 
 

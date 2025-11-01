@@ -1,4 +1,15 @@
+# COMMENT for no indent
 #+LATEX_HEADER: \setlength{\parindent}{0pt}
+
+# COMMENT for license
+#+LATEX_HEADER: \usepackage{ccicons}
+#+LATEX_HEADER: \usepackage[
+#+LATEX_HEADER:     type={CC},
+#+LATEX_HEADER:     modifier={by-sa},
+#+LATEX_HEADER:     version={4.0},
+#+LATEX_HEADER: ]{doclicense}
+
+
 
 #+title: The Little Schemer Simplified
 #+author: Deepak Venkatesh
@@ -36,6 +47,14 @@ well. I am still new to both Lisp and programming.
 + emacs for org notes
 + Macbook Pro 2019 2.6 Ghz I7 Intel chip with 16 GB RAM
 #+LATEX: \end{abstract}
+
+
+
+#+BEGIN_EXPORT latex
+\newpage
+\vfill
+\doclicenseThis
+#+END_EXPORT
 
 #+LATEX: \clearpage
 #+TOC: headlines 1          ; insert ToC here (on its own page)
@@ -1299,6 +1318,58 @@ Key Takeaway:
 
 + Removing a member in a nested list. In earlier chapters we only focused on proper non-nested lists but in this we will look at lists within lists. There could
   be any level of nesting theoretically speaking.
++ Any function name with a ~*~ at the end basically means application for the entire list. We write ~rember*~ which removes a specific element from even nested lists.
+  The logic is to simply check is the element in the list is an atom and equal to the removable element, if it is then we just do a recursive ~rember*~ on the ~cdr~ of the list. If it is not equal
+  then we ~cons~ that to the recursive call of the ~cdr~ of the list. In the case where the element is a list itself we keep calling the list recursively that is the ~car~ and applying the ~rember*~.
+  It is fairly logical. The ~trace~ on the stack actually shows the entire process nicely.
+  #+begin_src scheme
+	(define rember*
+	  (lambda (a l)
+	    (cond ((null? l) (quote ()))
+		  ((atom? (car l))
+		   (cond ((eq? a (car l)) (rember* a (cdr l)))
+			 (else (cons (car l) (rember* a (cdr l))))))
+		  (else (cons (rember* a (car l))
+			      (rember* a (cdr l)))))))
+
+    > (rember* 'cup '((coffee) cup ((tea) cup)
+			       (and (hick)) cup))
+    >(rember* 'cup '((coffee) cup ((tea) cup) (and (hick)) cup))
+    > (rember* 'cup '(coffee))
+    > >(rember* 'cup '())
+    < <'()
+    < '(coffee)
+    > (rember* 'cup '(cup ((tea) cup) (and (hick)) cup))
+    > (rember* 'cup '(((tea) cup) (and (hick)) cup))
+    > >(rember* 'cup '((tea) cup))
+    > > (rember* 'cup '(tea))
+    > > >(rember* 'cup '())
+    < < <'()
+    < < '(tea)
+    > > (rember* 'cup '(cup))
+    > > (rember* 'cup '())
+    < < '()
+    < <'((tea))
+    > >(rember* 'cup '((and (hick)) cup))
+    > > (rember* 'cup '(and (hick)))
+    > > >(rember* 'cup '((hick)))
+    > > > (rember* 'cup '(hick))
+    > > > >(rember* 'cup '())
+    < < < <'()
+    < < < '(hick)
+    > > > (rember* 'cup '())
+    < < < '()
+    < < <'((hick))
+    < < '(and (hick))
+    > > (rember* 'cup '(cup))
+    > > (rember* 'cup '())
+    < < '()
+    < <'((and (hick)))
+    < '(((tea)) (and (hick)))
+    <'((coffee) ((tea)) (and (hick)))
+    '((coffee) ((tea)) (and (hick)))
+    
+  #+end_src
 
 #+LATEX: \newpage
 

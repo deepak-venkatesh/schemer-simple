@@ -267,10 +267,18 @@
       (else (cons (car lat)
                   (rempick-one (sub1 n) (cdr lat)))))))
 
-(trace rempick-one)
+;; Book Ch05: *Oh My Gawd*: It's Full of Stars
 
+(define rember*
+  (lambda (a l)
+    (cond ((null? l) (quote ()))
+          ((atom? (car l))
+           (cond ((eq? a (car l)) (rember* a (cdr l)))
+                 (else (cons (car l) (rember* a (cdr l))))))
+          (else (cons (rember* a (car l))
+                      (rember* a (cdr l)))))))
 
-
+(trace rember*)
 
 
 

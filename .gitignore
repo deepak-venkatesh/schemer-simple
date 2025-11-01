@@ -11,3 +11,5 @@
 # macOS metadata
 .DS_Store
 
+# Ignore OpenDocument files
+*.odt
